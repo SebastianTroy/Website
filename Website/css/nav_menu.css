@@ -1,13 +1,13 @@
 ul.nav_menu_buttons {
 	list-style: none;
 	left: 0;
-	height: 2em;
+	height: 10em;
 	overflow: hidden;
 }
 ul.nav_menu_buttons li {
 	float: left;
 	width: 9.5em;
-	height: 2em;
+	height: 10em;
 	position: relative;
 }
 
@@ -38,11 +38,11 @@ ul.nav_menu_buttons li {
 	text-shadow: 1px 1px 1px #000;
 }
 
+/* These two classes are used to make the nav_buttons expand */
 .nav_button:hover span.left {
 	-webkit-transform: translate(0.5em, 0);
 	-moz-transform: translate(0.5em, 0);translate(0.5em, 0);
 }
-
 .nav_button:hover span.right {
 	-webkit-transform: translate(-1em, 0);
 	-moz-transform: translate(-1em, 0);translate(-1em, 0);
