@@ -1,6 +1,6 @@
 <?php
 
-$PageTitle = "Home";
+$PageTitle = "Contact";
 
 function customPageHeader(){
 ?>
@@ -9,7 +9,7 @@ function customPageHeader(){
 
 	include_once ('common/header.php');
 
-	include_once ('html/homepage.html');
+	include_once ('html/contact.html');
 
 	include_once ('common/footer.php');
 ?>

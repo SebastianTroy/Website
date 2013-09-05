@@ -10,6 +10,7 @@ $(window).scroll(
 	     */
 	    if ($(this).scrollTop() >= scroller_anchor
 		    && $('.nav_menu').css('position') != 'fixed') {
+		
 		// Change the CSS of the scroller to highlight it and fix it at
 		// the top of the screen.
 		$('.nav_menu').css({

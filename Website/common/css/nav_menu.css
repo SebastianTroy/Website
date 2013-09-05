@@ -1,13 +1,13 @@
 ul.nav_menu_buttons {
+	top: -1em;
 	list-style: none;
-	left: 0;
-	height: 10em;
+	height: 2em;
 	overflow: hidden;
 }
 ul.nav_menu_buttons li {
 	float: left;
 	width: 9.5em;
-	height: 10em;
+	height: 2em;
 	position: relative;
 }
 
