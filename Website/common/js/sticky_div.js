@@ -24,8 +24,8 @@ $(window).scroll(
 		/*
 		 * 
 		 */
-		$('.nav_menu_anchor').css('height', $('.nav_menu').height());
-	    } else if ($(this).scrollTop() < scroller_anchor
+		$('.nav_menu_anchor').css('height', 1.5 * $('.nav_menu').height());
+	    } else if ($(this).scrollTop() < scroller_anchor + 0.5 * $('.nav_menu').height()
 		    && $('.nav_menu').css('position') != 'relative') {
 		// If the user has scrolled back to the location above the
 		// scroller anchor place it back into the content.

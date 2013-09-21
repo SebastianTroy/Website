@@ -1,0 +1,31 @@
+div.box {
+	border: 2px solid #007275;
+	margin: 2%;
+	margin-bottom: 0px;
+	padding-bottom: 5px;
+}
+
+div.box h1 {
+	background-color: #007275;
+	color: #FFFFFF;
+	font-size: 1.2em;
+	font-weight: bold;
+	padding: 0 0 2px 4px;
+	margin: 0;
+}
+
+div.box p {
+	margin-bottom: 0.4em;
+	margin-top: 0;
+	padding: 4px;
+}
+
+div.floatleft {
+	display: inline-block;
+	width: 45%;
+}
+
+div.floatright {
+	display: inline-block;
+	width: 45%;
+}
