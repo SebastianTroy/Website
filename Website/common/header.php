@@ -63,7 +63,7 @@
 	<body>
 		<div id="master_container">
 			<div id="header_container">
-				<div style="left:50px">
+				<div>
 					<a href="index.php"><img src="common/img/banner.png" title="Games and simulations by Sebastian Troy" border="0" margin="0"/></a>
 				</div>
 				<div class="nav_menu_container">
