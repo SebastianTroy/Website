@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:site_name" content="TroyDev">
+        <meta property="og:title" content="TroyDev">
+        <meta property="og:description" content="Site for my personal projects">
+        <meta property="og:type" content="website">
+        <meta property="og:image" content="https://img1.wsimg.com/isteam/ip/961afd39-a6a6-4a34-aeab-9ebf830fefd8/IMG_0775-0001.JPG">
+        <meta property="og:locale" content="en_GB">
+
+        <title>Travelling Salesman | TroyDev</title>
+
+        <link rel="icon" type="image/x-icon" href="/assets/icons/logo.png">
+        <link rel="stylesheet" href="/assets/fonts/fonts.css">
+        <link rel="stylesheet" href="/assets/styles/toolbar.css">
+        <link rel="stylesheet" href="/assets/styles/shared.css">
+        <script src="/assets/scripts/toolbar.js"></script>
+    </head>
+
+    <body>
+        <div class="toolbar">
+            <div class="toolbar_content">
+                <a class="toolbar_logo" href="/index.html"></a>
+                <input type="checkbox" id="toolbar_hamburger_menu" style="display: none;">
+                <label for="toolbar_hamburger_menu" class="toolbar_buttons_toggle"></label>
+                <div class="toolbar_buttons_container">
+                    <a class="toolbar_button" href="/index.html">Home</a>
+                    <hr class="toolbar_button_spacer">
+                    <a class="toolbar_button" href="/trilobytes.html">Trilobytes</a>
+                    <hr class="toolbar_button_spacer">
+                    <a class="toolbar_button" href="/projects.html">Projects</a>
+                    <hr class="toolbar_button_spacer">
+                    <a class="toolbar_button" href="/contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <h2>Travelling Salesman Solver</h2>
+            <div class="box">
+                <div class="pair alt">
+                    <img src="https://img1.wsimg.com/isteam/stock/24856/:/cr=t:12.5%25,l:0%25,w:100%25,h:75%25/rs=w:400,h:200,cg:true">
+                    <div class="two_thirds box">
+                        <h3></h3>
+                        <div class="text_left">The inspiration for this project was the famous <a href="https://en.wikipedia.org/wiki/Travelling_salesman_problem">travelling salesman problem</a>, where you try to find the shortest route between a
+                            number of locations, visiting each location only once.</div>
+                        <div class="text_left">I wanted to see if a simple evolutionary algorithm could be used to obtain decent solutions, and to experiment with different mutations to see which gave the best results.</div>
+                        <div class="text_left">The project is open source and can be <a href="https://github.com/SebastianTroy/salesman">found on GitHub</a></div>
+                    </div>
+                </div>
+            </div>
+            <h2>Run it yourself</h2>
+            <div class="box">
+                <div class="text">To run this program yourself on Windows, download and unzip the file and double-click on "TravellingSalesman.exe" inside the folder.</div>
+                <a href="assets/zips/TravellingSalesman_v3.zip" class="try_it_now">TravellingSalesman_v3 (zip)</a>
+            </div>
+            <h2>Results</h2>
+            <div class="pair">
+                <div>
+                    <a href="assets/images/salesman/muddled.webp" class="image_link">
+                        <img src="assets/images/salesman/muddled.webp">
+                    </a>
+                </div>
+                <div class="box">
+                    <h3>The algorithm</h3>
+                    <div class="text">A basic hill-climber is used, the tour is copied, mutated and the shortest version is kept. There are 5 differnt mutations that can be applied.</div>
+                    <div class="text">
+                        <ol>
+                            <li>Move a random stop to a random location</li>
+                            <li>Move some random stops to random locations</li>
+                            <li>Take a random subsection of the tour and reverse the order of stops</li>
+                            <li>Take a random subsection of the tour and move it to the end</li>
+                            <li>Swap the position of two stops</li>
+                        </ol>
+                    </div>
+                    <div class="text">Individually these mutations often get stuck in clearly sub-optimal solutions, however together they cover each other's weaknesses and give great results very quickly.</div>
+                </div>
+            </div>
+            <div class="pair alt">
+                <div>
+                    <a href="assets/images/salesman/solved.webp" class="image_link">
+                        <img src="assets/images/salesman/solved.webp">
+                    </a>
+                </div>
+                <div class="box">
+                    <h3>Solution</h3>
+                    <div class="text">This shows the solution for the above image, over 22.5 million mutations have been applied, but the best solution found was at mutation 4.6 million. It is hard to prove this is the most optimum solution, and it
+                        likely isn't, the evolutionary landscape that this particular problem exists on has many local optima that my algorithm may not be able to escape easily, and even if it can, the nature of random mutations means that it could
+                        take a very long time to find further improvements.</div>
+                </div>
+            </div>
+            <div class="pair">
+                <iframe class="embedded_youtube" src="https://youtube.com/embed/XxzZ7P3_bpQ?rel=0" title="Travelling salesman solver in action" frameborder="0" allow="clipboard-write; encrypted-media;" allowfullscreen></iframe>
+                <div class="box">
+                    <h3>250 Stops Example</h3>
+                    <div class="text">The more stops that are added, the longer it takes to settle on a good solution. There is a "high conttrast" mode to make routes with hundreds of stops easier to view. In this example the "Reverse Section"
+                        mutation is selected to quickly hone in on a good solution, then the other mutations are enabled, allowing a small number of improvements that would not have otherwise been possible.</div>
+                </div>
+            </div>
+            <hr class="section_end">
+        </div>
+        <class="content">
+            <div class="footer_content">
+                <div class="small_text">Copyright © 2023 TroyDev - All Rights Reserved.</div>
+                <input type="checkbox" id="toolbar_hamburger_menu" style="display: none;">
+                <label for="toolbar_hamburger_menu" class="toolbar_buttons_toggle"></label>
+                <div class="toolbar_buttons_container" style="flex-direction: row;">
+                    <a class="toolbar_button" href="/index.html">Home</a>
+                    <hr>
+                    <a class="toolbar_button" href="/trilobytes.html">Trilobytes</a>
+                    <hr>
+                    <a class="toolbar_button" href="/projects.html">Projects</a>
+                    <hr>
+                    <a class="toolbar_button" href="/contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

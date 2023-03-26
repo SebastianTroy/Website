@@ -1,0 +1,333 @@
+*,
+::before,
+::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: black;
+    color: rgb(226, 226, 226);
+    font-family: "Lusitana", Georgia, serif;
+    width: 100%;
+    min-width: 250px;
+    display: block;
+    justify-content: space-around;
+}
+
+h1 {
+    font-family: "Lato", arial, sans-serif;
+    text-align: center;
+    font-weight: normal;
+    font-size: 52px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: solid 1px;
+}
+
+h2 {
+    font-family: "Lato", arial, sans-serif;
+    text-align: left;
+    font-weight: normal;
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    overflow-wrap: break-word;
+    padding-bottom: 10px;
+    border-bottom: solid 1px;
+}
+
+h3 {
+    text-align: center;
+    font-weight: normal;
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    overflow-wrap: break-word;
+    line-height: 1.25;
+}
+
+h4 {
+    text-align: center;
+    font-weight: normal;
+    font-size: 22px;
+    margin-bottom: 20px;
+    overflow-wrap: break-word;
+    line-height: 1.2;
+}
+
+hr.section_end {
+    width: 100%;
+    color: rgb(226, 226, 226);
+    padding-top: 5vh;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+a {
+    color: rgb(79, 119, 168);
+}
+
+li {
+    text-align: left;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 32px;
+    font-family: "Lusitana", Georgia, serif;
+    width: 65%;
+    min-width: 275px;
+    align-self: center;
+}
+
+form > input,
+textarea {
+    background-color: transparent;
+    color: rgb(244, 244, 244);
+    font-size: medium;
+    padding: 16px;
+}
+
+form > button {
+    background-color: rgb(19, 41, 68);
+    color: rgb(244, 244, 244);
+    border-style: none;
+    cursor: pointer;
+    min-height: 56px;
+    padding-right: 32px;
+    padding-left: 32px;
+    padding-bottom: 8px;
+    padding-top: 8px;
+    align-items: center;
+    font-size: 16px;
+    font-family: "Lusitana", Georgia, serif;
+    font-weight: 700;
+    letter-spacing: 0.063em;
+    display: inline-flex;
+    justify-content: center;
+    text-decoration: underline;
+}
+
+/* useful for making images clickable */
+a.image_link {
+    display: contents;
+}
+
+a.image_link > img {
+    width: 100%;
+    height: auto;
+}
+
+.content,
+.footer {
+    height: 100%;
+    width: 95%;
+    max-width: 1280px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.footer_content {
+    row-gap: 16px;
+    padding: 16px;
+    padding-bottom: 5vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer_buttons_container {
+    display: flex;
+    flex-direction: row;
+    width: max-content;
+}
+
+.over_image {
+    text-shadow: 2px 2px black;
+}
+
+iframe.embedded_youtube {
+    width: 100%;
+    aspect-ratio: calc(560 / 315);
+}
+
+.try_it_now {
+    display: block;
+    color: rgb(226, 226, 226);
+    background-color: #161616;
+    width: 100%;
+    max-width: 70%;
+    height: auto;
+    align-self: center;
+    padding: 20px;
+    text-decoration: none;
+}
+
+.try_it_now:hover {
+    background-color: #121212;
+    text-decoration: underline;
+}
+
+.try_it_now::after {
+    content: "⇩ Download";
+    float: right;
+    color: rgb(79, 119, 168);
+}
+
+.text,
+.text_left,
+.small_text {
+    color: rgb(145, 145, 145);
+    font-size: 18px;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.text_left {
+    text-align: left;
+    align-self: flex-start;
+}
+
+.small_text {
+    font-size: 15px;
+}
+
+/*
+    Intended for large blocks that span the full width of the page.
+*/
+.box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 16px;
+    column-gap: 16px;
+    font-size: 18px;
+    padding-bottom: 32px;
+}
+
+.box_item {
+    margin-bottom: 16px;
+}
+
+/*
+    Intended for small centered blocks that form a single row but
+    reactively spread onto new rows when there is limited space.
+*/
+.flowbox {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    row-gap: 16px;
+    column-gap: 16px;
+    font-size: 18px;
+    padding: 16px;
+}
+
+.flowbox > * {
+    flex: 1 1 230px;
+    max-width: 270px;
+}
+
+/* 
+    Intended for sequential blocks of pairs that fill the full width of
+    the page. Pairs will reactively collapse to a single column. Use
+    .alt class on every other pair for alternating content so when the
+    items collapse into a single column, items still alternate.
+*/
+.pair {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    column-gap: 32px;
+    padding-bottom: 64px;
+}
+
+.alt {
+    flex-direction: row-reverse;
+}
+
+.pair > * {
+    flex: 1 1 385px;
+    max-width: 6fr;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.pair > .two_thirds {
+    flex: 2 1 512px;
+}
+
+.pair > .one_third {
+    flex: 1 1 280 px;
+}
+
+.pair > img {
+    width: 100%;
+    height: auto;
+    margin: auto;
+}
+
+/* 
+    Intended for a grid with reactive column count (3, <-> 2 <-> 1),
+    that spans the full width of the page. Add items in multiples of
+    three, using use empty divs to fill any gaps (prevents trailing 
+    items from expading to fill multiple columns).
+*/
+.grid {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    row-gap: 54px;
+    column-gap: 54px;
+    font-size: 18px;
+}
+
+.grid > * {
+    flex: 1 1 350px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.grid > * > img {
+    width: 100%;
+    height: auto;
+}
+
+.grid > * > .text {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.more_info_button {
+    background-color: rgb(19, 41, 68);
+    color: rgb(244, 244, 244);
+    cursor: pointer;
+    min-height: 56px;
+    padding-right: 32px;
+    padding-left: 32px;
+    padding-bottom: 8px;
+    padding-top: 8px;
+    align-items: center;
+    font-size: 16px;
+    display: inline-flex;
+    border-style: none;
+    justify-content: center;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 0.063em;
+}

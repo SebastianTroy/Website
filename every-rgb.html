@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:site_name" content="TroyDev">
+        <meta property="og:title" content="TroyDev">
+        <meta property="og:description" content="Site for my personal projects">
+        <meta property="og:type" content="website">
+        <meta property="og:image" content="https://img1.wsimg.com/isteam/ip/961afd39-a6a6-4a34-aeab-9ebf830fefd8/IMG_0775-0001.JPG">
+        <meta property="og:locale" content="en_GB">
+
+        <title>Every RGB | TroyDev</title>
+
+        <link rel="icon" type="image/x-icon" href="/assets/icons/logo.png">
+        <link rel="stylesheet" href="/assets/fonts/fonts.css">
+        <link rel="stylesheet" href="/assets/styles/toolbar.css">
+        <link rel="stylesheet" href="/assets/styles/shared.css">
+        <script src="/assets/scripts/toolbar.js"></script>
+    </head>
+
+    <body>
+        <div class="toolbar">
+            <div class="toolbar_content">
+                <a class="toolbar_logo" href="/index.html"></a>
+                <input type="checkbox" id="toolbar_hamburger_menu" style="display: none;">
+                <label for="toolbar_hamburger_menu" class="toolbar_buttons_toggle"></label>
+                <div class="toolbar_buttons_container">
+                    <a class="toolbar_button" href="/index.html">Home</a>
+                    <hr class="toolbar_button_spacer">
+                    <a class="toolbar_button" href="/trilobytes.html">Trilobytes</a>
+                    <hr class="toolbar_button_spacer">
+                    <a class="toolbar_button" href="/projects.html">Projects</a>
+                    <hr class="toolbar_button_spacer">
+                    <a class="toolbar_button" href="/contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <h2>Every RGB</h2>
+            <div class="box">
+                <div class="pair alt">
+                    <div class="one_third">
+                        <a href="assets/images/every-RGB/overview.png" class="image_link">
+                            <img src="assets/images/every-RGB/overview.png" alt="Every RGB application, click for full size">
+                        </a>
+                    </div>
+                    <div class="two_thirds box">
+                        <h3></h3>
+                        <div class="text_left">The inspiration for this project was <a href="https://allrgb.com/">https://allrgb.com/</a> where there are many images with no two pixels the same colour. There are many approaches demonstrated, but I
+                            wanted to see if I could achieve similar results with an evolutionary algorithm.</div>
+                        <div class="text_left">My idea was simple, I'd select an image to try to replicate in every colour, create an output image containing one pixel of every colour, and an use a hill-climbing algorithm to adjust the output image
+                            to be more similar to the input image. The basic premise for all three algorithms I wrote is that two pixels are selected at random, and they are swapped if the algorithm calculates that it would improve the image. Given
+                            that there are 16,777,216 pixels in one of these images, it may take a billion or more swaps to reach a result that looks good.</div>
+                        <div class="text_left">The project is open source and can be <a href="https://github.com/SebastianTroy/allRGB">found on GitHub</a></div>
+                    </div>
+                </div>
+            </div>
+            <h2>Run it yourself</h2>
+            <div class="box">
+                <div class="text">To run this program yourself on Windows, download and unzip the file and double-click on "allRGB.exe" inside the folder.</div>
+                <a href="assets/zips/AllRGB_v2.0.zip" class="try_it_now">AllRGB_v2.0 (zip)</a>
+            </div>
+            <h2>Results</h2>
+            <div class="pair">
+                <div>
+                    <a href="assets/images/every-RGB/target.png" class="image_link">
+                        <img src="assets/images/every-RGB/target_thumb.webp">
+                    </a>
+                </div>
+                <div class="box">
+                    <h3>Target</h3>
+                    <div class="text">This is the image that each algorithm was attempting to replicate. This is perhaps not the best example, as it doesn't contain a balanced range of colours, but it does highlight the pros and cons of each
+                        algorithm.</div>
+                    <div class="text">Due to the large size of the output files, the following results have been scaled to 2048x2048 pixels.</div>
+                </div>
+            </div>
+            <div class="pair alt">
+                <div>
+                    <a href="assets/images/every-RGB/rgberror.png" class="image_link">
+                        <img src="assets/images/every-RGB/rgberror_thumb.webp">
+                    </a>
+                </div>
+                <div class="box">
+                    <h3>RGB Error</h3>
+                    <div class="text">Each pixel is scored by how closely its individual colour channels match the target image. Each pixel has three 0-255 values representing how much of each colour it has in it, by subtracting the red value of the
+                        target from the red value of the output pixel.</div>
+                    <div class="text">This image contains glaring issues in the dark areas, and loses the shadows amongst the grass and on the roses. Also the fact that the target image contains more green than any other colour results in the reds
+                        and blues being forced into unatural places.</div>
+                </div>
+            </div>
+            <div class="pair">
+                <div>
+                    <a href="assets/images/every-RGB/hsverror.png" class="image_link">
+                        <img src="assets/images/every-RGB/hsverror_thumb.webp">
+                    </a>
+                </div>
+                <div class="box">
+                    <h3>HSV Error</h3>
+                    <div class="text">Similar to RGB error except the pixel is converted to the HSV colourspace first. This means that we can bias the error calculation to prefer pixels that are closer in brightness, which may be desirable because
+                        human eyesight is much more adept at percieving brightness differences than it is colour differences.</div>
+                    <div class="text">While this image does improve the dark regions, and does bring back the shadows in the grass and on the roses, the trade-off to sacrifice colour accuracy for brightness accuracy is very evident.</div>
+                </div>
+            </div>
+            <div class="pair alt">
+                <div>
+                    <a href="assets/images/every-RGB/area_averaging.png" class="image_link">
+                        <img src="assets/images/every-RGB/area_averaging_thumb.webp">
+                    </a>
+                </div>
+                <div class="box">
+                    <h3>Area Averaging</h3>
+                    <div class="text">This uses the same algorithm as the RGB error except it compares the average colour of a small area around each pixel, rather than just each individual pixel. This does however slow down the algorithm greatly.</div>
+                    <div class="text">This is by far the most natural looking image, however it really sacrifices the contrast, making the colours all look washed out.</div>
+                </div>
+            </div>
+            <hr class="section_end">
+        </div>
+        <div class="content">
+            <div class="footer_content">
+                <div class="small_text">Copyright © 2023 TroyDev - All Rights Reserved.</div>
+                <input type="checkbox" id="toolbar_hamburger_menu" style="display: none;">
+                <label for="toolbar_hamburger_menu" class="toolbar_buttons_toggle"></label>
+                <div class="toolbar_buttons_container" style="flex-direction: row;">
+                    <a class="toolbar_button" href="/index.html">Home</a>
+                    <hr>
+                    <a class="toolbar_button" href="/trilobytes.html">Trilobytes</a>
+                    <hr>
+                    <a class="toolbar_button" href="/projects.html">Projects</a>
+                    <hr>
+                    <a class="toolbar_button" href="/contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
