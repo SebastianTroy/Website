@@ -1,5 +1,5 @@
 .background {
-    background-image: linear-gradient(#0000003f, #0000003f), url(/assets/images/WebBackground.webp);
+    background-image: linear-gradient(#0000003f, #0000003f), url(../images/WebBackground.webp);
     background-repeat: no-repeat;
     background-size: auto, auto;
     background-position: center, center;
