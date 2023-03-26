@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:site_name" content="TroyDev">
+        <meta property="og:title" content="TroyDev">
+        <meta property="og:description" content="Site for my personal projects">
+        <meta property="og:type" content="website">
+        <meta property="og:image" content="https://img1.wsimg.com/isteam/ip/961afd39-a6a6-4a34-aeab-9ebf830fefd8/IMG_0775-0001.JPG">
+        <meta property="og:locale" content="en_GB">
+
+        <title>Plant Evolution Sim | TroyDev</title>
+
+        <link rel="icon" type="image/x-icon" href="/assets/icons/logo.png">
+        <link rel="stylesheet" href="/assets/fonts/fonts.css">
+        <link rel="stylesheet" href="/assets/styles/toolbar.css">
+        <link rel="stylesheet" href="/assets/styles/shared.css">
+        <script src="/assets/scripts/toolbar.js"></script>
+    </head>
+
+    <body>
+        <div class="toolbar">
+            <div class="toolbar_content">
+                <a class="toolbar_logo" href="/index.html"></a>
+                <input type="checkbox" id="toolbar_hamburger_menu" style="display: none;">
+                <label for="toolbar_hamburger_menu" class="toolbar_buttons_toggle"></label>
+                <div class="toolbar_buttons_container">
+                    <a class="toolbar_button" href="/index.html">Home</a>
+                    <hr class="toolbar_button_spacer">
+                    <a class="toolbar_button" href="/trilobytes.html">Trilobytes</a>
+                    <hr class="toolbar_button_spacer">
+                    <a class="toolbar_button" href="/projects.html">Projects</a>
+                    <hr class="toolbar_button_spacer">
+                    <a class="toolbar_button" href="/contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <h2>Evolving Plants</h2>
+            <div class="box">
+                <img src="assets/images/evolving-plants/overview.png">
+                <div class="text">This is one of my earliest interactive projects, or at least, the original version was. It was first written in Java, and then updated in 2022 to C++ in Qt.</div>
+                <div class="text">See below for a more detailed explanation.</div>
+                <div class="text">This project is open source and can be <a href="https://github.com/SebastianTroy/Evolving-Plants">found on GitHub</a></div>
+            </div>
+            <h2>Run it yourself</h2>
+            <div class="box">
+                <div class="text">To run this program yourself on Windows, download and unzip the file and double-click on "EvolvingPlants.exe" inside the folder.</div>
+                <a class="try_it_now" href="assets/zips/EvolvingPlants_v4-1.zip">EvolvingPlants_v4-1 (zip)</a>
+            </div>
+            <h2>How it works</h2>
+            <div class="pair">
+                <img src="assets/images/evolving-plants/overview.png">
+                <div class="box">
+                    <h3>
+                        The Gist
+                    </h3>
+                    <div class="text">
+                        "Plants" are modelled as lines (stems) and ovals (leaves), the leaves absorb light energy and cast shadows. Over time plants evolve to compete for this light energy by being taller than competitors, or a different colour,
+                        or by having more leaves. The trade-off is that being taller and more complex requires more energy to exist, and a high dense canopy that blocks out all light prevents baby plants from surviving long enough to grow to full
+                        size.
+                    </div>
+                </div>
+            </div>
+            <div class="pair alt">
+                <img src="assets/images/evolving-plants/light_visible_new_sim.png">
+                <div class="box">
+                    <h3>
+                        Light
+                    </h3>
+                    <div class="text">
+                        The image to the right shows a number of small multi-coloured plants on a white background. The coloured rectangles beneath each leaf are shadows. The colour of the light represents the energy available at that point. <a
+                            href="https://en.wikipedia.org/wiki/Web_colors">R,G,& B channels</a> each contain their own energy and a leaf may evolve in colour to extract energy from one or more of these channels. A leaf "blocks" all of the energy
+                        it absorbs.
+                    </div>
+                    <div class="text">
+                        If a leaf has the colour 50, 50, 50, it will try to absorb that much light from each colour channel, gaining up to 150 energy. A plant cannot utilise more that 200 units of energy, the excess is actually deducted from the
+                        energy the leaf generates by "photosynthesising", this is realistic, plant leaves in strong direct sunlight can overheat and even "burn" like human skin does in strong sunlight.
+                    </div>
+                </div>
+            </div>
+            <div class="pair">
+                <img src="assets/images/evolving-plants/early_on.png">
+                <div class="box">
+                    <h3>
+                        Early on
+                    </h3>
+                    <div class="text">
+                        Here we can see two groups of plants, this simulation is actually the same as in the previous image, some 4000 ticks later, and we can see that these plants appear to all be descended from just two of the original plants
+                        based on their colour.
+                    </div>
+                </div>
+            </div>
+            <div class="pair alt">
+                <img src="assets/images/evolving-plants/early_competition.png">
+                <div class="box">
+                    <h3>
+                        Competition
+                    </h3>
+                    <div class="text">
+                        Now that these plants are growing in the same range, they have begun to compete for light, both with members of their own species, but now also with the other species too, initially we see a simple increase in height.
+                    </div>
+                </div>
+            </div>
+            <div class="pair">
+                <img src="assets/images/evolving-plants/colour_niches.png">
+                <div class="box">
+                    <h3>
+                        Colour Niches
+                    </h3>
+                    <div class="text">
+                        As there is a cap on how much energy a leaf can extract from the light when photosynthesising, we see different species evolving to take advantage of the light not absorbed by the upper canopy. Here we see three different
+                        colours of plant, with the shadows becoming progressively darker as each species extracts a different subset of the available light. From this point on the upper canopy colour may drift over time via <a
+                            href="https://en.wikipedia.org/wiki/Genetic_drift">genetic drift</a> and
+                        smaller species will adapt their colours via <a href="https://en.wikipedia.org/wiki/Natural_selection">natural selection</a> to stay different from the taller plants.
+                    </div>
+                </div>
+            </div>
+            <div class="pair alt">
+                <img src="assets/images/evolving-plants/branching.png">
+                <div class="box">
+                    <h3>
+                        Branching
+                    </h3>
+                    <div class="text">
+                        The selected plant is drawn with a white outline, here it is possible to make out that it is no longer a single stem with a leaf at the top, but it now has a second branch out to the right. The reddish plants also appear
+                        to have a branch, albeit smaller. The plants' structure will continue to get more complex as the simulation continues.
+                    </div>
+                </div>
+            </div>
+            <hr class="section_end">
+        </div>
+        <div class="content">
+            <div class="footer_content">
+                <div class="small_text">Copyright © 2023 TroyDev - All Rights Reserved.</div>
+                <input type="checkbox" id="toolbar_hamburger_menu" style="display: none;">
+                <label for="toolbar_hamburger_menu" class="toolbar_buttons_toggle"></label>
+                <div class="toolbar_buttons_container" style="flex-direction: row;">
+                    <a class="toolbar_button" href="/index.html">Home</a>
+                    <hr>
+                    <a class="toolbar_button" href="/trilobytes.html">Trilobytes</a>
+                    <hr>
+                    <a class="toolbar_button" href="/projects.html">Projects</a>
+                    <hr>
+                    <a class="toolbar_button" href="/contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

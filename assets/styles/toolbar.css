@@ -1,0 +1,137 @@
+.toolbar {
+    position: sticky;
+    top: 0;
+    background-color: #161616;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 16px;
+}
+
+.toolbar_content {
+    width: 100%;
+    max-width: 1280px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.toolbar_logo {
+    background-image: url("/assets/icons/logo.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 64px;
+    height: 64px;
+    max-width: 20vmin;
+    max-height: 20vmin;
+    min-width: 35px;
+    min-height: 35px;
+    transition: width 1s ease 0.1s, height 1s ease 0.1s;
+}
+
+.toolbar_logo_bigger {
+    width: 104px;
+    height: 104px;
+}
+
+.toolbar_buttons_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.toolbar_button,
+.toolbar_buttons_toggle {
+    background-color: transparent;
+    border: 0;
+    color: inherit;
+    font-family: inherit;
+    font-size: 18px;
+    padding: 6px 12px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.toolbar_button:hover,
+.toolbar_buttons_toggle:hover {
+    cursor: pointer;
+    color: rgb(89, 130, 181);
+}
+
+.toolbar_buttons_toggle {
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.toolbar_button_spacer {
+    display: none;
+}
+
+.toolbar_button_current_page {
+    text-decoration-line: underline;
+    text-underline-offset: 5px;
+    text-decoration-skip-ink: all;
+}
+
+@media screen and (min-width: 900px) {
+    .toolbar_buttons_toggle {
+        display: none;
+    }
+}
+
+/* 
+The following makes the menu buttons collapse into a menu on smaller screens.
+This is all done in CSS using a checkbox
+ */
+@media screen and (max-width: 901px) {
+    .toolbar_buttons_container {
+        display: none;
+    }
+
+    .toolbar_button {
+        font-size: large;
+        padding: 16px;
+        align-self: flex-start;
+        padding-left: 9vw;
+    }
+
+    .toolbar_button_spacer {
+        display: initial;
+        width: 82vw;
+    }
+
+    .toolbar_buttons_toggle::before {
+        content: "☰";
+    }
+
+    .toolbar_buttons_container > hr {
+        display: none;
+    }
+
+    #toolbar_hamburger_menu:checked ~ .toolbar_buttons_toggle::before {
+        content: "X";
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 5vmin;
+        z-index: 99;
+    }
+
+    #toolbar_hamburger_menu:checked ~ .toolbar_buttons_container {
+        display: flex;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        padding-top: 5vh;
+        background-color: #000000cf;
+        flex-direction: column;
+    }
+
+    #toolbar_hamburger_menu:checked ~ .toolbar_buttons_container > hr {
+        display: initial;
+    }
+}
