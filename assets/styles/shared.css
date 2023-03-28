@@ -258,7 +258,6 @@ iframe.embedded_youtube {
 
 .pair > * {
     flex: 1 1 385px;
-    max-width: 6fr;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -273,12 +272,17 @@ iframe.embedded_youtube {
     flex: 1 1 280 px;
 }
 
+/* 
+    NOTE THAT ONLY ON FIREFOX DOES THIS WORK
+    wrap images in <div><a class="image_link"><img ... ></a></div> instead
+
 .pair > img {
     width: 100%;
     height: auto;
     margin: auto;
 }
 
+*/
 /* 
     Intended for a grid with reactive column count (3, <-> 2 <-> 1),
     that spans the full width of the page. Add items in multiples of
