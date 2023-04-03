@@ -297,7 +297,6 @@ iframe.embedded_youtube {
     flex-wrap: wrap;
     row-gap: 54px;
     column-gap: 54px;
-    font-size: 18px;
 }
 
 .grid > * {
@@ -305,11 +304,6 @@ iframe.embedded_youtube {
     display: flex;
     align-items: center;
     flex-direction: column;
-}
-
-.grid > * > img {
-    width: 100%;
-    height: auto;
 }
 
 .grid > * > .text {

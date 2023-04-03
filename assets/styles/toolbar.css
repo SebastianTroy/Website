@@ -124,7 +124,8 @@ This is all done in CSS using a checkbox
         position: absolute;
         top: 0;
         left: 0;
-        width: 100vw;
+        /* width: 100vh; causes scroll bar on edge (and presumably other chromium based browsers) */
+        width: 100%;
         height: 100vh;
         padding-top: 5vh;
         background-color: #000000cf;
