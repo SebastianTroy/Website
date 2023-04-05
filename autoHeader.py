@@ -78,13 +78,21 @@ def getCustomScriptEntry(filename: str) -> str:
     if os.path.exists(scriptFilename):
         return '        <script src="assets/scripts/toolbar.js' + scriptFilename + '"></script>\n'
     return ""
- 
+
 
 
 def filenameToTitle(filename: str) -> str:
+    # Exception for index.html
     if filename == "index.html":
         return "Home"
-    return filename.replace("-", " ").removesuffix(".html").title()
+
+    title: str = ""
+    for word in filename.replace("-", " ").removesuffix(".html").split(" "):
+        if len(title) > 0:
+            title += " "
+        word = word[0].capitalize() + word[1:]
+        title += word
+    return title
 
 
 
