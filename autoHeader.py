@@ -13,11 +13,6 @@ def main():
     headerString, toolbarString, footerString = getTemplateSections()
 
     for filename in filter(lambda s: s.endswith(".html") and not s.startswith("template"), os.listdir(".")):
-        if filename.endswith("gen.html"):
-            os.remove(filename)
-            continue
-
-    for filename in filter(lambda s: s.endswith(".html") and not s.startswith("template"), os.listdir(".")):
         reconstructedDOM: str = ""
         with open(filename, "r+") as webpageFile:
             currentSection = Section.NONE
@@ -86,6 +81,7 @@ def filenameToTitle(filename: str) -> str:
     if filename == "index.html":
         return "Home"
 
+    # Don't simply use title(), as it un capitailises acronyms like RGB
     title: str = ""
     for word in filename.replace("-", " ").removesuffix(".html").split(" "):
         if len(title) > 0:
@@ -129,10 +125,3 @@ def getTemplateSections() -> tuple[str, str, str]:
 
 
 main()
-
-
-# Use this to paste, Header, Toolbar and Footer into each page
-
-# Use name of page to generate title "$page_name | TroyDev" and insert it into header
-
-# Use name of page to also link to css and scripts unique to the page, based on them being called the same thing but with a different file extension
