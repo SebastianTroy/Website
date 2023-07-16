@@ -158,6 +158,11 @@ iframe.embedded_youtube {
     aspect-ratio: calc(560 / 315);
 }
 
+iframe.embedded_godot {
+    width: 100%;
+    aspect-ratio: calc(560 / 315);
+}
+
 .try_it_now {
     display: block;
     color: rgb(226, 226, 226);
