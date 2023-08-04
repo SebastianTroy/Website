@@ -17,6 +17,12 @@ def main():
         with open(filename, "r+") as webpageFile:
             currentSection = Section.NONE
             for line in webpageFile:
+                # Check that all of our yutube URLS are uniform
+                if "youtube" in line and "<iframe" in line:
+                    line = line.replace("youtube.com", "youtube-nocookie.com")
+                    line = line.replace("http://", "https://")
+
+                # Insert the header and footer, along with any custom font/css/script files
                 if line == "    <head>\n":
                     currentSection = Section.HEADER
                 elif line == '        <div class="toolbar">\n':
@@ -80,6 +86,9 @@ def filenameToTitle(filename: str) -> str:
     # Exception for index.html
     if filename == "index.html":
         return "Home"
+    # Exception for tictacgodot.html
+    if filename == "tictacgodot.html":
+        return "Tic-Tac-Godot"
 
     # Don't simply use title(), as it un capitailises acronyms like RGB
     title: str = ""
