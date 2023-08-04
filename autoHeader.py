@@ -24,6 +24,7 @@ def processFiles(dir: str, headerString: str, toolbarString: str, footerString: 
                 if "youtube" in line and "<iframe" in line:
                     line = line.replace("youtube.com", "youtube-nocookie.com")
                     line = line.replace("http://", "https://")
+                    line = line.replace("http://youtube-nocookie.com", "http://www.youtube-nocookie.com")
 
                 # Insert the header and footer, along with any custom font/css/script files
                 if line == "    <head>\n":
