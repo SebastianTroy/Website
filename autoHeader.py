@@ -11,10 +11,13 @@ class Section(Enum):
 
 def main():
     headerString, toolbarString, footerString = getTemplateSections()
+    processFiles(".", headerString, toolbarString, footerString)
+    processFiles("./godot", headerString, toolbarString, footerString)
 
-    for filename in filter(lambda s: s.endswith(".html") and not s.startswith("template"), os.listdir(".")):
+def processFiles(dir: str, headerString: str, toolbarString: str, footerString: str):
+    for filename in filter(lambda s: s.endswith(".html") and not s.startswith("template"), os.listdir(dir)):
         reconstructedDOM: str = ""
-        with open(filename, "r+") as webpageFile:
+        with open(os.path.join(dir, filename), "r+") as webpageFile:
             currentSection = Section.NONE
             for line in webpageFile:
                 # Check that all of our yutube URLS are uniform
@@ -52,6 +55,16 @@ def main():
                 if line == "    </head>\n" or line == "        </div>\n":
                     currentSection = Section.NONE
 
+            if dir != ".":
+                reconstructedDOM = reconstructedDOM.replace('href="assets', 'href="../assets')
+                reconstructedDOM = reconstructedDOM.replace('src="assets', 'src="../assets')
+                reconstructedDOM = reconstructedDOM.replace('href="' + dir + "/", 'href="')
+                reconstructedDOM = reconstructedDOM.replace('src="' + dir + "/", 'src="')
+                reconstructedDOM = reconstructedDOM.replace('<a class="toolbar_button" href="', '<a class="toolbar_button" href="../')
+                reconstructedDOM = reconstructedDOM.replace('<a class="toolbar_logo" href="', '<a class="toolbar_logo" href="../')
+
+            checkLocalLinks(reconstructedDOM, dir)
+
             webpageFile.seek(0, 0)
             webpageFile.write(reconstructedDOM)
             webpageFile.truncate()
@@ -86,9 +99,6 @@ def filenameToTitle(filename: str) -> str:
     # Exception for index.html
     if filename == "index.html":
         return "Home"
-    # Exception for tictacgodot.html
-    if filename == "tictacgodot.html":
-        return "Tic-Tac-Godot"
 
     # Don't simply use title(), as it un capitailises acronyms like RGB
     title: str = ""
@@ -130,6 +140,39 @@ def getTemplateSections() -> tuple[str, str, str]:
                 currentSection = Section.NONE
 
     return headerString, toolbarString, footerString
+
+
+
+def checkLocalLink(link: str) -> bool:
+    return os.path.exists(link)
+
+
+
+def checkLocalLinks(pageData: str, pageDirectory: str):
+    class State(Enum):
+        SEEKING_OPEN = 1,
+        SEEKING_CLOSE = 2,
+
+    currentState: State = State.SEEKING_OPEN
+    openIndex: int = 0
+    closeIndex: int = 0
+    for index, c in enumerate(pageData):
+        match currentState:
+            case State.SEEKING_OPEN:
+                if c == '"':
+                    openIndex = index
+                    currentState = State.SEEKING_CLOSE
+            case State.SEEKING_CLOSE:
+                if c == '"':
+                    closeIndex = index
+                    currentState = State.SEEKING_OPEN
+
+                    attributeName = pageData[openIndex - 5 : openIndex - 1]
+                    link: str = pageData[openIndex + 1: closeIndex]
+
+                    if attributeName in [ "href", " src" ]:
+                        if not "http" in link and not checkLocalLink(os.path.join(pageDirectory, link)):
+                            print("Broken internal link: " + link)
 
 
 
