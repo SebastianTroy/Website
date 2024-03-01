@@ -1,4 +1,12 @@
+# ##################################################################### #
+# autoHeader.py can be run to automatically insert the header, toolbar, #
+# and footer into all HTML files in the current directory and the godot #
+# directory. It also ensures that all youtube links are uniform.        #
+# ##################################################################### #
+
 import os
+# pip3 install requests
+import requests
 
 from enum import Enum
 
@@ -10,12 +18,14 @@ class Section(Enum):
     SURPLUS = 4
 
 def main():
+    print("Running autoHeader.py")
     headerString, toolbarString, footerString = getTemplateSections()
     processFiles(".", headerString, toolbarString, footerString)
     processFiles("./godot", headerString, toolbarString, footerString)
 
 def processFiles(dir: str, headerString: str, toolbarString: str, footerString: str):
     for filename in filter(lambda s: s.endswith(".html") and not s.startswith("template"), os.listdir(dir)):
+        print(filename)
         reconstructedDOM: str = ""
         with open(os.path.join(dir, filename), "r+") as webpageFile:
             currentSection = Section.NONE
@@ -64,7 +74,7 @@ def processFiles(dir: str, headerString: str, toolbarString: str, footerString: 
                 reconstructedDOM = reconstructedDOM.replace('<a class="toolbar_button" href="', '<a class="toolbar_button" href="../')
                 reconstructedDOM = reconstructedDOM.replace('<a class="toolbar_logo" href="', '<a class="toolbar_logo" href="../')
 
-            checkLocalLinks(reconstructedDOM, dir)
+            checkLocalLinks(filename, reconstructedDOM, dir)
 
             webpageFile.seek(0, 0)
             webpageFile.write(reconstructedDOM)
@@ -91,7 +101,7 @@ def getCustomStyleEntry(filename: str) -> str:
 def getCustomScriptEntry(filename: str) -> str:
     scriptFilename = "assets/scripts/" + filename.removesuffix(".html") + ".js"
     if os.path.exists(scriptFilename):
-        return '        <script src="assets/scripts/toolbar.js' + scriptFilename + '"></script>\n'
+        return '        <script src="' + scriptFilename + '"></script>\n'
     return ""
 
 
@@ -99,7 +109,7 @@ def getCustomScriptEntry(filename: str) -> str:
 def filenameToTitle(filename: str) -> str:
     # Exception for index.html
     if filename == "index.html":
-        return "Home"
+        return "Projects"
 
     # Don't simply use title(), as it un capitailises acronyms like RGB
     title: str = ""
@@ -144,16 +154,29 @@ def getTemplateSections() -> tuple[str, str, str]:
 
 
 
-def checkLocalLink(link: str) -> bool:
-    return os.path.exists(link)
+def checkLocalLink(link: str, linkLocation: str):
+    if not os.path.exists(link):
+        print(linkLocation + " Broken internal link: " + link)
 
 
 
-def checkLocalLinks(pageData: str, pageDirectory: str):
+def checkWebLink(link: str, linkLocation: str):
+    try:
+        response = requests.get(link)
+        if response.status_code != 200:
+            raise Exception("HTTP status code: " + str(response.status_code))
+    except Exception as e:
+        print(linkLocation + " Broken external link: " + link + ": " + str(e))
+
+
+
+def checkLocalLinks(pageName: str, pageData: str, pageDirectory: str):
     class State(Enum):
         SEEKING_OPEN = 1,
         SEEKING_CLOSE = 2,
 
+    currentLine: int = 1
+    currentCharacter: int = 1
     currentState: State = State.SEEKING_OPEN
     openIndex: int = 0
     closeIndex: int = 0
@@ -172,8 +195,17 @@ def checkLocalLinks(pageData: str, pageDirectory: str):
                     link: str = pageData[openIndex + 1: closeIndex]
 
                     if attributeName in [ "href", " src" ]:
-                        if not "http" in link and not checkLocalLink(os.path.join(pageDirectory, link)):
-                            print("Broken internal link: " + link)
+                        # Formatted so we can ctrl + click in vscode
+                        linkLocation: str = pageName + ":" + str(currentLine) + ":" + str(currentCharacter)
+                        if any(substring in link for substring in ["http", "https", "www"]):
+                            checkWebLink(link, linkLocation)
+                        else:
+                            checkLocalLink(os.path.join(pageDirectory, link), linkLocation)
+        if c == "\n":
+            currentLine += 1
+            currentCharacter = 1
+        else:
+            currentCharacter += 1
 
 
 
