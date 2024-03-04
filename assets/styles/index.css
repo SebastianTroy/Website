@@ -1,12 +1,3 @@
-.background {
-    background-image: linear-gradient(#0000003f, #0000003f), url(../images/WebBackground.webp);
-    background-repeat: no-repeat;
-    background-size: auto, auto;
-    background-position: center, center;
-    width: 100%;
-    height: 80vh;
-}
-
 .toolbar {
     position: fixed;
     top: 0;
@@ -30,12 +21,12 @@
     background-color: #00000077;
 }
 
-.content {
-    background-color: transparent;
+#header_widget {
+    width: 100%;
+    height: 45vmin;
+    border: none;
 }
 
-@media screen and (max-width: 100vh) {
-    .background {
-        height: 45vh;
-    }
+.content {
+    background-color: transparent;
 }
