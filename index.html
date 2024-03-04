@@ -8,14 +8,16 @@
         <meta property="og:type" content="website">
         <meta property="og:locale" content="en_GB">
 
-        <title>Home | TroyDev</title>
+        <title>Projects | TroyDev</title>
 
         <link rel="icon" type="image/x-icon" href="assets/icons/logo.png">
         <link rel="stylesheet" href="assets/fonts/fonts.css">
         <link rel="stylesheet" href="assets/styles/toolbar.css">
         <link rel="stylesheet" href="assets/styles/shared.css">
         <link rel="stylesheet" href="assets/styles/index.css">
+        <script src="assets/scripts/shared.js"></script>
         <script src="assets/scripts/toolbar.js"></script>
+        <script src="assets/scripts/index.js"></script>
     </head>
     <body>
         <div class="toolbar">
@@ -24,43 +26,70 @@
                 <input type="checkbox" id="toolbar_hamburger_menu" style="display: none;">
                 <label for="toolbar_hamburger_menu" class="toolbar_buttons_toggle"></label>
                 <div class="toolbar_buttons_container">
-                    <a class="toolbar_button" href="index.html">Home</a>
-                    <hr class="toolbar_button_spacer">
-                    <a class="toolbar_button" href="trilobytes.html">Trilobytes</a>
-                    <hr class="toolbar_button_spacer">
-                    <a class="toolbar_button" href="projects.html">Projects</a>
+                    <a class="toolbar_button" href="index.html">Projects</a>
                     <hr class="toolbar_button_spacer">
                     <a class="toolbar_button" href="contact.html">Contact</a>
                 </div>
             </div>
         </div>
-        <div class="background">
-            <div class="content">
-                <div>
-                    <h1 class="over_image">Welcome!</h1>
-                    <h3 class="over_image">A site for my personal projects.</></div>
-                </div>
-            </div>
-        </div>
         <div class="content">
-            <div>
-                <h2>About Me</h2>
-                <div class="flowbox">
-                    <div>
-                        <h4>My Background</h4>
-                        <div class="text">After studying Marine Biology in Southampton I began my career in Software development. Initially a hobby between uni assignments, my passion for programming quickly became my main focus.</div>
-                    </div>
-                    <div>
-                        <h4>My Hobbies</h4>
-                        <div class="text">I enjoy cultivating my garden and house plants, cycling and bouldering, games both physical and digital and tinkering with evolution simulations. I also consume a lot of media in many forms, mostly sci-fi
-                            or
-                            educationally themed.</div>
-                    </div>
-                    <div>
-                        <h4>My Favorite Things</h4>
-                        <div class="text">I love many things, but if I had to choose I'd pick bouldering, board games, and software projects, covering physical activity, social activity and personal relaxation time.</div>
-                    </div>
+            <h2>Projects</h2>
+            <div class="grid">
+                <div>
+                    <h3>Trilobytes</h3>
+                    <a class="image_link" href="trilobytes.html">
+                        <img src="assets/images/trilobytes/splash_thumb.webp">
+                    </a>
+                    <div class="text">An evolution simulator, with a top down "petri dish" style. Individuals compete for food and can evolve new body parts or brain connections.</div>
+                    <a class="more_info_button" href="trilobytes.html">Find out More</a>
                 </div>
+                <div>
+                    <h3>Evolving Plants</h3>
+                    <a class="image_link" href="evolving-plants.html">
+                        <img src="assets/images/evolving-plants/overview_thumb.webp">
+                    </a>
+                    <div class="text">An evolution simulator, with a 2D side on emulation of "plant-like" organisms competing for light, with a simple structure defained by genetics.</div>
+                    <a class="more_info_button" href="evolving-plants.html">Find out More</a>
+                </div>
+                <div>
+                    <h3>Every RGB</h3>
+                    <a class="image_link" href="every-RGB.html">
+                        <img src="assets/images/every-RGB/overview_thumb.webp">
+                    </a>
+                    <div class="text">Takes any 4096x4096 input image and attempts to match it as closely as possible with no two pixels the same colour, using a basic hill-climber algorithm.</div>
+                    <a class="more_info_button" href="every-RGB.html">Find out More</a>
+                </div>
+                <div>
+                    <h3>Travelling Salesman</h3>
+                    <a class="image_link" href="travelling-salesman.html">
+                        <img src="assets/images/salesman/overview_thumb.webp">
+                    </a>
+                    <div class="text">A genetic algorithm, this time solving the classic salesman problem.</div>
+                    <a class="more_info_button" href="travelling-salesman.html">Find out More</a>
+                </div>
+                <div>
+                    <h3>Tic-Tac-Godot</h3>
+                    <a class="image_link" href="godot/tic-tac-godot.html" target="_blank">
+                        <img src="assets/images/tic-tac-godot/overview_thumb.webp">
+                    </a>
+                    <div class="text">A very simple noughts and crosses game, made with the Godot game engine. Can be played in the browser. An experiment with WebGL.</div>
+                    <a class="more_info_button" href="godot/tic-tac-godot.html">Play Now</a>
+                </div>
+                <div>
+                    <h3>CppPerfettoTrace</h3>
+                    <a class="image_link" href="cpp-perfetto-trace.html">
+                        <img src="assets/images/cpp-perfetto-trace/overview_thumb.webp">
+                    </a>
+                    <div class="text">A tiny C++ library for basic code analysis that generates .json files compatible with Perfetto Trace.</div>
+                    <a class="more_info_button" href="cpp-perfetto-trace.html">Find out More</a>
+                </div>
+                <div class="placeholder to prevent last item expanding into multiple slots"></div>
+                <div>
+                    <h3>Fluid Dynamics</h3>
+                    <iframe class="embedded_youtube" src="https://www.youtube-nocookie.com/embed/S-GhEECHuxg?rel=0" frameborder="0" allow="clipboard-write; encrypted-media;" allowfullscreen></iframe>
+                    <div class="text">A small demo developed as part of my dissertation, based on Jos Stam's fluid dynamics paper.</div>
+                </div>
+                <div class="placeholder to prevent last item expanding into multiple slots"></div>
             </div>
             <hr class="section_end">
         </div>
@@ -70,11 +99,7 @@
                 <input type="checkbox" id="toolbar_hamburger_menu" style="display: none;">
                 <label for="toolbar_hamburger_menu" class="toolbar_buttons_toggle"></label>
                 <div class="toolbar_buttons_container" style="flex-direction: row;">
-                    <a class="toolbar_button" href="index.html">Home</a>
-                    <hr>
-                    <a class="toolbar_button" href="trilobytes.html">Trilobytes</a>
-                    <hr>
-                    <a class="toolbar_button" href="projects.html">Projects</a>
+                    <a class="toolbar_button" href="index.html">Projects</a>
                     <hr>
                     <a class="toolbar_button" href="contact.html">Contact</a>
                 </div>
