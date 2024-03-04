@@ -84,27 +84,36 @@ class ConwaysGameOfLife extends Widget {
 }
 
 class Boids extends Widget {
-    constructor(millisecondsPerTick, context, boidColour) {
+    constructor(millisecondsPerTick, context, boidColour, boidDensity) {
         super(millisecondsPerTick, context);
         this.boids = [];
-        this.boidCount = 0;
-        this.boidSpeed = 10;
-        this.boidPerception = 50;
+        this.boidDensity = boidDensity || 0.05;
+        this.boidSpeed = 0;
+        this.boidPerception = 0;
         this.boidAvoidance = 10;
         this.boidAlignment = 0.2;
         this.boidCohesion = 0.001;
         this.boidColour = boidColour || "rgba(255, 255, 255, 0.25)";
-
-        this.boidShape = new Path2D();
-        this.boidShape.moveTo(0, -10);
-        this.boidShape.lineTo(5, 10);
-        this.boidShape.lineTo(-5, 10);
-        this.boidShape.closePath();
+        this.boidShape = {};
     }
 
     reset() {
-        this.boidCount = (this.context.canvas.width * this.context.canvas.height) / 5000;
-        this.boids = Array.from({ length: this.boidCount }, () => {
+        let boidBaseLength = Math.min(this.context.canvas.width, this.context.canvas.height) / 50;
+        let boidHeight = 2 * boidBaseLength;
+        this.boidShape = new Path2D();
+        this.boidShape.moveTo(0, -boidHeight / 2);
+        this.boidShape.lineTo(boidBaseLength / 2, boidHeight / 2);
+        this.boidShape.lineTo(-boidBaseLength / 2, boidHeight / 2);
+        this.boidShape.closePath();
+
+        this.boidSpeed = Math.min(this.context.canvas.width, this.context.canvas.height) / 50;
+        this.boidPerception = boidHeight * 2.5;
+        this.boidAvoidance = this.boidPerception / 5;
+
+        // Boids are isosceles triangles, but approximate them as circles for density calculation
+        let boidArea = Math.PI * (boidHeight / 2) ** 2;
+        let boidCount = ((this.context.canvas.width * this.context.canvas.height) / boidArea) * this.boidDensity;
+        this.boids = Array.from({ length: boidCount }, () => {
             return {
                 x: Math.random() * this.context.canvas.width,
                 y: Math.random() * this.context.canvas.height,
@@ -298,15 +307,89 @@ class FlappyBird extends Widget {
     }
 }
 
+// This class features a number of bouncing balls, that are drawn with lines connecting the nearest three balls
+class BouncingConnectedBalls extends Widget {
+    constructor(millisecondsPerTick, context, ballDensity, ballColour, lineColour) {
+        super(millisecondsPerTick, context);
+        this.ballDensity = ballDensity || 0.01;
+        this.ballRadius = 0;
+        this.ballColour = ballColour || "rgba(55, 55, 55, 1.0)";
+        this.lineColour = lineColour || "rgba(255, 255, 255, 0.1)";
+        this.balls = [];
+    }
+
+    reset() {
+        this.ballRadius = Math.min(this.context.canvas.width, this.context.canvas.height) / 100;
+        this.connectionDistance = Math.min(this.context.canvas.width, this.context.canvas.height) / 5;
+        let ballArea = Math.PI * this.ballRadius ** 2;
+        let ballCount = ((this.context.canvas.width * this.context.canvas.height) / ballArea) * this.ballDensity;
+        this.balls = Array.from({ length: ballCount }, () => {
+            return {
+                x: Math.random() * this.context.canvas.width,
+                y: Math.random() * this.context.canvas.height,
+                xSpeed: (Math.random() - 0.5) * (Math.min(this.context.canvas.width, this.context.canvas.height) / 100),
+                ySpeed: (Math.random() - 0.5) * (Math.min(this.context.canvas.width, this.context.canvas.height) / 100),
+            };
+        });
+    }
+
+    draw() {
+        this.context.fillStyle = "black";
+        this.context.fillRect(0, 0, this.context.canvas.width, this.context.canvas.height);
+        // Draw the connections first
+        this.context.strokeStyle = this.lineColour;
+        this.context.lineWidth = this.ballRadius / 4;
+        for (let i = 0; i < this.balls.length; i++) {
+            let ball = this.balls[i];
+            for (let j = 0; j < this.balls.length; j++) {
+                let otherBall = this.balls[j];
+                let distanseSquared = (ball.x - otherBall.x) ** 2 + (ball.y - otherBall.y) ** 2;
+                if (distanseSquared < this.connectionDistance ** 2) {
+                    this.context.beginPath();
+                    this.context.moveTo(ball.x, ball.y);
+                    this.context.lineTo(otherBall.x, otherBall.y);
+                    this.context.stroke();
+                }
+            }
+        }
+        // Draw the balls over the connections
+        this.context.fillStyle = this.ballColour;
+        for (let ball of this.balls) {
+            this.context.beginPath();
+            this.context.arc(ball.x, ball.y, this.ballRadius, 0, Math.PI * 2);
+            this.context.fill();
+        }
+    }
+
+    tick() {
+        for (let ball of this.balls) {
+            ball.x += ball.xSpeed;
+            ball.y += ball.ySpeed;
+            if (ball.x < 0 || ball.x > this.context.canvas.width) {
+                ball.xSpeed *= -1;
+            }
+            if (ball.y < 0 || ball.y > this.context.canvas.height) {
+                ball.ySpeed *= -1;
+            }
+        }
+    }
+}
+
 attachListener(document, "DOMContentLoaded", function () {
     const canvas = document.getElementById("simulation");
     const context = canvas.getContext("2d");
 
-    const widgets = [
-        new FlappyBird(1000 / 60, context),
+    let widgets = [
+        new FlappyBird(1000 / 60, context), //
         new ConwaysGameOfLife(1000 / 5, context),
         new Boids(1000 / 60, context),
+        new BouncingConnectedBalls(1000 / 60, context),
     ];
+    // shuffle widgets
+    widgets = widgets
+        .map((widget) => ({ widget, weight: Math.random() })) // map each widget to a random weight
+        .sort((a, b) => a.weight - b.weight) // sort by weight
+        .map(({ widget }) => widget); // map back to just the widget
     const widgetPlayDuration = 20000;
 
     let now = Date.now() - widgetPlayDuration;
