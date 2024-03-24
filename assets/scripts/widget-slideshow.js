@@ -1,3 +1,6 @@
+let backgroundColor = "black";
+let highlightColor = "white";
+
 class Widget {
     constructor(millisecondsPerTick, context) {
         this.lastTime = 0.0;
@@ -33,7 +36,7 @@ class ConwaysGameOfLife extends Widget {
 
         this.cellsPerVmin = cellsPerVmin || 50;
         this.proportionAliveOnReset = proportionAliveOnReset || 0.1;
-        this.cellColor = cellColor || "rgba(255, 255, 255, 0.1)";
+        this.cellColor = cellColor || highlightColor;
     }
 
     reset() {
@@ -47,7 +50,7 @@ class ConwaysGameOfLife extends Widget {
     }
 
     draw() {
-        this.context.fillStyle = "black";
+        this.context.fillStyle = backgroundColor;
         this.context.fillRect(0, 0, this.context.canvas.width, this.context.canvas.height);
         this.context.fillStyle = this.cellColor;
         for (let x = 0; x < this.gridWidth; x++) {
@@ -93,7 +96,7 @@ class Boids extends Widget {
         this.boidAvoidance = 10;
         this.boidAlignment = 0.2;
         this.boidCohesion = 0.001;
-        this.boidColour = boidColour || "rgba(255, 255, 255, 0.25)";
+        this.boidColour = boidColour || highlightColor;
         this.boidShape = {};
     }
 
@@ -124,7 +127,7 @@ class Boids extends Widget {
     }
 
     draw() {
-        this.context.fillStyle = "black";
+        this.context.fillStyle = backgroundColor;
         this.context.fillRect(0, 0, this.context.canvas.width, this.context.canvas.height);
         this.context.fillStyle = this.boidColour;
         for (let boid of this.boids) {
@@ -244,17 +247,26 @@ class FlappyBird extends Widget {
     }
 
     draw() {
-        this.context.fillStyle = "black";
+        this.context.fillStyle = backgroundColor;
         this.context.fillRect(0, 0, this.context.canvas.width, this.context.canvas.height);
         for (let pipe of this.pipes) {
             this.context.fillStyle = "rgba(0, 205, 0, 0.2)";
             this.context.fillRect(pipe.x, 0, this.pipeWidth, this.context.canvas.height);
-            this.context.fillStyle = "black";
+            this.context.fillStyle = backgroundColor;
             this.context.fillRect(pipe.getGapRect().x, pipe.getGapRect().y, pipe.getGapRect().width, pipe.getGapRect().height);
         }
-        this.context.fillStyle = "rgba(255, 255, 255, 0.2)";
+        this.context.fillStyle = highlightColor;
         this.context.beginPath();
-        this.context.arc(this.bird.x, this.bird.y, this.bird.radius, 0, Math.PI * 2);
+
+        this.context.save();
+        this.context.translate(this.bird.x, this.bird.y);
+        let speedRatio = this.bird.ySpeed / this.gravity;
+        speedRatio = Math.max(Math.min(speedRatio, 1), -1);
+        let rotation = (speedRatio * 10 * Math.PI) / 180;
+        this.context.rotate(rotation);
+        this.context.fillRect(-this.bird.radius, -this.bird.radius, this.bird.radius * 2, this.bird.radius * 2);
+
+        this.context.restore();
         this.context.fill();
     }
 
@@ -313,8 +325,8 @@ class BouncingConnectedBalls extends Widget {
         super(millisecondsPerTick, context);
         this.ballDensity = ballDensity || 0.01;
         this.ballRadius = 0;
-        this.ballColour = ballColour || "rgba(55, 55, 55, 1.0)";
-        this.lineColour = lineColour || "rgba(255, 255, 255, 0.1)";
+        this.ballColour = ballColour || highlightColor;
+        this.lineColour = lineColour || highlightColor;
         this.balls = [];
     }
 
@@ -334,7 +346,7 @@ class BouncingConnectedBalls extends Widget {
     }
 
     draw() {
-        this.context.fillStyle = "black";
+        this.context.fillStyle = backgroundColor;
         this.context.fillRect(0, 0, this.context.canvas.width, this.context.canvas.height);
         // Draw the connections first
         this.context.strokeStyle = this.lineColour;
@@ -375,7 +387,19 @@ class BouncingConnectedBalls extends Widget {
     }
 }
 
+function updateColours() {
+    // Set our colours to match the global CSS variables
+    let rootStyle = getComputedStyle(document.documentElement);
+    backgroundColor = rootStyle.getPropertyValue("--background-color").trim();
+    highlightColor = rootStyle.getPropertyValue("--accent-color").trim();
+}
+
 attachListener(document, "DOMContentLoaded", function () {
+    // Keep track of the user's preferred colour theme
+    updateColours();
+    let colourObserver = new MutationObserver(updateColours);
+    colourObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["style"] });
+
     const canvas = document.getElementById("simulation");
     const context = canvas.getContext("2d");
 

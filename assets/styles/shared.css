@@ -4,10 +4,63 @@
     box-sizing: border-box;
 }
 
+/* 
+    Some users may disable javascript, and we may have elements of a
+    page that only make sense to show when javascript is enabled. These
+    elements should be hidden by default, and then shown using javascript.
+ */
+
+.js_enabled_only {
+    display: none;
+}
+
+.js_disabled_only {
+    --placeholder: none;
+}
+
+/*
+    Setup a palette to be re-used trhoughout the site.
+ */
+
+:root {
+    --background-color: black;
+    --text-color: rgb(226, 226, 226);
+    --text-mute-color: rgb(145, 145, 145);
+    --control-text-color: rgb(244, 244, 244);
+    --control-background-color: rgb(19, 41, 68);
+    --accent-color: rgb(22, 22, 22);
+    --accent-color-emphasised: rgb(18, 18, 18);
+    /* To be used e.g. opacity: var(--translucent-light) */
+    --translucent-light: 0.28;
+    --translucent-medium: 0.47;
+    --translucent-heavy: 0.9;
+    /* Same for both colour schemes */
+    --link-color: rgb(79, 119, 168);
+    --link-hover-color: rgb(89, 130, 181);
+}
+
+/* 
+Some users may have a preference for a light theme, and we should
+respect that preference. We can use the prefers-color-scheme media
+query to detect this preference and adjust our styles accordingly.
+*/
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --background-color: white;
+        --text-color: rgb(29, 29, 29);
+        --text-mute-color: rgb(110, 110, 110);
+        --control-text-color: rgb(10, 10, 10);
+        --control-background-color: rgb(236, 214, 187);
+        --accent-color: rgb(233, 233, 233);
+        --accent-color-emphasised: rgb(237, 237, 237);
+    }
+}
+
 body {
     margin: 0;
-    background-color: black;
-    color: rgb(226, 226, 226);
+    background-color: var(--background-color);
+    color: var(--text-color);
     font-family: "Lusitana", Georgia, serif;
     width: 100%;
     min-width: 250px;
@@ -59,7 +112,7 @@ h4 {
 
 hr.section_end {
     width: 100%;
-    color: rgb(226, 226, 226);
+    color: var(--text-color);
     padding-top: 5vh;
     border-top: none;
     border-left: none;
@@ -67,7 +120,11 @@ hr.section_end {
 }
 
 a {
-    color: rgb(79, 119, 168);
+    color: var(--link-color);
+}
+
+a:hover {
+    color: var(--link-hover-color);
 }
 
 li {
@@ -87,14 +144,14 @@ form {
 form > input,
 textarea {
     background-color: transparent;
-    color: rgb(244, 244, 244);
+    color: var(--control-text-color);
     font-size: medium;
     padding: 16px;
 }
 
 form > button {
-    background-color: rgb(19, 41, 68);
-    color: rgb(244, 244, 244);
+    background-color: var(--control-background-color);
+    color: var(--control-text-color);
     border-style: none;
     cursor: pointer;
     min-height: 56px;
@@ -150,7 +207,7 @@ a.image_link > img {
 }
 
 .over_image {
-    text-shadow: 2px 2px black;
+    text-shadow: 2px 2px var(--background-color);
 }
 
 iframe.embedded_youtube {
@@ -165,8 +222,8 @@ iframe.embedded_godot {
 
 .try_it_now {
     display: block;
-    color: rgb(226, 226, 226);
-    background-color: #161616;
+    color: var(--text-color);
+    background-color: var(--accent-color);
     width: 100%;
     max-width: 70%;
     height: auto;
@@ -176,20 +233,20 @@ iframe.embedded_godot {
 }
 
 .try_it_now:hover {
-    background-color: #121212;
+    background-color: var(--accent-color-emphasised);
     text-decoration: underline;
 }
 
 .try_it_now::after {
     content: "⇩ Download";
     float: right;
-    color: rgb(79, 119, 168);
+    color: var(--link-color);
 }
 
 .text,
 .text_left,
 .small_text {
-    color: rgb(145, 145, 145);
+    color: var(--text-mute-color);
     font-size: 18px;
     text-align: center;
     line-height: 1.4;
@@ -317,8 +374,8 @@ iframe.embedded_godot {
 }
 
 .more_info_button {
-    background-color: rgb(19, 41, 68);
-    color: rgb(244, 244, 244);
+    background-color: var(--control-background-color);
+    color: var(--control-text-color);
     cursor: pointer;
     min-height: 56px;
     padding-right: 32px;
@@ -369,7 +426,7 @@ iframe.embedded_godot {
     left: 0;
     width: 100%;
     height: 100vh;
-    background: #000000;
+    background: var(--background-color);
     z-index: 9998;
     overflow: hidden;
     cursor: pointer;
