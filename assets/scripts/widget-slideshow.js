@@ -391,7 +391,7 @@ function updateColours() {
     // Set our colours to match the global CSS variables
     let rootStyle = getComputedStyle(document.documentElement);
     backgroundColor = rootStyle.getPropertyValue("--background-color").trim();
-    highlightColor = rootStyle.getPropertyValue("--accent-color").trim();
+    highlightColor = rootStyle.getPropertyValue("--alt-background-color").trim();
 }
 
 attachListener(document, "DOMContentLoaded", function () {
