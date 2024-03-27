@@ -14,10 +14,6 @@
     display: none;
 }
 
-.js_disabled_only {
-    --placeholder: none;
-}
-
 /*
     Setup a palette to be re-used trhoughout the site.
  */
@@ -26,10 +22,10 @@
     --background-color: black;
     --text-color: rgb(226, 226, 226);
     --text-mute-color: rgb(145, 145, 145);
-    --control-text-color: rgb(244, 244, 244);
-    --control-background-color: rgb(19, 41, 68);
-    --accent-color: rgb(22, 22, 22);
-    --accent-color-emphasised: rgb(18, 18, 18);
+    --accent-text-color: rgb(244, 244, 244);
+    --accent-color: rgb(19, 41, 68);
+    --alt-background-color: rgb(22, 22, 22);
+    --alt-background-color-emphasised: rgb(18, 18, 18);
     /* To be used e.g. opacity: var(--translucent-light) */
     --translucent-light: 0.28;
     --translucent-medium: 0.47;
@@ -50,10 +46,10 @@ query to detect this preference and adjust our styles accordingly.
         --background-color: white;
         --text-color: rgb(29, 29, 29);
         --text-mute-color: rgb(110, 110, 110);
-        --control-text-color: rgb(10, 10, 10);
-        --control-background-color: rgb(236, 214, 187);
-        --accent-color: rgb(233, 233, 233);
-        --accent-color-emphasised: rgb(237, 237, 237);
+        --accent-text-color: rgb(10, 10, 10);
+        --accent-color: rgb(236, 214, 187);
+        --alt-background-color: rgb(233, 233, 233);
+        --alt-background-color-emphasised: rgb(237, 237, 237);
     }
 }
 
@@ -144,14 +140,14 @@ form {
 form > input,
 textarea {
     background-color: transparent;
-    color: var(--control-text-color);
+    color: var(--accent-text-color);
     font-size: medium;
     padding: 16px;
 }
 
 form > button {
-    background-color: var(--control-background-color);
-    color: var(--control-text-color);
+    background-color: var(--accent-color);
+    color: var(--accent-text-color);
     border-style: none;
     cursor: pointer;
     min-height: 56px;
@@ -223,7 +219,7 @@ iframe.embedded_godot {
 .try_it_now {
     display: block;
     color: var(--text-color);
-    background-color: var(--accent-color);
+    background-color: var(--alt-background-color);
     width: 100%;
     max-width: 70%;
     height: auto;
@@ -233,7 +229,7 @@ iframe.embedded_godot {
 }
 
 .try_it_now:hover {
-    background-color: var(--accent-color-emphasised);
+    background-color: var(--alt-background-color-emphasised);
     text-decoration: underline;
 }
 
@@ -374,8 +370,8 @@ iframe.embedded_godot {
 }
 
 .more_info_button {
-    background-color: var(--control-background-color);
-    color: var(--control-text-color);
+    background-color: var(--accent-color);
+    color: var(--accent-text-color);
     cursor: pointer;
     min-height: 56px;
     padding-right: 32px;

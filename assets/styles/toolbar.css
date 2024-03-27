@@ -1,7 +1,7 @@
 .toolbar {
     position: sticky;
     top: 0;
-    background-color: var(--accent-color);
+    background-color: var(--alt-background-color);
     width: 100%;
     display: flex;
     flex-direction: row;
