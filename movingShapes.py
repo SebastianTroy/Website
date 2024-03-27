@@ -23,7 +23,7 @@ if len(sys.argv) > 1:
 print("""
 # CSS BEGIN #
 
-/* Credit for CSS idea to: "https://alvarotrigo.com/blog/animated-backgrounds-css/ */
+/* Credit for CSS idea to: "https://www.alvarotrigo.com/blog/animated-backgrounds-css/ */
 
 .header_widget {
     width: 100%;

@@ -30,12 +30,6 @@ def processFiles(dir: str, headerString: str, toolbarString: str, footerString: 
         with open(os.path.join(dir, filename), "r+") as webpageFile:
             currentSection = Section.NONE
             for line in webpageFile:
-                # Check that all of our yutube URLS are uniform
-                if "youtube" in line and "<iframe" in line:
-                    line = line.replace("youtube.com", "youtube-nocookie.com")
-                    line = line.replace("http://", "https://")
-                    line = line.replace("http://youtube-nocookie.com", "http://www.youtube-nocookie.com")
-
                 # Insert the header and footer, along with any custom font/css/script files
                 if line == "    <head>\n":
                     currentSection = Section.HEADER
@@ -74,7 +68,7 @@ def processFiles(dir: str, headerString: str, toolbarString: str, footerString: 
                 reconstructedDOM = reconstructedDOM.replace('<a class="toolbar_button" href="', '<a class="toolbar_button" href="../')
                 reconstructedDOM = reconstructedDOM.replace('<a class="toolbar_logo" href="', '<a class="toolbar_logo" href="../')
 
-            checkLocalLinks(filename, reconstructedDOM, dir)
+            checkLinks(filename, reconstructedDOM, dir)
 
             webpageFile.seek(0, 0)
             webpageFile.write(reconstructedDOM)
@@ -160,7 +154,16 @@ def checkLocalLink(link: str, linkLocation: str):
 
 
 
-def checkWebLink(link: str, linkLocation: str):
+def checkWebLink(link: str, linkLocation: str, enclosingTag: str):
+    if "http://" in link:
+        print(linkLocation + " Insecure link: " + link + " (use https)")
+    if "youtube.com" in link:
+        print(linkLocation + " Insecure link: " + link + " (use youtube-nocookie)")
+    if "href" in enclosingTag and "target" not in enclosingTag:
+        print(linkLocation + " Missing target attribute: " + link + " (use target='_blank')")
+    if "href" in enclosingTag and "noopener noreferrer" not in enclosingTag:
+        print(linkLocation + " Inscure link: " + link + " (use rel='noopener noreferrer')")
+    # TODO consider iframe security
     try:
         response = requests.get(link)
         if response.status_code != 200:
@@ -170,7 +173,7 @@ def checkWebLink(link: str, linkLocation: str):
 
 
 
-def checkLocalLinks(pageName: str, pageData: str, pageDirectory: str):
+def checkLinks(pageName: str, pageData: str, pageDirectory: str):
     class State(Enum):
         SEEKING_OPEN = 1,
         SEEKING_CLOSE = 2,
@@ -191,14 +194,19 @@ def checkLocalLinks(pageName: str, pageData: str, pageDirectory: str):
                     closeIndex = index
                     currentState = State.SEEKING_OPEN
 
-                    attributeName = pageData[openIndex - 5 : openIndex - 1]
+                    attributeBeginIndex = pageData.rfind(" ", None, openIndex)
+                    attributeName = pageData[attributeBeginIndex + 1 : openIndex - 1]
                     link: str = pageData[openIndex + 1: closeIndex]
 
-                    if attributeName in [ "href", " src" ]:
+                    if attributeName in [ "href", "src" ]:
                         # Formatted so we can ctrl + click in vscode
                         linkLocation: str = pageName + ":" + str(currentLine) + ":" + str(currentCharacter)
                         if any(substring in link for substring in ["http", "https", "www"]):
-                            checkWebLink(link, linkLocation)
+                            # And grab the enclosing tag for additional security checks
+                            tagBeginIndex = pageData.rfind("<", None, openIndex)
+                            tagEndIndex = pageData.find(">", closeIndex)
+                            surroundingTag = pageData[tagBeginIndex : tagEndIndex + 1]
+                            checkWebLink(link, linkLocation, surroundingTag)
                         else:
                             checkLocalLink(os.path.join(pageDirectory, link), linkLocation)
         if c == "\n":
