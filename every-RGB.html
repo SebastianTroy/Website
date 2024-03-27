@@ -34,18 +34,18 @@
             <h2>Every RGB</h2>
             <div class="box">
                 <div class="pair alt">
-                    <input class="lightbox_toggle" type="checkbox" id="overview"/>
+                    <input class="lightbox_toggle" type="checkbox" id="overview" />
                     <label class="lightbox one_third" for="overview">
                         <img src="assets/images/every-RGB/overview.png" alt="Every RGB application, click for full size">
                     </label>
                     <div class="two_thirds box">
                         <h3></h3>
-                        <div class="text_left">The inspiration for this project was <a href="https://allrgb.com/">https://allrgb.com/</a> where there are many images with no two pixels the same colour. There are many approaches demonstrated, but I
-                            wanted to see if I could achieve similar results with an evolutionary algorithm.</div>
+                        <div class="text_left">The inspiration for this project was <a target="_blank" rel="noopener noreferrer" href="https://www.allrgb.com/">https://www.allrgb.com/</a> where there are many images with no two pixels the same
+                            colour. There are many approaches demonstrated, but I wanted to see if I could achieve similar results with an evolutionary algorithm.</div>
                         <div class="text_left">My idea was simple, I'd select an image to try to replicate in every colour, create an output image containing one pixel of every colour, and an use a hill-climbing algorithm to adjust the output image
                             to be more similar to the input image. The basic premise for all three algorithms I wrote is that two pixels are selected at random, and they are swapped if the algorithm calculates that it would improve the image. Given
                             that there are 16,777,216 pixels in one of these images, it may take a billion or more swaps to reach a result that looks good.</div>
-                        <div class="text_left">The project is open source and can be <a href="https://github.com/SebastianTroy/allRGB">found on GitHub</a></div>
+                        <div class="text_left">The project is open source and can be <a target="_blank" rel="noopener noreferrer" href="https://www.github.com/SebastianTroy/allRGB">found on GitHub</a></div>
                     </div>
                 </div>
             </div>
@@ -103,7 +103,8 @@
                 </div>
                 <div class="box">
                     <h3>Area Averaging</h3>
-                    <div class="text">This uses the same algorithm as the RGB error except it compares the average colour of a small area around each pixel, rather than just each individual pixel. This does however slow down the algorithm greatly.</div>
+                    <div class="text">This uses the same algorithm as the RGB error except it compares the average colour of a small area around each pixel, rather than just each individual pixel. This does however slow down the algorithm
+                        greatly.</div>
                     <div class="text">This is by far the most natural looking image, however it really sacrifices the contrast, making the colours all look washed out.</div>
                 </div>
             </div>
