@@ -1,0 +1,50 @@
+.letter_boxed_grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+}
+
+.lb_cell {
+    text-align: center;
+    color: white;
+    background-color: white;
+    border: none;
+}
+
+td,
+table {
+    border-collapse: collapse;
+    border: 1px solid var(--text-mute-color);
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px;
+}
+
+/* Match the colour of the real puzzle */
+.lb_outer {
+    background-color: #faa6a4;
+}
+
+/* Draw a black box around the white centre */
+.lb_inner_top {
+    border-top: 3px solid black;
+}
+.lb_inner_left {
+    border-left: 3px solid black;
+}
+.lb_inner_right {
+    border-right: 3px solid black;
+}
+.lb_inner_bottom {
+    border-bottom: 3px solid black;
+}
+
+/* Fix for the focus outline being drawn under neighbouring cells */
+.lb_outer:focus {
+    z-index: 1;
+}
+
+#dictionary_input {
+    width: 100%;
+    height: 100%;
+}
