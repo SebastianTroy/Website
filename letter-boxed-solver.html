@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:site_name" content="TroyDev">
+        <meta property="og:description" content="Site for my personal projects">
+        <meta property="og:type" content="website">
+        <meta property="og:locale" content="en_GB">
+
+        <title>Letter Boxed Solver | TroyDev</title>
+
+        <link rel="icon" type="image/x-icon" href="assets/icons/logo.png">
+        <link rel="stylesheet" href="assets/fonts/fonts.css">
+        <link rel="stylesheet" href="assets/styles/toolbar.css">
+        <link rel="stylesheet" href="assets/styles/shared.css">
+        <link rel="stylesheet" href="assets/styles/letter-boxed-solver.css">
+        <script src="assets/scripts/shared.js"></script>
+        <script src="assets/scripts/toolbar.js"></script>
+        <script src="assets/scripts/letter-boxed-solver.js"></script>
+    </head>
+
+    <body>
+        <div class="toolbar">
+            <div class="toolbar_content">
+                <a class="toolbar_logo" href="index.html"></a>
+                <input type="checkbox" id="toolbar_hamburger_menu" style="display: none;">
+                <label for="toolbar_hamburger_menu" class="toolbar_buttons_toggle"></label>
+                <div class="toolbar_buttons_container">
+                    <a class="toolbar_button" href="index.html">Projects</a>
+                    <hr class="toolbar_button_spacer">
+                    <a class="toolbar_button" href="contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <h2>Letter Boxed Rules</h2>
+            <div class="pair">
+                <div class="box two_thirds">
+                    <h3>Explanation</h3>
+                    <div class="text_left">Letter Boxed is a word puzzle game that appears in the <a target="_blank" rel="noopener noreferrer" href="https://www.nytimes.com/puzzles/letter-boxed">New York Times</a>. The puzzle consists of a 3x3
+                        square, with 3 letters on each side, and the aim is to create a sequence of words that together use all of the letters at least once.</div>
+                    <div class="text_left">The rules:</div>
+                    <ul>
+                        <li class="text_left">Each word must be at least 3 letters long</li>
+                        <li class="text_left">Each word must start with the last letter of the previous word</li>
+                        <li class="text_left">The letters in each word must be able to trace a path on the puzzle, where the next letter must be on a different edge to the previous letter</li>
+                    </ul>
+                    <div class="text_left">The puzzle is considered solved when all the letters have been used.</div>
+                    <div class="text_left">For example, the following image is a screenshot of the original puzzle with the first word traced out, it spells 'GRIP'. The next word would begin with 'P'.</div>
+                </div>
+                <div class="box">
+                    <input class="lightbox_toggle" type="checkbox" id="letter-boxed-example-grid" />
+                    <label class="lightbox" for="letter-boxed-example-grid">
+                        <img src="assets/images/letter-boxed-solver/letter-boxed-example-grid.png" />
+                    </label>
+                </div>
+            </div>
+            <h2>Letter Boxed Solver</h2>
+            <div class="pair">
+                <div class="box two_thirds">
+                    <h3>Customise the puzzle</h3>
+                    <div class="letter_boxed_grid">
+                        <div class="lb_cell lb_outer"></div>
+                        <input class="lb_cell lb_outer" type="text" maxlength="1" />
+                        <input class="lb_cell lb_outer" type="text" maxlength="1" />
+                        <input class="lb_cell lb_outer" type="text" maxlength="1" />
+                        <div class="lb_cell lb_outer"></div>
+
+                        <input class="lb_cell lb_outer" type="text" maxlength="1" />
+                        <div class="lb_cell lb_inner_top lb_inner_left"></div>
+                        <div class="lb_cell lb_inner_top"></div>
+                        <div class="lb_cell lb_inner_top lb_inner_right"></div>
+                        <input class="lb_cell lb_outer" type="text" maxlength="1" />
+
+                        <input class="lb_cell lb_outer" type="text" maxlength="1" />
+                        <div class="lb_cell lb_inner_left"></div>
+                        <div class="lb_cell "></div>
+                        <div class="lb_cell lb_inner_right"></div>
+                        <input class="lb_cell lb_outer" type="text" maxlength="1" />
+
+                        <input class="lb_cell lb_outer" type="text" maxlength="1" />
+                        <div class="lb_cell lb_inner_bottom lb_inner_left"></div>
+                        <div class="lb_cell lb_inner_bottom"></div>
+                        <div class="lb_cell lb_inner_bottom lb_inner_right"></div>
+                        <input class="lb_cell lb_outer" type="text" maxlength="1" />
+
+                        <div class="lb_cell lb_outer"></div>
+                        <input class="lb_cell lb_outer" type="text" maxlength="1" />
+                        <input class="lb_cell lb_outer" type="text" maxlength="1" />
+                        <input class="lb_cell lb_outer" type="text" maxlength="1" />
+                        <div class="lb_cell lb_outer"></div>
+                    </div>
+                    <span>
+                        <span class="text_left"> Click to edit.</span>
+                        <input type="button" value="Random Puzzle" id="new_puzzle_button" />
+                    </span>
+                </div>
+                <div class="box">
+                    <h3>Customise the dictionary</h3>
+                    <textarea id="dictionary_input"></textarea>
+                </div>
+            </div>
+            <div class="pair">
+                <div class="box">
+                    <h3>Solution</h3>
+                    <table id="solution_table">
+                    </table>
+                    <input type="button" value="Reset Solution" id="reset_solution_button" />
+                </div>
+                <div class="box">
+                    <h3>Words</h3>
+                    <table id="word_table">
+                    </table>
+                </div>
+            </div>
+            <hr class="section_end">
+        </div>
+        <div class="footer">
+            <div class="footer_content">
+                <div class="small_text">Copyright © 2023 TroyDev - All Rights Reserved.</div>
+                <input type="checkbox" id="toolbar_hamburger_menu" style="display: none;">
+                <label for="toolbar_hamburger_menu" class="toolbar_buttons_toggle"></label>
+                <div class="toolbar_buttons_container" style="flex-direction: row;">
+                    <a class="toolbar_button" href="index.html">Projects</a>
+                    <hr>
+                    <a class="toolbar_button" href="contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
