@@ -11,7 +11,7 @@
  */
 
 .js_enabled_only {
-    display: none;
+    display: none !important;
 }
 
 /*

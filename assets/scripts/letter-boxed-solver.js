@@ -5,11 +5,17 @@
  */
 class WordLink {
     /**
+     * @param {string[]} puzzleTriplets The four triplets of letters that make up the puzzle
      * @param {string | null} previousWord Either null (for the first word) or the last link in the chain
      * @param {Set<string>} desiredLetters The letters we would like to use in the next word
+     * @param {string[]} dictionary A list of words to search through
      */
-    constructor(previousWord, desiredLetters, dictionary) {
-        this.words = dictionary.filter((word) => !previousWord || (word !== previousWord && word[0] === previousWord?.slice(-1) && word.split("").some((letter) => desiredLetters.has(letter))));
+    constructor(puzzleTriplets, previousWord, desiredLetters, dictionary) {
+        this.puzzleTriplets = puzzleTriplets;
+        // If this is the first word link, do an initial filter of the dictionary
+        this.dictionary = previousWord ? dictionary : dictionary.filter((word) => this.isValidWord(word));
+        // Filter the dictionary to only include words that start with the last letter of the previous word
+        this.words = !previousWord ? this.dictionary : this.dictionary.filter((word) => word !== previousWord && word[0] === previousWord?.slice(-1) && word.split("").some((letter) => desiredLetters.has(letter)));
         // Sort the words by the number of desired letters they contain
         // Create a map to cache the number of desired letters in each word
         let desiredLetterCount = new Map();
@@ -20,6 +26,10 @@ class WordLink {
         this.words = this.words.sort((a, b) => desiredLetterCount.get(b) - desiredLetterCount.get(a));
         this.currentWordIndex = 0;
         this.desiredLetters = desiredLetters;
+    }
+
+    createNextLink() {
+        return new WordLink(this.puzzleTriplets, this.currentWord(), this.getLetterStillUnusedAfterThisLink(), this.dictionary);
     }
 
     /**
@@ -60,83 +70,120 @@ class WordLink {
     doesCurrentWordCompleteChain() {
         return this.getLetterStillUnusedAfterThisLink().size === 0;
     }
-}
-
-/**
- * This class represents the entire word chain needed to solve the puzzle.
- * It contains helpers to validate words, and to recalculate the solution as the user
- * vetoes words.
- */
-class WordChain {
-    constructor(challengeTriplets, dictionary) {
-        this.challengeTriplets = challengeTriplets;
-        this.dictionary = dictionary.filter((word) => this.isValidWord(word));
-        this.rejectedWords = new Set(); // Allow the user to veto words
-        this.links = [];
-    }
 
     /**
-     * @param {*} word Any string from the dictionary
+     * @param {string} word Any string from the dictionary
      * @returns true if the word can be created from the challenge triplets as per the rules
      */
     isValidWord(word) {
-        if (word.length <= 3) {
+        // Check if the word is too short
+        if (word.length < 3) {
             return false;
         }
-        let lastTriplet = null;
-        for (let triplet of this.challengeTriplets) {
-            if (triplet.includes(word[0])) {
-                lastTriplet = triplet;
-                break;
-            }
-        }
-        if (lastTriplet === null) {
-            return false;
-        }
-        for (let letter of word.slice(1)) {
-            let found = false;
-            for (let triplet of this.challengeTriplets) {
-                if (triplet.includes(letter) && triplet !== lastTriplet) {
-                    lastTriplet = triplet;
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
+        // Check that the word satisfies the puzzle constraints
+        let previousIndex = -1;
+        for (let letter of word) {
+            let index = this.puzzleTriplets.findIndex((triplet) => triplet.includes(letter));
+            if (index === -1 || index === previousIndex) {
                 return false;
             }
+            previousIndex = index;
         }
+
         return true;
     }
+}
 
-    /**
-     * @returns {WordLink[]} The current word chain as an array of objects that allow
-     */
-    getLinks() {
-        return this.links;
+/**
+ * This type will manage the table displaying the solution, which will consist of a row containing the solution words in text edits, and a row beneath with a button allowing the user to select the next word in that WordLink.
+ *
+ * Each column will have an associated WordLink object, which will be used to determine the next word in the chain, if the user presses the associated button.
+ *
+ * Each time the user edits the word in the text box, or presses the button, the WordLink object will be updated, and each subsequent column will be recalculated, with new buttons and word links.
+ */
+class SolutionTable {
+    constructor(challengeTriplets, dictionary) {
+        this.challengeTriplets = challengeTriplets;
+        this.dictionary = dictionary;
+        this.links = [];
+    }
+
+    addLink() {
+        if (this.links.length === 0) {
+            let link = new WordLink(this.challengeTriplets, null, new Set(this.challengeTriplets.join("")), this.dictionary);
+            this.links.push(link);
+        } else {
+            this.links.push(this.links[this.links.length - 1].createNextLink());
+        }
+    }
+
+    canAddLink() {
+        let lastLink = this.links.length === 0 ? null : this.links[this.links.length - 1];
+        return !lastLink || (!lastLink.doesCurrentWordCompleteChain() && lastLink.currentWord() !== "");
     }
 
     recalculateSolution() {
-        this.links = [new WordLink(null, new Set(this.challengeTriplets.join("")), this.dictionary)];
-        while (this.links.length > 0) {
-            let currentLink = this.links[this.links.length - 1];
-            let word = currentLink.currentWord();
-            while (word && this.rejectedWords.has(word)) {
-                word = currentLink.nextWord();
+        while (this.canAddLink()) {
+            this.addLink();
+        }
+    }
+
+    recalculateSolutionFromIndex(index) {
+        // If the index is the final link, create a new link
+        if (index === this.links.length - 1) {
+            while (this.canAddLink()) {
+                this.addLink();
             }
-            if (!word) {
-                this.links.pop();
-                if (this.links.length > 0) {
-                    currentLink = this.links[this.links.length - 1];
-                    currentLink.currentWordEndingIsBad();
-                }
-            } else if (currentLink.doesCurrentWordCompleteChain()) {
-                break;
-            } else {
-                let nextLink = new WordLink(word, currentLink.getLetterStillUnusedAfterThisLink(), this.dictionary);
-                this.links.push(nextLink);
+        } else {
+            //  Remove all links after index and re-create them
+            this.links = this.links.slice(0, index + 1);
+            while (this.canAddLink()) {
+                this.addLink();
             }
         }
+        this.rebuildTable();
+    }
+
+    rebuildTable() {
+        // Get DOM table
+        let solutionTable = document.querySelector("#solution_table");
+        solutionTable.innerHTML = "";
+
+        if (this.links.length === 0 || !this.links[this.links.length - 1].doesCurrentWordCompleteChain()) {
+            solutionTable.insertRow().insertCell().textContent = "No solution found";
+            return;
+        }
+
+        let wordRow = solutionTable.insertRow();
+        let buttonRow = solutionTable.insertRow();
+        for (let [index, link] of this.links.entries()) {
+            // Insert a text edit with the word as text
+            let wordCell = wordRow.insertCell();
+            // MAYBE: Allow the user to edit the word, currently disabled as recalculateSolutionFromIndex calls rebuild table, which undoes the user input
+            // let wordInput = document.createElement("input");
+            // wordInput.type = "text";
+            // wordInput.value = link.currentWord();
+            // wordCell.appendChild(wordInput);
+            // attachListener(wordInput, "input", (event) => {
+            //     this.recalculateSolutionFromIndex(index + 1);
+            // });
+            wordCell.textContent = link.currentWord();
+            // Insert a button to select the next word
+            let buttonCell = buttonRow.insertCell();
+            let nextWordButton = document.createElement("button");
+            nextWordButton.textContent = "Next word";
+            buttonCell.appendChild(nextWordButton);
+            attachListener(nextWordButton, "click", () => {
+                this.links[index].nextWord();
+                this.recalculateSolutionFromIndex(index);
+            });
+        }
+    }
+
+    resetSolution() {
+        this.links = [];
+        this.recalculateSolution();
+        this.rebuildTable();
     }
 }
 
@@ -152,7 +199,7 @@ function validateLetter(letter) {
 }
 
 function downloadDictionary() {
-    fetch("assets/data/oxford5000.txt")
+    fetch("assets/data/SCOWL-en_GB-large.txt")
         .then((response) => response.text())
         .then((text) => {
             document.querySelector("#dictionary_input").value = text;
@@ -193,13 +240,13 @@ function setupLetterBoxedPuzzle() {
         });
     }
     resizeGrid();
+    resetSolution();
 }
 
 function resizeGrid() {
-    let grid = document.querySelector(".letter_boxed_grid");
-
-    let gridOwner = grid.parentElement;
-    let gridSize = gridOwner.clientWidth / 2;
+    const grid = document.querySelector(".letter_boxed_grid");
+    const gridOwner = grid.parentElement;
+    const gridSize = gridOwner.clientWidth / 2;
 
     // if the width of the container is more than 2/3 of the screen, set width to match the parent
     if (gridOwner.clientWidth > window.innerWidth * (2 / 3)) {
@@ -224,57 +271,15 @@ function resizeGrid() {
 }
 
 function resetSolution() {
-    let challengeTriplets = [];
+    let challengeTriplets = ["", "", "", ""];
     let inputs = document.querySelectorAll(".lb_cell[type='text']");
     for (let input of inputs) {
-        challengeTriplets.push(input.value.toLowerCase());
+        let index = parseInt(input.getAttribute("triplet"));
+        challengeTriplets[index] = challengeTriplets[index] + input.value.toLowerCase();
     }
     let dictionary = document.querySelector("#dictionary_input").value.split("\n");
 
-    solution = new WordChain(challengeTriplets, dictionary);
-    solution.recalculateSolution();
-    updateSolutionTable();
-}
-
-function updateSolutionTable() {
-    if (!solution) {
-        return;
-    }
-
-    let solutionTable = document.querySelector("#solution_table");
-    solutionTable.innerHTML = "";
-    let wordRow = solutionTable.insertRow();
-    let buttonRow = solutionTable.insertRow();
-
-    let links = solution.getLinks();
-    if (links.length === 0) {
-        let row = solutionTable.insertRow();
-        let cell = row.insertCell();
-        cell.textContent = "No solution found";
-        return;
-    }
-
-    for (let i = 0; i < links.length; i++) {
-        wordRow.insertCell().textContent = links[i].currentWord();
-        let nextWordButton = document.createElement("button");
-        let vetoWordButton = document.createElement("button");
-        nextWordButton.textContent = "Next word";
-        vetoWordButton.textContent = "Veto word";
-        attachListener(nextWordButton, "click", () => {
-            nextWord(i);
-        });
-        attachListener(vetoWordButton, "click", () => {
-            vetoWord(i, links[i].currentWord());
-        });
-        let buttonCell = buttonRow.insertCell();
-        let buttonContainer = document.createElement("div");
-        buttonCell.appendChild(buttonContainer);
-        // make button cell layout the vbuttons horizontally
-        buttonContainer.style.display = "flex";
-        buttonContainer.style.flexDirection = "row";
-        buttonContainer.appendChild(nextWordButton);
-        buttonContainer.appendChild(vetoWordButton);
-    }
+    new SolutionTable(challengeTriplets, dictionary).resetSolution();
 }
 
 // Make our .letter_boxed_grid a sensible size for the screen, adjusting each time the screen is resized
@@ -288,5 +293,8 @@ attachListener(document, "DOMContentLoaded", () => {
     downloadDictionary();
     attachListener(document.querySelector("#new_puzzle_button"), "click", setupLetterBoxedPuzzle);
     attachListener(document.querySelector("#reset_solution_button"), "click", resetSolution);
+    for (let input of document.querySelectorAll(".lb_cell[type='text']")) {
+        attachListener(input, "input", resetSolution);
+    }
     resetSolution();
 });
