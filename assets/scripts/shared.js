@@ -21,5 +21,5 @@ attachListener(document, "DOMContentLoaded", function () {
     // modify the CSS to add a new rule that hides the .js_disabled_only class
     let style = document.createElement("style");
     document.head.appendChild(style);
-    style.sheet.insertRule(".js_disabled_only { display: none; }");
+    style.sheet.insertRule(".js_disabled_only { display: none !important; }");
 });
