@@ -20,6 +20,14 @@ class Widget {
         throw new Error("Not implemented");
     }
 
+    mouseMoved(x, y, mouseDown) {
+        // Do nothing by default
+    }
+
+    mouseClick(x, y) {
+        // Do nothing by default
+    }
+
     nextFrame(deltaTime) {
         this.lastTime += deltaTime;
         if (this.lastTime > this.millisecondsPerTick) {
@@ -83,6 +91,16 @@ class ConwaysGameOfLife extends Widget {
                 }
             })
         );
+    }
+
+    mouseMoved(x, y, mouseDown) {
+        if (mouseDown) {
+            let cellX = Math.floor(x / this.cellSize);
+            let cellY = Math.floor(y / this.cellSize);
+            if (cellX >= 0 && cellX < this.gridWidth && cellY >= 0 && cellY < this.gridHeight) {
+                this.cells[cellX][cellY] = true;
+            }
+        }
     }
 }
 
@@ -188,6 +206,17 @@ class Boids extends Widget {
             if (boid.y > this.context.canvas.height) boid.y = 0;
         }
     }
+
+    mouseClick(x, y) {
+        // Make nearby boids scatter
+        for (let boid of this.boids) {
+            let distance = Math.sqrt((boid.x - x) ** 2 + (boid.y - y) ** 2);
+            if (distance < this.boidPerception * 3) {
+                boid.xSpeed += (boid.x - x) * 1.5;
+                boid.ySpeed += (boid.y - y) * 1.5;
+            }
+        }
+    }
 }
 
 class FlappyBird extends Widget {
@@ -215,9 +244,12 @@ class FlappyBird extends Widget {
         this.gravity = 0;
         this.jumpStrength = 0;
         this.maxPipes = 0;
+        this.autoplay = true;
     }
 
     reset() {
+        this.autoplay = true;
+
         // Adjust gapSize and birdSize based on canvas height
         this.gapSize = this.context.canvas.height / 4;
         this.bird = { x: this.context.canvas.width / 2, y: 0, ySpeed: 0, radius: this.gapSize / 15 };
@@ -285,16 +317,34 @@ class FlappyBird extends Widget {
         this.bird.ySpeed = Math.min(this.bird.ySpeed, this.jumpStrength);
 
         this.bird.y += this.bird.ySpeed;
+
         let pipe = this.nextPipe();
-        // if the bird is inside a gap
-        if (pipe && this.bird.x > pipe.x && this.bird.x < pipe.x + pipe.width) {
-            // if the bird is about to hit the bottom of the gap, jump
-            if (this.bird.y + this.bird.radius > pipe.gapY + pipe.gapSize * 0.75) {
+        if (this.autoplay) {
+            // if the bird is inside a gap
+            if (pipe && this.bird.x > pipe.x && this.bird.x < pipe.x + pipe.width) {
+                // if the bird is about to hit the bottom of the gap, jump
+                if (this.bird.y + this.bird.radius > pipe.gapY + pipe.gapSize * 0.75) {
+                    this.jump();
+                }
+            } else if (this.bird.y > this.context.canvas.height * 0.9 || (pipe && this.bird.y > pipe.gapY + pipe.gapSize * 0.75)) {
+                // if the bird is below the gap, jump
                 this.jump();
             }
-        } else if (this.bird.y > this.context.canvas.height * 0.9 || (pipe && this.bird.y > pipe.gapY + pipe.gapSize * 0.75)) {
-            // if the bird is below the gap, jump
-            this.jump();
+        } else {
+            // if the bird is outside the canvas, reset
+            if (this.bird.y > this.context.canvas.height || this.bird.y < 0) {
+                this.reset();
+            }
+            // if the bird is colliding with pipe, reset
+            const pipeCollideLeft = pipe.x;
+            const pipeCollideRight = pipe.x + pipe.width;
+            if (this.bird.x > pipeCollideLeft && this.bird.x < pipeCollideRight) {
+                const pipeCollideTop = pipe.gapY + this.bird.radius;
+                const pipeCollideBottom = pipe.gapY + pipe.gapSize - this.bird.radius;
+                if (this.bird.y < pipeCollideTop || this.bird.y > pipeCollideBottom) {
+                    this.reset();
+                }
+            }
         }
     }
 
@@ -316,6 +366,11 @@ class FlappyBird extends Widget {
 
     jump() {
         this.bird.ySpeed = -this.jumpStrength;
+    }
+
+    mouseClick(x, y) {
+        this.autoplay = false;
+        this.jump();
     }
 }
 
@@ -385,6 +440,13 @@ class BouncingConnectedBalls extends Widget {
             }
         }
     }
+
+    mouseMoved(x, y, mouseDown) {
+        this.balls[0].x = x;
+        this.balls[0].y = y;
+        this.balls[0].xSpeed = 0;
+        this.balls[0].ySpeed = 0;
+    }
 }
 
 function updateColours() {
@@ -434,11 +496,26 @@ attachListener(document, "DOMContentLoaded", function () {
         requestAnimationFrame(draw);
     }
 
-    attachListener(window, "keydown", function (event) {
-        if (event.key === " ") {
-            event.preventDefault();
-            widgets[currentWidgetIndex].jump();
+    attachListener(window, "mousemove", function (event) {
+        let rect = canvas.getBoundingClientRect();
+        let eventOutOfBounds = event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom;
+        if (eventOutOfBounds) {
+            return;
         }
+        let x = event.clientX - rect.left;
+        let y = event.clientY - rect.top;
+        widgets[currentWidgetIndex].mouseMoved(x, y, event.buttons === 1);
+    });
+
+    attachListener(window, "click", function (event) {
+        let rect = canvas.getBoundingClientRect();
+        let eventOutOfBounds = event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom;
+        if (eventOutOfBounds) {
+            return;
+        }
+        let x = event.clientX - rect.left;
+        let y = event.clientY - rect.top;
+        widgets[currentWidgetIndex].mouseClick(x, y);
     });
 
     attachListener(window, "load", function () {
