@@ -10,6 +10,15 @@ function setupToolbar() {
         // Enable larger toolbar & logo at top of page
         logo.classList.add("toolbar_logo_bigger");
 
+        // Make the larger toolbar transparent so it doesn't block too much of our banner animation
+        for (let stylesheet of document.styleSheets) {
+            for (let i = 0; i < stylesheet.cssRules.length; i++) {
+                if (stylesheet.cssRules[i].selectorText === ".toolbar") {
+                    stylesheet.cssRules[i].style.backgroundColor = "rgba(0, 0, 0, 0.0)";
+                }
+            }
+        }
+
         // Underline current page on toolbar
         let allButtons = document.querySelectorAll(".toolbar_button");
         for (let i = 0; i < allButtons.length; i++) {

@@ -1,9 +1,11 @@
 .toolbar {
     position: fixed;
     top: 0;
+    transition: background-color 1s ease 0.1s;
+}
+
+.darker_toolbar {
     background-color: var(--alt-background-color);
-    opacity: var(--translucent-light);
-    transition: opacity 1s ease 0.1s;
 }
 
 .toolbar_logo {
@@ -11,16 +13,11 @@
     height: 100px;
     max-width: 20vmin;
     max-height: 20vmin;
-    opacity: none;
 }
 
 .toolbar_logo_bigger {
     width: 200px;
     height: 200px;
-}
-
-.darker_toolbar {
-    opacity: var(--translucent-heavy);
 }
 
 .header_widget {
@@ -48,6 +45,7 @@
     --base-size: 10vw;
     animation: animate 25s linear infinite;
     background-color: var(--accent-color);
+    z-index: -1;
 }
 
 .moving_shapes div:nth-child(1) {
@@ -188,13 +186,11 @@
 @keyframes animate {
     0% {
         transform: translateY(calc(0 * var(--header_widget_height))) rotate(0deg);
-        opacity: 0.5;
         border-radius: 5%;
     }
 
     100% {
         transform: translateY(calc((-1 * var(--header_widget_height)) - 100%)) rotate(720deg);
-        opacity: 0.1;
         border-radius: 50%;
     }
 }
