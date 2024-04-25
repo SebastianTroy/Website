@@ -241,7 +241,8 @@ iframe.embedded_godot {
 
 .text,
 .text_left,
-.small_text {
+.small_text,
+.large_text {
     color: var(--text-mute-color);
     font-size: 18px;
     text-align: center;
@@ -255,6 +256,10 @@ iframe.embedded_godot {
 
 .small_text {
     font-size: 15px;
+}
+
+.large_text {
+    font-size: 21px;
 }
 
 /*
