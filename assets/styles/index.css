@@ -2,6 +2,7 @@
     position: fixed;
     top: 0;
     transition: background-color 1s ease 0.1s;
+    pointer-events: none;
 }
 
 .darker_toolbar {
@@ -13,6 +14,11 @@
     height: 100px;
     max-width: 20vmin;
     max-height: 20vmin;
+    pointer-events: auto;
+}
+
+.toolbar_button {
+    pointer-events: auto;
 }
 
 .toolbar_logo_bigger {
