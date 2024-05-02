@@ -3,6 +3,7 @@
     top: 0;
     transition: background-color 1s ease 0.1s;
     pointer-events: none;
+    background-color: transparent;
 }
 
 .darker_toolbar {
