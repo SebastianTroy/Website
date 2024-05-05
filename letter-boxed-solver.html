@@ -106,11 +106,31 @@
                 </div>
             </div>
             <div class="pair js_enabled_only">
-                <div class="box">
+                <div class="box two_thirds">
                     <h3>Solution</h3>
                     <table id="solution_table">
                     </table>
                     <input type="button" value="Reset Solution" id="reset_solution_button" />
+                </div>
+                <div class="box">
+                    <h3>Best Words</h3>
+                    <div class="best_words_table_container">
+                        <table id="best_words_table">
+                            <tr>
+                                <th id="word_th"></th>
+                                <th id="letters_used_th">Letters Used</th>
+                                <th id="words_before_th">Words Before</th>
+                                <th id="words_after_th">Words After</th>
+                            </tr>
+                        </table>
+                    </div>
+                    <span>
+                        <span>Sort by:</span>
+                        <input type="button" value="Word" id="sort_by_words_button" />
+                        <input type="button" value="Letters Used" id="sort_by_letters_button" />
+                        <input type="button" value="Words Before" id="sort_by_words_before_button" />
+                        <input type="button" value="Words After" id="sort_by_words_after_button" />
+                    </span>
                 </div>
             </div>
             <hr class="section_end">
