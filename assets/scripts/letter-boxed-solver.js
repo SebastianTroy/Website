@@ -18,12 +18,13 @@ class WordLink {
         this.words = !previousWord ? this.dictionary : this.dictionary.filter((word) => word !== previousWord && word[0] === previousWord?.slice(-1) && word.split("").some((letter) => desiredLetters.has(letter)));
         // Sort the words by the number of desired letters they contain
         // Create a map to cache the number of desired letters in each word
-        let desiredLetterCount = new Map();
+        this.desiredLetterCount = new Map();
         for (let word of this.words) {
             let uniqueDesiredLetters = new Set(word.split("").filter((letter) => desiredLetters.has(letter)));
-            desiredLetterCount.set(word, uniqueDesiredLetters.size);
+            this.desiredLetterCount.set(word, uniqueDesiredLetters.size);
         }
-        this.words = this.words.sort((a, b) => desiredLetterCount.get(b) - desiredLetterCount.get(a));
+
+        this.words = this.words.sort((a, b) => this.getLettersUsedCount(b) - this.getLettersUsedCount(a));
         this.currentWordIndex = 0;
         this.desiredLetters = desiredLetters;
     }
@@ -92,6 +93,17 @@ class WordLink {
 
         return true;
     }
+
+    /**
+     * @returns {string[]} A copy of the dictionary, which is the list of valid words
+     */
+    getValidWords() {
+        return Array.from(this.dictionary);
+    }
+
+    getLettersUsedCount(word) {
+        return this.desiredLetterCount.get(word) || 0;
+    }
 }
 
 /**
@@ -141,10 +153,10 @@ class SolutionTable {
                 this.addLink();
             }
         }
-        this.rebuildTable();
+        this.rebuildSolutionTable();
     }
 
-    rebuildTable() {
+    rebuildSolutionTable() {
         // Get DOM table
         let solutionTable = document.querySelector("#solution_table");
         solutionTable.innerHTML = "";
@@ -180,10 +192,59 @@ class SolutionTable {
         }
     }
 
+    rebuildBestWordsTable() {
+        let bestWordsTable = document.querySelector("#best_words_table");
+        // Remove all but first row of table
+        while (bestWordsTable.rows.length > 1) {
+            bestWordsTable.deleteRow(1);
+        }
+
+        console.log(this.links);
+
+        if (this.links.length > 0) {
+            let solutionParams = this.links[0];
+            let validWords = solutionParams.getValidWords();
+            // Cache the counts of start and end letters
+            let wordsBeginningWith = new Map();
+            let wordsEndingWith = new Map();
+            for (let word of validWords) {
+                let firstLetter = word[0];
+                let lastLetter = word.slice(-1);
+                if (!wordsBeginningWith.has(firstLetter)) {
+                    wordsBeginningWith.set(firstLetter, 1);
+                } else {
+                    wordsBeginningWith.set(firstLetter, wordsBeginningWith.get(firstLetter) + 1);
+                }
+                if (!wordsEndingWith.has(lastLetter)) {
+                    wordsEndingWith.set(lastLetter, 1);
+                } else {
+                    wordsEndingWith.set(lastLetter, wordsEndingWith.get(lastLetter) + 1);
+                }
+            }
+
+            for (let word of validWords) {
+                let otherWordsEndingWithFirstLetter = wordsEndingWith.get(word[0]) || 0;
+                let otherWordsBeginningWithLastLetter = wordsBeginningWith.get(word.slice(-1)) || 0;
+                // Don't count the word itself
+                if (word[0] === word.slice(-1)) {
+                    otherWordsEndingWithFirstLetter--;
+                    otherWordsBeginningWithLastLetter--;
+                }
+
+                let row = bestWordsTable.insertRow();
+                row.insertCell().textContent = word;
+                row.insertCell().textContent = solutionParams.getLettersUsedCount(word);
+                row.insertCell().textContent = otherWordsEndingWithFirstLetter;
+                row.insertCell().textContent = otherWordsBeginningWithLastLetter;
+            }
+        }
+    }
+
     resetSolution() {
         this.links = [];
         this.recalculateSolution();
-        this.rebuildTable();
+        this.rebuildSolutionTable();
+        this.rebuildBestWordsTable();
     }
 }
 
@@ -203,6 +264,9 @@ function downloadDictionary() {
         .then((response) => response.text())
         .then((text) => {
             document.querySelector("#dictionary_input").value = text;
+        })
+        .then(() => {
+            resetSolution();
         });
 }
 
@@ -231,13 +295,6 @@ function setupLetterBoxedPuzzle() {
     let inputs = document.querySelectorAll(".lb_cell[type='text']");
     for (let input of inputs) {
         input.value = challengeLetters.pop().toUpperCase();
-        attachListener(input, "input", (event) => {
-            if (!validateLetter(event.target.value)) {
-                event.target.value = "";
-            } else {
-                event.target.value = event.target.value.toUpperCase();
-            }
-        });
     }
     resizeGrid();
     resetSolution();
@@ -246,11 +303,11 @@ function setupLetterBoxedPuzzle() {
 function resizeGrid() {
     const grid = document.querySelector(".letter_boxed_grid");
     const gridOwner = grid.parentElement;
-    const gridSize = gridOwner.clientWidth / 2;
+    let gridSize = gridOwner.clientWidth / 2;
 
     // if the width of the container is more than 2/3 of the screen, set width to match the parent
     if (gridOwner.clientWidth > window.innerWidth * (2 / 3)) {
-        gridSize = gridOwner.clientWidth * 0.8;
+        gridSize = gridOwner.clientWidth * 0.65;
     }
 
     grid.style.width = `${gridSize}px`;
@@ -282,19 +339,76 @@ function resetSolution() {
     new SolutionTable(challengeTriplets, dictionary).resetSolution();
 }
 
-// Make our .letter_boxed_grid a sensible size for the screen, adjusting each time the screen is resized
-attachListener(window, "resize", () => {
-    resizeGrid();
-});
+function sortTableByColumn(tableElement, headerElement, sortAscending) {
+    const columnIndex = Array.from(headerElement.parentElement.children).indexOf(headerElement);
+    let rows = Array.from(tableElement.rows).slice(1);
+    rows.sort((a, b) => {
+        let aValue = a.cells[columnIndex].textContent;
+        let bValue = b.cells[columnIndex].textContent;
+
+        if (!isNaN(aValue) && !isNaN(bValue)) {
+            return sortAscending ? aValue - bValue : bValue - aValue;
+        } else {
+            return sortAscending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+        }
+    });
+
+    // prepend the header ro to rows and re-add the values
+    rows.unshift(tableElement.rows[0]);
+    tableElement.innerHTML = "";
+    for (let row of rows) {
+        tableElement.appendChild(row);
+    }
+}
+
+let wordSortAscending = true;
+function sortByWord() {
+    sortTableByColumn(document.querySelector("#best_words_table"), document.querySelector("#word_th"), wordSortAscending);
+    wordSortAscending = !wordSortAscending;
+}
+
+let letterCountSortAscending = true;
+function sortBestWordsByLetterCount() {
+    sortTableByColumn(document.querySelector("#best_words_table"), document.querySelector("#letters_used_th"), letterCountSortAscending);
+    letterCountSortAscending = !letterCountSortAscending;
+}
+
+let wordsBeforeSortAscending = false;
+function sortBestWordsByWordsBefore() {
+    sortTableByColumn(document.querySelector("#best_words_table"), document.querySelector("#words_before_th"), wordsBeforeSortAscending);
+    wordsBeforeSortAscending = !wordsBeforeSortAscending;
+}
+
+let wordsAfterSortAscending = false;
+function sortBestWordsByWordsAfter() {
+    sortTableByColumn(document.querySelector("#best_words_table"), document.querySelector("#words_after_th"), wordsAfterSortAscending);
+    wordsAfterSortAscending = !wordsAfterSortAscending;
+}
 
 attachListener(document, "DOMContentLoaded", () => {
     setupLetterBoxedPuzzle();
     resizeGrid();
     downloadDictionary();
+    attachListener(window, "resize", resizeGrid);
     attachListener(document.querySelector("#new_puzzle_button"), "click", setupLetterBoxedPuzzle);
     attachListener(document.querySelector("#reset_solution_button"), "click", resetSolution);
     for (let input of document.querySelectorAll(".lb_cell[type='text']")) {
-        attachListener(input, "input", resetSolution);
+        // remove max length limitation
+        input.removeAttribute("maxlength");
+        attachListener(input, "input", (event) => {
+            let targetIndex = event.target.value.length > 1 ? 1 : 0;
+            if (event.target.value.length > 0) {
+                if (validateLetter(event.target.value[targetIndex].toUpperCase())) {
+                    event.target.value = event.target.value[targetIndex].toUpperCase();
+                    resetSolution();
+                } else {
+                    event.target.value = "";
+                }
+            }
+        });
     }
-    resetSolution();
+    attachListener(document.querySelector("#sort_by_words_button"), "click", sortByWord);
+    attachListener(document.querySelector("#sort_by_letters_button"), "click", sortBestWordsByLetterCount);
+    attachListener(document.querySelector("#sort_by_words_before_button"), "click", sortBestWordsByWordsBefore);
+    attachListener(document.querySelector("#sort_by_words_after_button"), "click", sortBestWordsByWordsAfter);
 });

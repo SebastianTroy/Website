@@ -11,6 +11,7 @@
     border: none;
 }
 
+th,
 td,
 table {
     border-collapse: collapse;
@@ -18,6 +19,14 @@ table {
     text-align: center;
     vertical-align: middle;
     padding: 10px;
+}
+
+#dictionary_input,
+.best_words_table_container {
+    min-height: 15em;
+    max-height: 33vh;
+    overflow: auto;
+    outline: solid 1px var(--text-mute-color);
 }
 
 /* Match the colour of the real puzzle */
