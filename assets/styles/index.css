@@ -6,6 +6,10 @@
     background-color: transparent;
 }
 
+.toolbar_buttons_toggle {
+    pointer-events: auto;
+}
+
 .darker_toolbar {
     background-color: var(--alt-background-color);
 }
