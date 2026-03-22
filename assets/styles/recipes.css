@@ -95,3 +95,31 @@
 .hidden {
     display: none !important;
 }
+
+/* For recipe pages we want to tweak a few divs to make the layout a little more compact */
+.preamble {
+    max-width: 600px;
+    margin: auto;
+}
+
+/* Firther limit image width to not take too much vertical space */
+.preamble img {
+    max-width: 400px;
+    max-height: 400px;
+    width: auto;
+    height: auto;
+    display: block;
+    margin: auto;
+}
+
+@media (max-width: 500px) {
+    .preamble {
+        max-width: 98vw;
+        padding-left: 1vw;
+        padding-right: 1vw;
+    }
+    .preamble img {
+        max-width: 90vw;
+        height: auto;
+    }
+}

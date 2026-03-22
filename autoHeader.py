@@ -82,7 +82,7 @@ def getCustomFontEntry(dir: str, filename: str) -> str:
         filename = filename.removesuffix("-template.html") + ".html"
     customFontEntry: str = ""
     fontFilenameFromPage = "assets/fonts/" + filename.removesuffix(".html") + ".css"
-    fontFilenameFromDir = "assets/fonts/" + dir + ".css"
+    fontFilenameFromDir = "assets/fonts/" + os.path.normpath(dir) + ".css"
     if os.path.exists(fontFilenameFromPage):
         customFontEntry += '        <link rel="stylesheet" href="' + fontFilenameFromPage + '">\n'
     if os.path.exists(fontFilenameFromDir):
@@ -96,7 +96,7 @@ def getCustomStyleEntry(dir: str, filename: str) -> str:
         filename = filename.removesuffix("-template.html") + ".html"
     customStyleEntry: str = ""
     styleFilenameFromPage = "assets/styles/" + filename.removesuffix(".html") + ".css"
-    styleFilenameFromDir = "assets/styles/" + dir + ".css"
+    styleFilenameFromDir = "assets/styles/" + os.path.normpath(dir) + ".css"
     if os.path.exists(styleFilenameFromPage):
         customStyleEntry += '        <link rel="stylesheet" href="' + styleFilenameFromPage + '">\n'
     if os.path.exists(styleFilenameFromDir):
@@ -110,7 +110,7 @@ def getCustomScriptEntry(dir: str, filename: str) -> str:
         filename = filename.removesuffix("-template.html") + ".html"
     customScriptEntry: str = ""
     scriptFilenameFromPage = "assets/scripts/" + filename.removesuffix(".html") + ".js"
-    scriptFilenameFromDir = "assets/scripts/" + dir + ".js"
+    scriptFilenameFromDir = "assets/scripts/" + os.path.normpath(dir) + ".js"
     if os.path.exists(scriptFilenameFromPage):
         customScriptEntry += '        <script src="' + scriptFilenameFromPage + '"></script>\n'
     if os.path.exists(scriptFilenameFromDir):

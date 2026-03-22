@@ -301,7 +301,7 @@ def createRecipePage(recipe: Recipe):
 
     # If source is a URL, make it a clickable link
     if source.startswith("http://") or source.startswith("https://"):
-        source = f'<a href="{source}" target="_blank">{source}</a>'
+        source = f'<a href="{source}" target="_blank" rel="noopener noreferrer">{source}</a>'
 
     outputHtml: str = template.format(title=title, image=image, description=description, serves=serves, cook_time=cook_time, source=source, tags=tags, ingredients=ingredients, method=method)
 
