@@ -165,7 +165,8 @@ def checkWebLink(link: str, linkLocation: str, enclosingTag: str):
         print(linkLocation + " Inscure link: " + link + " (use rel='noopener noreferrer')")
     # TODO consider iframe security
     try:
-        response = requests.get(link)
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)'}
+        response = requests.get(link, headers=headers, timeout=5)
         if response.status_code != 200:
             raise Exception("HTTP status code: " + str(response.status_code))
     except Exception as e:
