@@ -36,3 +36,15 @@
     display: block;
     margin: auto;
 }
+
+@media (max-width: 500px) {
+    .preamble {
+        max-width: 98vw;
+        padding-left: 1vw;
+        padding-right: 1vw;
+    }
+    .preamble img {
+        max-width: 90vw;
+        height: auto;
+    }
+}
