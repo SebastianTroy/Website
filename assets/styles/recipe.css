@@ -1,0 +1,38 @@
+.recipe_tags {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.tag {
+    font-size: 12px;
+    font-family: "Lato", arial, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--accent-text-color);
+    background-color: var(--accent-color);
+    padding: 3px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+/* this class is for the image, descritpion and tags, we want to limit the width sensibly */
+.preamble {
+    max-width: 600px;
+    margin: auto;
+}
+
+/* Firther limit image width to not take too much vertical space */
+.preamble img {
+    max-width: 400px;
+    max-height: 400px;
+    width: auto;
+    height: auto;
+    display: block;
+    margin: auto;
+}

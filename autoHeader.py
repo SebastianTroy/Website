@@ -22,6 +22,7 @@ def main():
     headerString, toolbarString, footerString = getTemplateSections()
     processFiles(".", headerString, toolbarString, footerString)
     processFiles("./godot", headerString, toolbarString, footerString)
+    processFiles("./recipes", headerString, toolbarString, footerString)
 
 def processFiles(dir: str, headerString: str, toolbarString: str, footerString: str):
     for filename in filter(lambda s: s.endswith(".html") and not s.startswith("template"), os.listdir(dir)):
@@ -42,9 +43,9 @@ def processFiles(dir: str, headerString: str, toolbarString: str, footerString: 
                     case Section.HEADER:
                         reconstructedDOM += headerString
                         reconstructedDOM = reconstructedDOM.replace("<title>TroyDev</title>", "<title>" + filenameToTitle(filename) + " | TroyDev</title>")
-                        reconstructedDOM = reconstructedDOM.replace("        <!-- font -->\n", getCustomFontEntry(filename))
-                        reconstructedDOM = reconstructedDOM.replace("        <!-- style -->\n", getCustomStyleEntry(filename))
-                        reconstructedDOM = reconstructedDOM.replace("        <!-- script -->\n", getCustomScriptEntry(filename))
+                        reconstructedDOM = reconstructedDOM.replace("        <!-- font -->\n", getCustomFontEntry(dir, filename))
+                        reconstructedDOM = reconstructedDOM.replace("        <!-- style -->\n", getCustomStyleEntry(dir, filename))
+                        reconstructedDOM = reconstructedDOM.replace("        <!-- script -->\n", getCustomScriptEntry(dir, filename))
                         currentSection = Section.SURPLUS
                     case Section.TOOLBAR:
                         reconstructedDOM += toolbarString
@@ -76,27 +77,45 @@ def processFiles(dir: str, headerString: str, toolbarString: str, footerString: 
 
 
 
-def getCustomFontEntry(filename: str) -> str:
-    fontFilename = "assets/fonts/" + filename.removesuffix(".html") + ".css"
-    if os.path.exists(fontFilename):
-        return '        <link rel="stylesheet" href="' + fontFilename + '">\n'
-    return ""
+def getCustomFontEntry(dir: str, filename: str) -> str:
+    if filename.endswith("-template.html"):
+        filename = filename.removesuffix("-template.html") + ".html"
+    customFontEntry: str = ""
+    fontFilenameFromPage = "assets/fonts/" + filename.removesuffix(".html") + ".css"
+    fontFilenameFromDir = "assets/fonts/" + dir + ".css"
+    if os.path.exists(fontFilenameFromPage):
+        customFontEntry += '        <link rel="stylesheet" href="' + fontFilenameFromPage + '">\n'
+    if os.path.exists(fontFilenameFromDir):
+        customFontEntry += '        <link rel="stylesheet" href="' + fontFilenameFromDir + '">\n'
+    return customFontEntry
 
 
 
-def getCustomStyleEntry(filename: str) -> str:
-    styleFilename = "assets/styles/" + filename.removesuffix(".html") + ".css"
-    if os.path.exists(styleFilename):
-        return '        <link rel="stylesheet" href="' + styleFilename + '">\n'
-    return ""
+def getCustomStyleEntry(dir: str, filename: str) -> str:
+    if filename.endswith("-template.html"):
+        filename = filename.removesuffix("-template.html") + ".html"
+    customStyleEntry: str = ""
+    styleFilenameFromPage = "assets/styles/" + filename.removesuffix(".html") + ".css"
+    styleFilenameFromDir = "assets/styles/" + dir + ".css"
+    if os.path.exists(styleFilenameFromPage):
+        customStyleEntry += '        <link rel="stylesheet" href="' + styleFilenameFromPage + '">\n'
+    if os.path.exists(styleFilenameFromDir):
+        customStyleEntry += '        <link rel="stylesheet" href="' + styleFilenameFromDir + '">\n'
+    return customStyleEntry
 
 
 
-def getCustomScriptEntry(filename: str) -> str:
-    scriptFilename = "assets/scripts/" + filename.removesuffix(".html") + ".js"
-    if os.path.exists(scriptFilename):
-        return '        <script src="' + scriptFilename + '"></script>\n'
-    return ""
+def getCustomScriptEntry(dir: str, filename: str) -> str:
+    if filename.endswith("-template.html"):
+        filename = filename.removesuffix("-template.html") + ".html"
+    customScriptEntry: str = ""
+    scriptFilenameFromPage = "assets/scripts/" + filename.removesuffix(".html") + ".js"
+    scriptFilenameFromDir = "assets/scripts/" + dir + ".js"
+    if os.path.exists(scriptFilenameFromPage):
+        customScriptEntry += '        <script src="' + scriptFilenameFromPage + '"></script>\n'
+    if os.path.exists(scriptFilenameFromDir):
+        customScriptEntry += '        <script src="' + scriptFilenameFromDir + '"></script>\n'
+    return customScriptEntry
 
 
 
@@ -217,5 +236,5 @@ def checkLinks(pageName: str, pageData: str, pageDirectory: str):
             currentCharacter += 1
 
 
-
-main()
+if __name__  == "__main__":
+    main()
