@@ -44,23 +44,23 @@
                 <div class="recipe_filters">
                     <!-- DIETARY FILTER TOGGLES SENTINEL -->
                 </div>
-                <div class="recipe_filters">
-                    <!-- COOKTIME SLIDERS SENTINEL -->
-                </div>
-                <div class="recipe_filters">
-                    <!-- SERVINGS SLIDERS SENTINEL -->
+                <div class="recipe_filters grid">
+                    <!-- COOKTIME FILTERS SENTINEL -->
+                    <!-- SERVINGS FILTERS SENTINEL -->
                 </div>
                 <div class="sorting_buttons">
-                    <input type="radio" name="sort" id="sort_name" class="sorting_radio" data-sort-by="name" hidden>
-                    <label for="sort_name" class="sorting_button">Sort by Name</label>
+                    <input type="radio" name="sort" id="sort_name" class="sorting_radio" data-sort-by="name" hidden checked>
+                    <label for="sort_name" class="sorting_button">Name <span class="sorting_arrow">▲</span></label>
                     <input type="radio" name="sort" id="sort_cook" class="sorting_radio" data-sort-by="cook-time" hidden>
-                    <label for="sort_cook" class="sorting_button">Sort by Cook Time</label>
+                    <label for="sort_cook" class="sorting_button">Cook Time <span class="sorting_arrow">▲</span></label>
                     <input type="radio" name="sort" id="sort_serves" class="sorting_radio" data-sort-by="serves" hidden>
-                    <label for="sort_serves" class="sorting_button">Sort by Serves</label>
+                    <label for="sort_serves" class="sorting_button">Serves <span class="sorting_arrow">▲</span></label>
+                    <input type="radio" name="sort" id="sort_random" class="sorting_radio" data-sort-by="random" hidden>
+                    <label for="sort_random" class="sorting_button">Random</label>
                 </div>
             </div>
 
-            <div class="grid">
+            <div class="grid cards_container">
                 <!-- RECIPE CARDS SENTINEL -->
                 <div note="placeholder to prevent last item expanding into multiple slots"></div>
                 <div note="placeholder to prevent last item expanding into multiple slots"></div>
