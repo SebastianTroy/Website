@@ -7,6 +7,8 @@
 import os
 # pip3 install requests
 import requests
+import aiohttp
+import asyncio
 
 from enum import Enum
 
@@ -17,15 +19,20 @@ class Section(Enum):
     FOOTER = 3
     SURPLUS = 4
 
+# Used to collect all tasks for checking web links, so we can run them asynchronously at the end
+# This prevents a worst case scenario of an 8 second timeout for each web link
+web_link_tasks = []
+
 def main():
     print("Running autoHeader.py")
     headerString, toolbarString, footerString = getTemplateSections()
     processFiles(".", headerString, toolbarString, footerString)
     processFiles("./godot", headerString, toolbarString, footerString)
     processFiles("./recipes", headerString, toolbarString, footerString)
+    asyncio.run(run_all_web_checks())
 
 def processFiles(dir: str, headerString: str, toolbarString: str, footerString: str):
-    for filename in filter(lambda s: s.endswith(".html") and not s.startswith("template"), os.listdir(dir)):
+    for filename in filter(lambda s: s.endswith(".html") and not s.endswith("template.html"), os.listdir(dir)):
         print(filename)
         reconstructedDOM: str = ""
         with open(os.path.join(dir, filename), "r+") as webpageFile:
@@ -169,27 +176,27 @@ def getTemplateSections() -> tuple[str, str, str]:
 
 def checkLocalLink(link: str, linkLocation: str):
     if not os.path.exists(link):
-        print(linkLocation + " Broken internal link: " + link)
+        print(" >>> " + linkLocation + " Broken internal link: " + link)
 
 
 
-def checkWebLink(link: str, linkLocation: str, enclosingTag: str):
+async def checkWebLink(session, link: str, linkLocation: str, enclosingTag: str):
     if "http://" in link:
-        print(linkLocation + " Insecure link: " + link + " (use https)")
+        print(" >>> " + linkLocation + " Insecure link: " + link + " (use https)")
     if "youtube.com" in link:
-        print(linkLocation + " Insecure link: " + link + " (use youtube-nocookie)")
+        print(" >>> " + linkLocation + " Insecure link: " + link + " (use youtube-nocookie)")
     if "href" in enclosingTag and "target" not in enclosingTag:
-        print(linkLocation + " Missing target attribute: " + link + " (use target='_blank')")
+        print(" >>> " + linkLocation + " Missing target attribute: " + link + " (use target='_blank')")
     if "href" in enclosingTag and "noopener noreferrer" not in enclosingTag:
-        print(linkLocation + " Inscure link: " + link + " (use rel='noopener noreferrer')")
+        print(" >>> " + linkLocation + " Inscure link: " + link + " (use rel='noopener noreferrer')")
     # TODO consider iframe security
     try:
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)'}
-        response = requests.get(link, headers=headers, timeout=5)
-        if response.status_code != 200:
-            raise Exception("HTTP status code: " + str(response.status_code))
+        async with session.get(link, headers=headers, timeout=8) as response:
+            if response.status != 200:
+                raise Exception("HTTP status code: " + str(response.status))
     except Exception as e:
-        print(linkLocation + " Broken external link: " + link + ": " + str(e))
+        print(" >>> " + linkLocation + " Broken external link: " + link + ": " + str(e))
 
 
 
@@ -226,7 +233,7 @@ def checkLinks(pageName: str, pageData: str, pageDirectory: str):
                             tagBeginIndex = pageData.rfind("<", None, openIndex)
                             tagEndIndex = pageData.find(">", closeIndex)
                             surroundingTag = pageData[tagBeginIndex : tagEndIndex + 1]
-                            checkWebLink(link, linkLocation, surroundingTag)
+                            web_link_tasks.append((link, linkLocation, surroundingTag))
                         else:
                             checkLocalLink(os.path.join(pageDirectory, link), linkLocation)
         if c == "\n":
@@ -234,6 +241,15 @@ def checkLinks(pageName: str, pageData: str, pageDirectory: str):
             currentCharacter = 1
         else:
             currentCharacter += 1
+
+
+
+async def run_all_web_checks():
+    print("Running {count} web link checks...".format(count=len(web_link_tasks)))
+    async with aiohttp.ClientSession() as session:
+        tasks = [checkWebLink(session, link, loc, tag) for link, loc, tag in web_link_tasks]
+        await asyncio.gather(*tasks)
+
 
 
 if __name__  == "__main__":
