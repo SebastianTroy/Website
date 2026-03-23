@@ -1,6 +1,6 @@
 ## Meta
 type: main
-dietary: meat, dairy, egg
+dietary: meat, egg, gluten
 serves: 6
 prep_time: 20
 cook_time: 130
