@@ -84,19 +84,17 @@ attachListener(document, "DOMContentLoaded", function () {
                 cards.forEach(function (card) {
                     let hidden = false;    
 
-                    for (const cls of card.classList) {
-                        if (hiddenTypes.includes(cls) || hiddenDietary.includes(cls)) {
-                            hidden = true;
-                            break;
-                        }
+                    const cardTags = card.getAttribute("data-tags").split(" ");
+                    if (cardTags.some(tag => hiddenTypes.includes(tag) || hiddenDietary.includes(tag))) {
+                        hidden = true;
                     }
 
-                    cookTime = parseInt(card.getAttribute('data-cook-time'), 10);
+                    const cookTime = parseInt(card.getAttribute('data-cook-time'), 10);
                     if (hiddenCookTimeRanges.some(([min, max]) => cookTime >= Number(min) && cookTime <= Number(max))) {
                         hidden = true;
                     }
 
-                    serves = parseInt(card.getAttribute('data-serves'), 10);
+                    const serves = parseInt(card.getAttribute('data-serves'), 10);
                     if (hiddenServesRanges.some(([min, max]) => serves >= Number(min) && serves <= Number(max))) {
                         hidden = true;
                     }

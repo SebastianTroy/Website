@@ -40,47 +40,46 @@
             <div class="js_enabled_only">
                 <div class="recipe_filters">
                     
+                    <input type="checkbox" id="filter_dessert" class="filter_checkbox" data-type="dessert" hidden>
+                    <label for="filter_dessert" class="filter_button">dessert (1)</label>
+                    
                     <input type="checkbox" id="filter_main" class="filter_checkbox" data-type="main" hidden>
                     <label for="filter_main" class="filter_button">main (21)</label>
                     
                     <input type="checkbox" id="filter_side" class="filter_checkbox" data-type="side" hidden>
                     <label for="filter_side" class="filter_button">side (1)</label>
-                    
-                    <input type="checkbox" id="filter_dessert" class="filter_checkbox" data-type="dessert" hidden>
-                    <label for="filter_dessert" class="filter_button">dessert (1)</label>
-                    
                 </div>
                 <div class="recipe_filters">
-                    
-                    <input type="checkbox" id="filter_gluten" class="filter_checkbox" data-dietary="gluten" hidden>
-                    <label for="filter_gluten" class="filter_button">gluten (3)</label>
                     
                     <input type="checkbox" id="filter_brassica" class="filter_checkbox" data-dietary="brassica" hidden>
                     <label for="filter_brassica" class="filter_button">brassica (2)</label>
                     
-                    <input type="checkbox" id="filter_peanut" class="filter_checkbox" data-dietary="peanut" hidden>
-                    <label for="filter_peanut" class="filter_button">peanut (1)</label>
-                    
-                    <input type="checkbox" id="filter_soy" class="filter_checkbox" data-dietary="soy" hidden>
-                    <label for="filter_soy" class="filter_button">soy (1)</label>
+                    <input type="checkbox" id="filter_dairy" class="filter_checkbox" data-dietary="dairy" hidden>
+                    <label for="filter_dairy" class="filter_button">dairy (6)</label>
                     
                     <input type="checkbox" id="filter_egg" class="filter_checkbox" data-dietary="egg" hidden>
                     <label for="filter_egg" class="filter_button">egg (4)</label>
                     
-                    <input type="checkbox" id="filter_sesame" class="filter_checkbox" data-dietary="sesame" hidden>
-                    <label for="filter_sesame" class="filter_button">sesame (1)</label>
+                    <input type="checkbox" id="filter_gluten" class="filter_checkbox" data-dietary="gluten" hidden>
+                    <label for="filter_gluten" class="filter_button">gluten (3)</label>
                     
                     <input type="checkbox" id="filter_meat" class="filter_checkbox" data-dietary="meat" hidden>
                     <label for="filter_meat" class="filter_button">meat (11)</label>
                     
-                    <input type="checkbox" id="filter_dairy" class="filter_checkbox" data-dietary="dairy" hidden>
-                    <label for="filter_dairy" class="filter_button">dairy (6)</label>
+                    <input type="checkbox" id="filter_mustard" class="filter_checkbox" data-dietary="mustard" hidden>
+                    <label for="filter_mustard" class="filter_button">mustard (2)</label>
                     
                     <input type="checkbox" id="filter_nut" class="filter_checkbox" data-dietary="nut" hidden>
                     <label for="filter_nut" class="filter_button">nut (3)</label>
                     
-                    <input type="checkbox" id="filter_mustard" class="filter_checkbox" data-dietary="mustard" hidden>
-                    <label for="filter_mustard" class="filter_button">mustard (2)</label>
+                    <input type="checkbox" id="filter_peanut" class="filter_checkbox" data-dietary="peanut" hidden>
+                    <label for="filter_peanut" class="filter_button">peanut (1)</label>
+                    
+                    <input type="checkbox" id="filter_sesame" class="filter_checkbox" data-dietary="sesame" hidden>
+                    <label for="filter_sesame" class="filter_button">sesame (1)</label>
+                    
+                    <input type="checkbox" id="filter_soy" class="filter_checkbox" data-dietary="soy" hidden>
+                    <label for="filter_soy" class="filter_button">soy (1)</label>
                 </div>
                 <div class="recipe_filters">
                     
@@ -131,20 +130,20 @@
 
             <div class="grid">
                 
-                <div class="main nut gluten" data-cook-time="30" data-serves="2">
+                <div data-tags="main nut gluten" data-cook-time="30" data-serves="2">
                     <h3>Sicilian Stew</h3>
                     <a class="image_link" href="recipes/sicilian-stew.html">
                         <img src="assets/images/recipes/sicilian-stew.jpg" alt="Sicilian Stew">
                     </a>
                     <div class="text">A fantastic dish from southern Italy that the Sicilians are super proud of – and so they should be – it’s a complete joy to eat. Jam-packed with veg, this recipe adds up to two of your 5-a-day, and using wholewheat couscous helps keep you fuller for longer.</div>
                     <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">nut</span><span class="tag">gluten</span>
+                        <span class="tag">main</span><span class="tag">gluten</span><span class="tag">nut</span>
                     </div>
                     <h5>Serves 2 | Takes 30 mins</h5>
                     <a class="more_info_button" href="recipes/sicilian-stew.html">View Recipe</a>
                 </div>
                 
-                <div class="main" data-cook-time="30" data-serves="4">
+                <div data-tags="main" data-cook-time="30" data-serves="4">
                     <h3>Harissa Pasta With Olives & Capers</h3>
                     <a class="image_link" href="recipes/harissa-pasta-with-olives-and-capers.html">
                         <img src="assets/images/recipes/harissa-pasta-with-olives-and-capers.jpg" alt="Harissa Pasta With Olives & Capers">
@@ -157,7 +156,7 @@
                     <a class="more_info_button" href="recipes/harissa-pasta-with-olives-and-capers.html">View Recipe</a>
                 </div>
                 
-                <div class="main brassica" data-cook-time="65" data-serves="4">
+                <div data-tags="main brassica" data-cook-time="65" data-serves="4">
                     <h3>Roasted Aloo Gobi</h3>
                     <a class="image_link" href="recipes/roasted-aloo-gobi.html">
                         <img src="assets/images/recipes/roasted-aloo-gobi.jpg" alt="Roasted Aloo Gobi">
@@ -170,7 +169,7 @@
                     <a class="more_info_button" href="recipes/roasted-aloo-gobi.html">View Recipe</a>
                 </div>
                 
-                <div class="main" data-cook-time="30" data-serves="4">
+                <div data-tags="main" data-cook-time="30" data-serves="4">
                     <h3>Gochujang Pasta</h3>
                     <a class="image_link" href="recipes/gochujang-pasta.html">
                         <img src="assets/images/recipes/gochujang-pasta.jpg" alt="Gochujang Pasta">
@@ -183,7 +182,7 @@
                     <a class="more_info_button" href="recipes/gochujang-pasta.html">View Recipe</a>
                 </div>
                 
-                <div class="main meat" data-cook-time="65" data-serves="4">
+                <div data-tags="main meat" data-cook-time="65" data-serves="4">
                     <h3>Katsu Curry</h3>
                     <a class="image_link" href="recipes/katsu-curry.html">
                         <img src="assets/images/recipes/katsu-curry.jpg" alt="Katsu Curry">
@@ -196,20 +195,20 @@
                     <a class="more_info_button" href="recipes/katsu-curry.html">View Recipe</a>
                 </div>
                 
-                <div class="main meat dairy" data-cook-time="180" data-serves="5">
+                <div data-tags="main meat dairy" data-cook-time="180" data-serves="5">
                     <h3>Steak & Ale Pie</h3>
                     <a class="image_link" href="recipes/steak-and-ale-pie.html">
                         <img src="assets/images/recipes/steak-and-ale-pie.jpg" alt="Steak & Ale Pie">
                     </a>
                     <div class="text">Good meat, good beer and good pastry – it’s clear why this steak and ale pie is a winner.</div>
                     <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">meat</span><span class="tag">dairy</span>
+                        <span class="tag">main</span><span class="tag">dairy</span><span class="tag">meat</span>
                     </div>
                     <h5>Serves 5 | Takes 180 mins</h5>
                     <a class="more_info_button" href="recipes/steak-and-ale-pie.html">View Recipe</a>
                 </div>
                 
-                <div class="main" data-cook-time="75" data-serves="6">
+                <div data-tags="main" data-cook-time="75" data-serves="6">
                     <h3>Mushroom & Tarragon Pithivier</h3>
                     <a class="image_link" href="recipes/mushroom-and-tarragon-pithivier.html">
                         <img src="assets/images/recipes/mushroom-and-tarragon-pithivier.jpg" alt="Mushroom & Tarragon Pithivier">
@@ -222,7 +221,7 @@
                     <a class="more_info_button" href="recipes/mushroom-and-tarragon-pithivier.html">View Recipe</a>
                 </div>
                 
-                <div class="main meat mustard" data-cook-time="165" data-serves="4">
+                <div data-tags="main meat mustard" data-cook-time="165" data-serves="4">
                     <h3>Lemon Chicken Traybake</h3>
                     <a class="image_link" href="recipes/lemon-chicken-traybake.html">
                         <img src="assets/images/recipes/lemon-chicken-traybake.jpg" alt="Lemon Chicken Traybake">
@@ -235,7 +234,7 @@
                     <a class="more_info_button" href="recipes/lemon-chicken-traybake.html">View Recipe</a>
                 </div>
                 
-                <div class="main meat" data-cook-time="50" data-serves="4">
+                <div data-tags="main meat" data-cook-time="50" data-serves="4">
                     <h3>Chicken Madras</h3>
                     <a class="image_link" href="recipes/chicken-madras.html">
                         <img src="assets/images/recipes/chicken-madras.jpg" alt="Chicken Madras">
@@ -248,7 +247,7 @@
                     <a class="more_info_button" href="recipes/chicken-madras.html">View Recipe</a>
                 </div>
                 
-                <div class="side" data-cook-time="45" data-serves="4">
+                <div data-tags="side" data-cook-time="45" data-serves="4">
                     <h3>Fiesta Red Potatoes</h3>
                     <a class="image_link" href="recipes/fiesta-red-potatoes.html">
                         <img src="assets/images/recipes/fiesta-red-potatoes.jpg" alt="Fiesta Red Potatoes">
@@ -261,20 +260,20 @@
                     <a class="more_info_button" href="recipes/fiesta-red-potatoes.html">View Recipe</a>
                 </div>
                 
-                <div class="main meat dairy" data-cook-time="60" data-serves="6">
+                <div data-tags="main meat dairy" data-cook-time="60" data-serves="6">
                     <h3>Lamb Biryani</h3>
                     <a class="image_link" href="recipes/lamb-biryani.html">
                         <img src="assets/images/recipes/lamb-biryani.jpg" alt="Lamb Biryani">
                     </a>
                     <div class="text">Make this classic Indian dish for deliciously moist lamb with paneer, rice and spinach, all spiced to perfection. Great for casual entertaining</div>
                     <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">meat</span><span class="tag">dairy</span>
+                        <span class="tag">main</span><span class="tag">dairy</span><span class="tag">meat</span>
                     </div>
                     <h5>Serves 6 | Takes 60 mins</h5>
                     <a class="more_info_button" href="recipes/lamb-biryani.html">View Recipe</a>
                 </div>
                 
-                <div class="main peanut" data-cook-time="60" data-serves="4">
+                <div data-tags="main peanut" data-cook-time="60" data-serves="4">
                     <h3>Satay Sweet Potato Curry</h3>
                     <a class="image_link" href="recipes/satay-sweet-potato-curry.html">
                         <img src="assets/images/recipes/satay-sweet-potato-curry.jpg" alt="Satay Sweet Potato Curry">
@@ -287,33 +286,33 @@
                     <a class="more_info_button" href="recipes/satay-sweet-potato-curry.html">View Recipe</a>
                 </div>
                 
-                <div class="main meat nut dairy" data-cook-time="40" data-serves="4">
+                <div data-tags="main meat nut dairy" data-cook-time="40" data-serves="4">
                     <h3>Pistachio Lamb Koftas With Apricot Relish</h3>
                     <a class="image_link" href="recipes/pistachio-lamb-koftas-with-apricot-relish.html">
                         <img src="assets/images/recipes/pistachio-lamb-koftas-with-apricot-relish.jpg" alt="Pistachio Lamb Koftas With Apricot Relish">
                     </a>
                     <div class="text">These budget-friendly, Middle Eastern-inspired lamb meatballs make a simple yet tasty supper, served with fruity chutney and crisp wholemeal pittas</div>
                     <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">meat</span><span class="tag">nut</span><span class="tag">dairy</span>
+                        <span class="tag">main</span><span class="tag">dairy</span><span class="tag">meat</span><span class="tag">nut</span>
                     </div>
                     <h5>Serves 4 | Takes 40 mins</h5>
                     <a class="more_info_button" href="recipes/pistachio-lamb-koftas-with-apricot-relish.html">View Recipe</a>
                 </div>
                 
-                <div class="main meat egg dairy nut" data-cook-time="17" data-serves="2">
+                <div data-tags="main meat egg dairy nut" data-cook-time="17" data-serves="2">
                     <h3>Chicken & Pistachio Salad</h3>
                     <a class="image_link" href="recipes/chicken-and-pistachio-salad.html">
                         <img src="assets/images/recipes/chicken-and-pistachio-salad.jpg" alt="Chicken & Pistachio Salad">
                     </a>
                     <div class="text">Toss chicken breast, boiled eggs, Little Gem, sundried tomatoes and toasted nuts in a zesty dressing for a quick salad that's rich in calcium, folate and iron</div>
                     <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">meat</span><span class="tag">egg</span><span class="tag">dairy</span><span class="tag">nut</span>
+                        <span class="tag">main</span><span class="tag">dairy</span><span class="tag">egg</span><span class="tag">meat</span><span class="tag">nut</span>
                     </div>
                     <h5>Serves 2 | Takes 17 mins</h5>
                     <a class="more_info_button" href="recipes/chicken-and-pistachio-salad.html">View Recipe</a>
                 </div>
                 
-                <div class="main" data-cook-time="35" data-serves="4">
+                <div data-tags="main" data-cook-time="35" data-serves="4">
                     <h3>Gnocchi Alla Norma</h3>
                     <a class="image_link" href="recipes/gnocchi-alla-norma.html">
                         <img src="assets/images/recipes/gnocchi-alla-norma.jpg" alt="Gnocchi Alla Norma">
@@ -326,7 +325,7 @@
                     <a class="more_info_button" href="recipes/gnocchi-alla-norma.html">View Recipe</a>
                 </div>
                 
-                <div class="main gluten" data-cook-time="55" data-serves="4">
+                <div data-tags="main gluten" data-cook-time="55" data-serves="4">
                     <h3>Mushroom & Leek Pie</h3>
                     <a class="image_link" href="recipes/mushroom-and-leek-pie.html">
                         <img src="assets/images/recipes/mushroom-and-leek-pie.jpg" alt="Mushroom & Leek Pie">
@@ -339,20 +338,20 @@
                     <a class="more_info_button" href="recipes/mushroom-and-leek-pie.html">View Recipe</a>
                 </div>
                 
-                <div class="main meat egg dairy mustard gluten" data-cook-time="80" data-serves="6">
+                <div data-tags="main meat egg dairy mustard gluten" data-cook-time="80" data-serves="6">
                     <h3>Spring Chicken Pot Pie</h3>
                     <a class="image_link" href="recipes/spring-chicken-pot-pie.html">
                         <img src="assets/images/recipes/spring-chicken-pot-pie.jpg" alt="Spring Chicken Pot Pie">
                     </a>
                     <div class="text">Celebrate Easter with this spring chicken pot pie. It's kinder on your wallet than the traditional roast lamb, and equally enjoyable</div>
                     <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">meat</span><span class="tag">egg</span><span class="tag">dairy</span><span class="tag">mustard</span><span class="tag">gluten</span>
+                        <span class="tag">main</span><span class="tag">dairy</span><span class="tag">egg</span><span class="tag">gluten</span><span class="tag">meat</span><span class="tag">mustard</span>
                     </div>
                     <h5>Serves 6 | Takes 80 mins</h5>
                     <a class="more_info_button" href="recipes/spring-chicken-pot-pie.html">View Recipe</a>
                 </div>
                 
-                <div class="main" data-cook-time="95" data-serves="4">
+                <div data-tags="main" data-cook-time="95" data-serves="4">
                     <h3>Parsnip Gnocchi</h3>
                     <a class="image_link" href="recipes/parsnip-gnocchi.html">
                         <img src="assets/images/recipes/parsnip-gnocchi.jpg" alt="Parsnip Gnocchi">
@@ -365,33 +364,33 @@
                     <a class="more_info_button" href="recipes/parsnip-gnocchi.html">View Recipe</a>
                 </div>
                 
-                <div class="main meat dairy egg" data-cook-time="150" data-serves="6">
+                <div data-tags="main meat dairy egg" data-cook-time="150" data-serves="6">
                     <h3>Chicken & Chorizo Pie</h3>
                     <a class="image_link" href="recipes/chicken-and-chorizo-pie.html">
                         <img src="assets/images/recipes/chicken-and-chorizo-pie.jpg" alt="Chicken & Chorizo Pie">
                     </a>
                     <div class="text">A wholesome pie perfect for weekends. Flavour your Spanish sausage and chicken with sherry, parsley and a hint of cream</div>
                     <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">meat</span><span class="tag">dairy</span><span class="tag">egg</span>
+                        <span class="tag">main</span><span class="tag">dairy</span><span class="tag">egg</span><span class="tag">meat</span>
                     </div>
                     <h5>Serves 6 | Takes 150 mins</h5>
                     <a class="more_info_button" href="recipes/chicken-and-chorizo-pie.html">View Recipe</a>
                 </div>
                 
-                <div class="main meat brassica" data-cook-time="20" data-serves="4">
+                <div data-tags="main meat brassica" data-cook-time="20" data-serves="4">
                     <h3>Sausage Kale Gnocchi One Pot</h3>
                     <a class="image_link" href="recipes/sausage-kale-gnocchi-one-pot.html">
                         <img src="assets/images/recipes/sausage-kale-gnocchi-one-pot.jpg" alt="Sausage Kale Gnocchi One Pot">
                     </a>
                     <div class="text">Plate up this delicious one-pot of sausage, kale and gnocchi in just 20 minutes, with just five minutes prep.</div>
                     <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">meat</span><span class="tag">brassica</span>
+                        <span class="tag">main</span><span class="tag">brassica</span><span class="tag">meat</span>
                     </div>
                     <h5>Serves 4 | Takes 20 mins</h5>
                     <a class="more_info_button" href="recipes/sausage-kale-gnocchi-one-pot.html">View Recipe</a>
                 </div>
                 
-                <div class="main" data-cook-time="45" data-serves="4">
+                <div data-tags="main" data-cook-time="45" data-serves="4">
                     <h3>Courgette Risotto</h3>
                     <a class="image_link" href="recipes/courgette-risotto.html">
                         <img src="assets/images/recipes/courgette-risotto.jpg" alt="Courgette Risotto">
@@ -404,7 +403,7 @@
                     <a class="more_info_button" href="recipes/courgette-risotto.html">View Recipe</a>
                 </div>
                 
-                <div class="dessert egg" data-cook-time="250" data-serves="4">
+                <div data-tags="dessert egg" data-cook-time="250" data-serves="4">
                     <h3>Chocolate Mousse</h3>
                     <a class="image_link" href="recipes/chocolate-mousse.html">
                         <img src="assets/images/recipes/chocolate-mousse.jpg" alt="Chocolate Mousse">
@@ -417,18 +416,19 @@
                     <a class="more_info_button" href="recipes/chocolate-mousse.html">View Recipe</a>
                 </div>
                 
-                <div class="main meat soy sesame" data-cook-time="480" data-serves="6">
+                <div data-tags="main meat soy sesame" data-cook-time="480" data-serves="6">
                     <h3>Slow Cooker Korean Beef</h3>
                     <a class="image_link" href="recipes/slow-cooker-korean-beef.html">
                         <img src="assets/images/recipes/slow-cooker-korean-beef.jpg" alt="Slow Cooker Korean Beef">
                     </a>
                     <div class="text">Packed with flavour and meltingly tender beef, try this classic comfort food with steamed rice and greens.</div>
                     <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">meat</span><span class="tag">soy</span><span class="tag">sesame</span>
+                        <span class="tag">main</span><span class="tag">meat</span><span class="tag">sesame</span><span class="tag">soy</span>
                     </div>
                     <h5>Serves 6 | Takes 480 mins</h5>
                     <a class="more_info_button" href="recipes/slow-cooker-korean-beef.html">View Recipe</a>
                 </div>
+                <div note="placeholder to prevent last item expanding into multiple slots"></div>
                 <div note="placeholder to prevent last item expanding into multiple slots"></div>
             </div>
             <hr class="section_end">
