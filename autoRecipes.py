@@ -101,7 +101,7 @@ def parseRecipeMarkdown(filePath: str) -> Recipe:
             # Parsing method
             elif currentSection == "## Method":
                 # strip step numbers or - from the start of the line
-                step: str = line.strip().lstrip("-").lstrip("0123456789.").strip()
+                step: str = line.strip().lstrip("-0123456789.").strip()
                 method.append(step)
 
     # check we found all the expected sections and meta fields
@@ -128,14 +128,14 @@ def parseRecipeMarkdown(filePath: str) -> Recipe:
 # is a class used in recipes.html to layout the recipe cards
 def generateRecipeCardGrid(recipes: list[Recipe]) -> str:
     recipeCardTemplate: str = """
-<div class="{classes}" data-cook-time="{cook_time}" data-serves="{serves}">
+<div data-tags="{dataTags}" data-cook-time="{cook_time}" data-serves="{serves}">
     <h3>{name}</h3>
     <a class="image_link" href="recipes/{filename}.html">
         <img src="assets/images/recipes/{thumbnail}.jpg" alt="{name}">
     </a>
     <div class="text">{description}</div>
     <div class="recipe_tags">
-        {tags}
+        {visualTags}
     </div>
     <h5>Serves {serves} | Takes {cook_time} mins</h5>
     <a class="more_info_button" href="recipes/{filename}.html">View Recipe</a>
@@ -147,22 +147,23 @@ def generateRecipeCardGrid(recipes: list[Recipe]) -> str:
     for recipe in recipes:
         # concatenate the type and dietary list lower case class names
         # These will be used to toggle visibility
-        classes: str = recipe.type
+        dataTags: str = recipe.type
         if recipe.dietary:
-            classes += " " + " ".join(recipe.dietary)
-        classes = classes.lower()
-        tags: str = tagSpanTemplate.format(tag=recipe.type)
-        for dietary in recipe.dietary:
-            tags += tagSpanTemplate.format(tag=dietary)
-        html += recipeCardTemplate.format(classes=classes, name=recipe.name, filename=recipe.filename, thumbnail=recipe.filename, description=recipe.description, tags=tags, serves=recipe.serves, cook_time=recipe.cook_time)
+            dataTags += " " + " ".join(recipe.dietary)
+        dataTags = dataTags.lower()
+        visualTags: str = tagSpanTemplate.format(tag=recipe.type)
+        dietaryTags: list[str] = recipe.dietary
+        dietaryTags.sort()
+        for dietary in dietaryTags:
+            visualTags += tagSpanTemplate.format(tag=dietary)
+        html += recipeCardTemplate.format(dataTags=dataTags, name=recipe.name, filename=recipe.filename, thumbnail=recipe.filename, description=recipe.description, visualTags=visualTags, serves=recipe.serves, cook_time=recipe.cook_time)
 
-    paddingDivsRequired = 3 - (len(recipes) % 3)
-    html += '<div note="placeholder to prevent last item expanding into multiple slots"></div>\n' * paddingDivsRequired
     return html
 
 
 def generateTypeFilterControls(recipes: list[Recipe]) -> str:
-    types: set[str] = set(recipe.type for recipe in recipes)
+    types: list[str] = list(set(recipe.type for recipe in recipes))
+    types.sort()
     filterTemplate: str = """
 <input type="checkbox" id="filter_{type}" class="filter_checkbox" data-type="{type}" hidden>
 <label for="filter_{type}" class="filter_button">{type} ({count})</label>
@@ -175,7 +176,8 @@ def generateTypeFilterControls(recipes: list[Recipe]) -> str:
 
 
 def generateDietaryFilterControls(recipes: list[Recipe]) -> str:
-    dietaryOptions: set[str] = set(dietary for recipe in recipes for dietary in recipe.dietary)
+    dietaryOptions: list[str] = list(set(dietary for recipe in recipes for dietary in recipe.dietary))
+    dietaryOptions.sort()
     filterTemplate: str = """
 <input type="checkbox" id="filter_{dietary}" class="filter_checkbox" data-dietary="{dietary}" hidden>
 <label for="filter_{dietary}" class="filter_button">{dietary} ({count})</label>
