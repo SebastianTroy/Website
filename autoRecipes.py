@@ -144,6 +144,7 @@ def generateRecipeCardGrid(recipes: list[Recipe]) -> str:
     tagSpanTemplate: str = '<span class="tag">{tag}</span>'
 
     html: str = ""
+    recipes.sort(key=lambda r: r.name) # Sort recipes alphabetically by name
     for recipe in recipes:
         # concatenate the type and dietary list lower case class names
         # These will be used to toggle visibility
@@ -165,15 +166,15 @@ def generateTypeFilterControls(recipes: list[Recipe]) -> str:
     types: list[str] = list(set(recipe.type for recipe in recipes))
     types.sort()
     filterTemplate: str = """
-<input type="checkbox" id="filter_{type}" class="filter_checkbox" data-type="{type}" hidden>
-<label for="filter_{type}" class="filter_button">{type} ({count})</label>
+<input type="radio" name="type_filter" id="filter_{type}" class="type_radio" data-type="{type}" hidden {checked}>
+<label for="filter_{type}" class="type_button">{type} ({count})</label>
 """
     html: str = ""
+    html += filterTemplate.format(type="all", count=len(recipes), checked="checked")
     for type in types:
         count = sum(type == recipe.type for recipe in recipes)
-        html += filterTemplate.format(type=type, count=count)
+        html += filterTemplate.format(type=type, count=count, checked="")
     return html
-
 
 def generateDietaryFilterControls(recipes: list[Recipe]) -> str:
     dietaryOptions: list[str] = list(set(dietary for recipe in recipes for dietary in recipe.dietary))
@@ -191,49 +192,25 @@ def generateDietaryFilterControls(recipes: list[Recipe]) -> str:
 
 def generateCookTimeFilterControls(recipes: list[Recipe]) -> str:
     maxCookTime: int = max(recipe.cook_time for recipe in recipes)
-    slots = []
-    slot_size = 30
-    for start in range(0, maxCookTime + 1, slot_size):
-        end = min(start + slot_size - 1, maxCookTime)
-        slots.append((start, end))
     filterTemplate: str = """
-<input type="checkbox" id="cooktime_{min}_{max}" class="filter_checkbox" data-cook-time-min="{min}" data-cook-time-max="{max}" hidden>
-<label for="cooktime_{min}_{max}" class="filter_button">{label}</label>
+<div class="slider_container">
+    <label for="cooktime_slider" class="text slider_label">Takes up to <span id="cooktime_count">{max}</span> (mins)</label>
+    <input type="range" id="cooktime_slider" class="filter_slider" min="0" max="{max}" step="15" value="{max}">
+</div>
 """
-    html = ''
-    for minval, maxval in slots:
-        count = sum(minval <= r.cook_time <= maxval for r in recipes)
-        if count == 0:
-            continue
-        if minval == maxval:
-            label = f"{minval} min ({count})"
-        else:
-            label = f"{minval}-{maxval} min ({count})"
-        html += filterTemplate.format(min=minval, max=maxval, label=label)
+    html = filterTemplate.format(max=maxCookTime)
     return html
 
 
 def generateServesFilterControls(recipes: list[Recipe]) -> str:
     maxServes: int = max(recipe.serves for recipe in recipes)
-    slots = []
-    slot_size = 2
-    for start in range(1, maxServes + 1, slot_size):
-        end = min(start + slot_size - 1, maxServes)
-        slots.append((start, end))
     filterTemplate: str = """
-<input type="checkbox" id="serves_{min}_{max}" class="filter_checkbox" data-serves-min="{min}" data-serves-max="{max}" hidden>
-<label for="serves_{min}_{max}" class="filter_button">{label}</label>
+<div class="slider_container">
+    <label for="serves_slider" class="text slider_label">Serves at least <span id="serves_count">1</span></label>
+    <input type="range" id="serves_slider" class="filter_slider" min="1" max="{max}" step="1" value="1">
+</div>
 """
-    html = ''
-    for minval, maxval in slots:
-        count = sum(minval <= r.serves <= maxval for r in recipes)
-        if count == 0:
-            continue
-        if minval == maxval:
-            label = f"Serves {minval} ({count})"
-        else:
-            label = f"Serves {minval}-{maxval} ({count})"
-        html += filterTemplate.format(min=minval, max=maxval, label=label)
+    html = filterTemplate.format(max=maxServes)
     return html
 
 
@@ -258,11 +235,11 @@ def createRecipeIndexPage(recipes: list[Recipe]):
     dietaryFiltersHtml = applyIndentation(dietaryFiltersHtml, dietaryFilterSentinel)
 
     cookTimeFilterControls: str = generateCookTimeFilterControls(recipes)
-    cookTimeFilterSentinel: str = next(line for line in template.splitlines() if "<!-- COOKTIME SLIDERS SENTINEL -->" in line)
+    cookTimeFilterSentinel: str = next(line for line in template.splitlines() if "<!-- COOKTIME FILTERS SENTINEL -->" in line)
     cookTimeFilterControls = applyIndentation(cookTimeFilterControls, cookTimeFilterSentinel)
 
     servesFilterControls: str = generateServesFilterControls(recipes)
-    servesFilterSentinel: str = next(line for line in template.splitlines() if "<!-- SERVINGS SLIDERS SENTINEL -->" in line)
+    servesFilterSentinel: str = next(line for line in template.splitlines() if "<!-- SERVINGS FILTERS SENTINEL -->" in line)
     servesFilterControls = applyIndentation(servesFilterControls, servesFilterSentinel)
 
     recipeCardsHtml: str = generateRecipeCardGrid(recipes)

@@ -48,13 +48,14 @@
     text-transform: uppercase;
     background-color: var(--accent-color);
     color: var(--accent-text-color);
-    border: 2px solid var(--accent-color);
+    border: 2px solid var(--text-mute-color);
     border-radius: 16px;
     padding: 7px 22px;
     margin: 2px 4px;
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s;
     box-sizing: border-box;
+    user-select: none;
 }
 
 .filter_button:hover,
@@ -65,10 +66,18 @@
 .filter_checkbox:checked + .filter_button {
     background-color: var(--alt-background-color);
     color: var(--text-mute-color);
-    border-color: var(--text-mute-color);
+    border-color: var(--accent-color);
 }
 
-/* Radio button for sorting recipes */
+/* filter_radio and filter_button want the exact opposite colouration */
+
+.text {
+    /* For the spans inside the slider labels */
+    display: inline;
+}
+
+/* Radio button for sorting/filtering recipes */
+.type_button,
 .sorting_button {
     display: inline-block;
     font-family: "Lato", arial, sans-serif;
@@ -76,8 +85,8 @@
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    background-color: var(--accent-color);
-    color: var(--accent-text-color);
+    background-color: var(--alt-background-color);
+    color: var(--text-mute-color);
     border: 2px solid var(--accent-color);
     border-radius: 16px;
     padding: 7px 22px;
@@ -85,11 +94,132 @@
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s;
     box-sizing: border-box;
+    user-select: none;
 }
+
+.type_button:hover,
+.type_radio:checked + .type_button:hover,
+.sorting_button:hover,
+.sorting_radio:checked + .sorting_button:hover {
+    border-color: color-mix(in srgb, var(--accent-color) 60%, var(--text-mute-color) 40%);
+}
+
+.type_radio:checked + .type_button,
 .sorting_radio:checked + .sorting_button {
-    background-color: var(--alt-background-color);
-    color: var(--text-mute-color);
+    background-color: var(--accent-color);
+    color: var(--accent-text-color);
     border-color: var(--text-mute-color);
+}
+
+/* Now the sliders, make them thick and remove the handle, overlay the current value on them */
+
+.slider_container {
+    position: relative;
+    display: inline-block;
+    width: 150px; /* match your slider width */
+    height: 38px; /* match your slider height */
+}
+
+.slider_label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none; /* allows slider to be used */
+    font-weight: bold;
+    font-size: 18px;
+    user-select: none;
+    white-space: pre; /* preserves spaces */
+}
+
+.filter_slider {
+    appearance: none;
+    width: 100%;
+    height: 100%;
+    background: none;
+    border: 2px solid var(--text-mute-color);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    /* Remove default outline */
+    outline: none;
+    /* Remove default background */
+    background-color: transparent;
+    /* For Firefox */
+    overflow: hidden;
+}
+
+/* Webkit (Chrome, Safari, Edge) */
+.filter_slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 0; /* Hide the knob */
+    height: 38px;
+    box-shadow: none;
+    background: transparent;
+    border: none;
+}
+
+.filter_slider::-webkit-slider-runnable-track {
+    height: 38px;
+    border-radius: 16px;
+    background: linear-gradient(
+        to right,
+        var(--accent-color) 0%,
+        var(--accent-color) calc(var(--value, 0) * 1%),
+        var(--alt-background-color) calc(var(--value, 0) * 1%),
+        var(--alt-background-color) 100%
+    );
+}
+
+/* Firefox */
+.filter_slider::-moz-range-thumb {
+    width: 0;
+    height: 38px;
+    background: transparent;
+    border: none;
+}
+
+.filter_slider::-moz-range-track {
+    height: 38px;
+    border-radius: 16px;
+    background: linear-gradient(
+        to right,
+        var(--accent-color) 0%,
+        var(--accent-color) calc(var(--value, 0) * 1%),
+        var(--alt-background-color) calc(var(--value, 0) * 1%),
+        var(--alt-background-color) 100%
+    );
+}
+
+/* IE/Edge */
+.filter_slider::-ms-thumb {
+    width: 0;
+    height: 38px;
+    background: transparent;
+    border: none;
+}
+
+.filter_slider::-ms-fill-lower {
+    background: var(--accent-color);
+    border-radius: 16px 0 0 16px;
+}
+.filter_slider::-ms-fill-upper {
+    background: var(--alt-background-color);
+    border-radius: 0 16px 16px 0;
+}
+
+.filter_slider:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* Hide the focus outline for mouse users, but keep for keyboard users */
+.filter_slider:focus:not(:focus-visible) {
+    outline: none;
 }
 
 .hidden {
@@ -102,7 +232,7 @@
     margin: auto;
 }
 
-/* Firther limit image width to not take too much vertical space */
+/* Further limit image width to not take too much vertical space */
 .preamble img {
     max-width: 400px;
     max-height: 400px;

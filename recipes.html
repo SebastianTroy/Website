@@ -40,14 +40,17 @@
             <div class="js_enabled_only">
                 <div class="recipe_filters">
                     
-                    <input type="checkbox" id="filter_dessert" class="filter_checkbox" data-type="dessert" hidden>
-                    <label for="filter_dessert" class="filter_button">dessert (1)</label>
+                    <input type="radio" name="type_filter" id="filter_all" class="type_radio" data-type="all" hidden checked>
+                    <label for="filter_all" class="type_button">all (23)</label>
                     
-                    <input type="checkbox" id="filter_main" class="filter_checkbox" data-type="main" hidden>
-                    <label for="filter_main" class="filter_button">main (21)</label>
+                    <input type="radio" name="type_filter" id="filter_dessert" class="type_radio" data-type="dessert" hidden >
+                    <label for="filter_dessert" class="type_button">dessert (1)</label>
                     
-                    <input type="checkbox" id="filter_side" class="filter_checkbox" data-type="side" hidden>
-                    <label for="filter_side" class="filter_button">side (1)</label>
+                    <input type="radio" name="type_filter" id="filter_main" class="type_radio" data-type="main" hidden >
+                    <label for="filter_main" class="type_button">main (21)</label>
+                    
+                    <input type="radio" name="type_filter" id="filter_side" class="type_radio" data-type="side" hidden >
+                    <label for="filter_side" class="type_button">side (1)</label>
                 </div>
                 <div class="recipe_filters">
                     
@@ -81,222 +84,43 @@
                     <input type="checkbox" id="filter_soy" class="filter_checkbox" data-dietary="soy" hidden>
                     <label for="filter_soy" class="filter_button">soy (1)</label>
                 </div>
-                <div class="recipe_filters">
+                <div class="recipe_filters grid">
                     
-                    <input type="checkbox" id="cooktime_0_29" class="filter_checkbox" data-cook-time-min="0" data-cook-time-max="29" hidden>
-                    <label for="cooktime_0_29" class="filter_button">0-29 min (2)</label>
+                    <div class="slider_container">
+                        <label for="cooktime_slider" class="text slider_label">Takes up to <span id="cooktime_count">480</span> (mins)</label>
+                        <input type="range" id="cooktime_slider" class="filter_slider" min="0" max="480" step="15" value="480">
+                    </div>
                     
-                    <input type="checkbox" id="cooktime_30_59" class="filter_checkbox" data-cook-time-min="30" data-cook-time-max="59" hidden>
-                    <label for="cooktime_30_59" class="filter_button">30-59 min (9)</label>
-                    
-                    <input type="checkbox" id="cooktime_60_89" class="filter_checkbox" data-cook-time-min="60" data-cook-time-max="89" hidden>
-                    <label for="cooktime_60_89" class="filter_button">60-89 min (6)</label>
-                    
-                    <input type="checkbox" id="cooktime_90_119" class="filter_checkbox" data-cook-time-min="90" data-cook-time-max="119" hidden>
-                    <label for="cooktime_90_119" class="filter_button">90-119 min (1)</label>
-                    
-                    <input type="checkbox" id="cooktime_150_179" class="filter_checkbox" data-cook-time-min="150" data-cook-time-max="179" hidden>
-                    <label for="cooktime_150_179" class="filter_button">150-179 min (2)</label>
-                    
-                    <input type="checkbox" id="cooktime_180_209" class="filter_checkbox" data-cook-time-min="180" data-cook-time-max="209" hidden>
-                    <label for="cooktime_180_209" class="filter_button">180-209 min (1)</label>
-                    
-                    <input type="checkbox" id="cooktime_240_269" class="filter_checkbox" data-cook-time-min="240" data-cook-time-max="269" hidden>
-                    <label for="cooktime_240_269" class="filter_button">240-269 min (1)</label>
-                    
-                    <input type="checkbox" id="cooktime_480_480" class="filter_checkbox" data-cook-time-min="480" data-cook-time-max="480" hidden>
-                    <label for="cooktime_480_480" class="filter_button">480 min (1)</label>
-                </div>
-                <div class="recipe_filters">
-                    
-                    <input type="checkbox" id="serves_1_2" class="filter_checkbox" data-serves-min="1" data-serves-max="2" hidden>
-                    <label for="serves_1_2" class="filter_button">Serves 1-2 (2)</label>
-                    
-                    <input type="checkbox" id="serves_3_4" class="filter_checkbox" data-serves-min="3" data-serves-max="4" hidden>
-                    <label for="serves_3_4" class="filter_button">Serves 3-4 (15)</label>
-                    
-                    <input type="checkbox" id="serves_5_6" class="filter_checkbox" data-serves-min="5" data-serves-max="6" hidden>
-                    <label for="serves_5_6" class="filter_button">Serves 5-6 (6)</label>
+                    <div class="slider_container">
+                        <label for="serves_slider" class="text slider_label">Serves at least <span id="serves_count">1</span></label>
+                        <input type="range" id="serves_slider" class="filter_slider" min="1" max="6" step="1" value="1">
+                    </div>
                 </div>
                 <div class="sorting_buttons">
-                    <input type="radio" name="sort" id="sort_name" class="sorting_radio" data-sort-by="name" hidden>
-                    <label for="sort_name" class="sorting_button">Sort by Name</label>
+                    <input type="radio" name="sort" id="sort_name" class="sorting_radio" data-sort-by="name" hidden checked>
+                    <label for="sort_name" class="sorting_button">Name <span class="sorting_arrow">▲</span></label>
                     <input type="radio" name="sort" id="sort_cook" class="sorting_radio" data-sort-by="cook-time" hidden>
-                    <label for="sort_cook" class="sorting_button">Sort by Cook Time</label>
+                    <label for="sort_cook" class="sorting_button">Cook Time <span class="sorting_arrow">▲</span></label>
                     <input type="radio" name="sort" id="sort_serves" class="sorting_radio" data-sort-by="serves" hidden>
-                    <label for="sort_serves" class="sorting_button">Sort by Serves</label>
+                    <label for="sort_serves" class="sorting_button">Serves <span class="sorting_arrow">▲</span></label>
+                    <input type="radio" name="sort" id="sort_random" class="sorting_radio" data-sort-by="random" hidden>
+                    <label for="sort_random" class="sorting_button">Random</label>
                 </div>
             </div>
 
-            <div class="grid">
+            <div class="grid cards_container">
                 
-                <div data-tags="main nut gluten" data-cook-time="30" data-serves="2">
-                    <h3>Sicilian Stew</h3>
-                    <a class="image_link" href="recipes/sicilian-stew.html">
-                        <img src="assets/images/recipes/sicilian-stew.jpg" alt="Sicilian Stew">
+                <div data-tags="main meat dairy egg" data-cook-time="150" data-serves="6">
+                    <h3>Chicken & Chorizo Pie</h3>
+                    <a class="image_link" href="recipes/chicken-and-chorizo-pie.html">
+                        <img src="assets/images/recipes/chicken-and-chorizo-pie.jpg" alt="Chicken & Chorizo Pie">
                     </a>
-                    <div class="text">A fantastic dish from southern Italy that the Sicilians are super proud of – and so they should be – it’s a complete joy to eat. Jam-packed with veg, this recipe adds up to two of your 5-a-day, and using wholewheat couscous helps keep you fuller for longer.</div>
+                    <div class="text">A wholesome pie perfect for weekends. Flavour your Spanish sausage and chicken with sherry, parsley and a hint of cream</div>
                     <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">gluten</span><span class="tag">nut</span>
+                        <span class="tag">main</span><span class="tag">dairy</span><span class="tag">egg</span><span class="tag">meat</span>
                     </div>
-                    <h5>Serves 2 | Takes 30 mins</h5>
-                    <a class="more_info_button" href="recipes/sicilian-stew.html">View Recipe</a>
-                </div>
-                
-                <div data-tags="main" data-cook-time="30" data-serves="4">
-                    <h3>Harissa Pasta With Olives & Capers</h3>
-                    <a class="image_link" href="recipes/harissa-pasta-with-olives-and-capers.html">
-                        <img src="assets/images/recipes/harissa-pasta-with-olives-and-capers.jpg" alt="Harissa Pasta With Olives & Capers">
-                    </a>
-                    <div class="text">A quick, vibrant pasta dish with a spicy tomato and harissa sauce, briny green olives, and capers. Finished with fresh herbs and lemon, this weeknight-friendly meal is packed with North African flavors.</div>
-                    <div class="recipe_tags">
-                        <span class="tag">main</span>
-                    </div>
-                    <h5>Serves 4 | Takes 30 mins</h5>
-                    <a class="more_info_button" href="recipes/harissa-pasta-with-olives-and-capers.html">View Recipe</a>
-                </div>
-                
-                <div data-tags="main brassica" data-cook-time="65" data-serves="4">
-                    <h3>Roasted Aloo Gobi</h3>
-                    <a class="image_link" href="recipes/roasted-aloo-gobi.html">
-                        <img src="assets/images/recipes/roasted-aloo-gobi.jpg" alt="Roasted Aloo Gobi">
-                    </a>
-                    <div class="text">This extra special vegan curry uses roasted cauliflower and potatoes to bring out their flavour. You can also serve as a side to meat curries</div>
-                    <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">brassica</span>
-                    </div>
-                    <h5>Serves 4 | Takes 65 mins</h5>
-                    <a class="more_info_button" href="recipes/roasted-aloo-gobi.html">View Recipe</a>
-                </div>
-                
-                <div data-tags="main" data-cook-time="30" data-serves="4">
-                    <h3>Gochujang Pasta</h3>
-                    <a class="image_link" href="recipes/gochujang-pasta.html">
-                        <img src="assets/images/recipes/gochujang-pasta.jpg" alt="Gochujang Pasta">
-                    </a>
-                    <div class="text">This vegan pasta dish is so easy to make but is deliciously spicy and comfortingly creamy. Feel free to swap the peas for shredded greens – or leave them out completely.</div>
-                    <div class="recipe_tags">
-                        <span class="tag">main</span>
-                    </div>
-                    <h5>Serves 4 | Takes 30 mins</h5>
-                    <a class="more_info_button" href="recipes/gochujang-pasta.html">View Recipe</a>
-                </div>
-                
-                <div data-tags="main meat" data-cook-time="65" data-serves="4">
-                    <h3>Katsu Curry</h3>
-                    <a class="image_link" href="recipes/katsu-curry.html">
-                        <img src="assets/images/recipes/katsu-curry.jpg" alt="Katsu Curry">
-                    </a>
-                    <div class="text">Make our easy katsu curry with options for chicken or tofu, and adapt for vegetarian, vegan and gluten-free diets. Crispy cutlets, rich curry sauce, and fresh toppings make this a Japanese classic</div>
-                    <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">meat</span>
-                    </div>
-                    <h5>Serves 4 | Takes 65 mins</h5>
-                    <a class="more_info_button" href="recipes/katsu-curry.html">View Recipe</a>
-                </div>
-                
-                <div data-tags="main meat dairy" data-cook-time="180" data-serves="5">
-                    <h3>Steak & Ale Pie</h3>
-                    <a class="image_link" href="recipes/steak-and-ale-pie.html">
-                        <img src="assets/images/recipes/steak-and-ale-pie.jpg" alt="Steak & Ale Pie">
-                    </a>
-                    <div class="text">Good meat, good beer and good pastry – it’s clear why this steak and ale pie is a winner.</div>
-                    <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">dairy</span><span class="tag">meat</span>
-                    </div>
-                    <h5>Serves 5 | Takes 180 mins</h5>
-                    <a class="more_info_button" href="recipes/steak-and-ale-pie.html">View Recipe</a>
-                </div>
-                
-                <div data-tags="main" data-cook-time="75" data-serves="6">
-                    <h3>Mushroom & Tarragon Pithivier</h3>
-                    <a class="image_link" href="recipes/mushroom-and-tarragon-pithivier.html">
-                        <img src="assets/images/recipes/mushroom-and-tarragon-pithivier.jpg" alt="Mushroom & Tarragon Pithivier">
-                    </a>
-                    <div class="text">These rich, earthy puff pastry parcels pack a real punch. This rich, aniseedy pie needs only a leafy salad alongside.</div>
-                    <div class="recipe_tags">
-                        <span class="tag">main</span>
-                    </div>
-                    <h5>Serves 6 | Takes 75 mins</h5>
-                    <a class="more_info_button" href="recipes/mushroom-and-tarragon-pithivier.html">View Recipe</a>
-                </div>
-                
-                <div data-tags="main meat mustard" data-cook-time="165" data-serves="4">
-                    <h3>Lemon Chicken Traybake</h3>
-                    <a class="image_link" href="recipes/lemon-chicken-traybake.html">
-                        <img src="assets/images/recipes/lemon-chicken-traybake.jpg" alt="Lemon Chicken Traybake">
-                    </a>
-                    <div class="text">This tasty lemon chicken tray bake is super easy – all the flavour comes from the delectable honey and mustard marinade.</div>
-                    <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">meat</span><span class="tag">mustard</span>
-                    </div>
-                    <h5>Serves 4 | Takes 165 mins</h5>
-                    <a class="more_info_button" href="recipes/lemon-chicken-traybake.html">View Recipe</a>
-                </div>
-                
-                <div data-tags="main meat" data-cook-time="50" data-serves="4">
-                    <h3>Chicken Madras</h3>
-                    <a class="image_link" href="recipes/chicken-madras.html">
-                        <img src="assets/images/recipes/chicken-madras.jpg" alt="Chicken Madras">
-                    </a>
-                    <div class="text">This hearty, spicy tomato-based curry is a classic from South India. Perfect for a winter warmer, especially if you like your curries hot.</div>
-                    <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">meat</span>
-                    </div>
-                    <h5>Serves 4 | Takes 50 mins</h5>
-                    <a class="more_info_button" href="recipes/chicken-madras.html">View Recipe</a>
-                </div>
-                
-                <div data-tags="side" data-cook-time="45" data-serves="4">
-                    <h3>Fiesta Red Potatoes</h3>
-                    <a class="image_link" href="recipes/fiesta-red-potatoes.html">
-                        <img src="assets/images/recipes/fiesta-red-potatoes.jpg" alt="Fiesta Red Potatoes">
-                    </a>
-                    <div class="text">A delicious addition to any Spanish tapas night.</div>
-                    <div class="recipe_tags">
-                        <span class="tag">side</span>
-                    </div>
-                    <h5>Serves 4 | Takes 45 mins</h5>
-                    <a class="more_info_button" href="recipes/fiesta-red-potatoes.html">View Recipe</a>
-                </div>
-                
-                <div data-tags="main meat dairy" data-cook-time="60" data-serves="6">
-                    <h3>Lamb Biryani</h3>
-                    <a class="image_link" href="recipes/lamb-biryani.html">
-                        <img src="assets/images/recipes/lamb-biryani.jpg" alt="Lamb Biryani">
-                    </a>
-                    <div class="text">Make this classic Indian dish for deliciously moist lamb with paneer, rice and spinach, all spiced to perfection. Great for casual entertaining</div>
-                    <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">dairy</span><span class="tag">meat</span>
-                    </div>
-                    <h5>Serves 6 | Takes 60 mins</h5>
-                    <a class="more_info_button" href="recipes/lamb-biryani.html">View Recipe</a>
-                </div>
-                
-                <div data-tags="main peanut" data-cook-time="60" data-serves="4">
-                    <h3>Satay Sweet Potato Curry</h3>
-                    <a class="image_link" href="recipes/satay-sweet-potato-curry.html">
-                        <img src="assets/images/recipes/satay-sweet-potato-curry.jpg" alt="Satay Sweet Potato Curry">
-                    </a>
-                    <div class="text">Cook this tasty, budget-friendly vegan curry for an easy family dinner. With spinach and sweet potato, it boasts two of your five-a-day and it’s under 400 calories</div>
-                    <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">peanut</span>
-                    </div>
-                    <h5>Serves 4 | Takes 60 mins</h5>
-                    <a class="more_info_button" href="recipes/satay-sweet-potato-curry.html">View Recipe</a>
-                </div>
-                
-                <div data-tags="main meat nut dairy" data-cook-time="40" data-serves="4">
-                    <h3>Pistachio Lamb Koftas With Apricot Relish</h3>
-                    <a class="image_link" href="recipes/pistachio-lamb-koftas-with-apricot-relish.html">
-                        <img src="assets/images/recipes/pistachio-lamb-koftas-with-apricot-relish.jpg" alt="Pistachio Lamb Koftas With Apricot Relish">
-                    </a>
-                    <div class="text">These budget-friendly, Middle Eastern-inspired lamb meatballs make a simple yet tasty supper, served with fruity chutney and crisp wholemeal pittas</div>
-                    <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">dairy</span><span class="tag">meat</span><span class="tag">nut</span>
-                    </div>
-                    <h5>Serves 4 | Takes 40 mins</h5>
-                    <a class="more_info_button" href="recipes/pistachio-lamb-koftas-with-apricot-relish.html">View Recipe</a>
+                    <h5>Serves 6 | Takes 150 mins</h5>
+                    <a class="more_info_button" href="recipes/chicken-and-chorizo-pie.html">View Recipe</a>
                 </div>
                 
                 <div data-tags="main meat egg dairy nut" data-cook-time="17" data-serves="2">
@@ -312,95 +136,17 @@
                     <a class="more_info_button" href="recipes/chicken-and-pistachio-salad.html">View Recipe</a>
                 </div>
                 
-                <div data-tags="main" data-cook-time="35" data-serves="4">
-                    <h3>Gnocchi Alla Norma</h3>
-                    <a class="image_link" href="recipes/gnocchi-alla-norma.html">
-                        <img src="assets/images/recipes/gnocchi-alla-norma.jpg" alt="Gnocchi Alla Norma">
+                <div data-tags="main meat" data-cook-time="50" data-serves="4">
+                    <h3>Chicken Madras</h3>
+                    <a class="image_link" href="recipes/chicken-madras.html">
+                        <img src="assets/images/recipes/chicken-madras.jpg" alt="Chicken Madras">
                     </a>
-                    <div class="text">Bring the flavours of Italy to your kitchen with gnocchi for dinner. Made with a delicious tomato, basil and aubergine sauce, it's a tasty midweek meal</div>
+                    <div class="text">This hearty, spicy tomato-based curry is a classic from South India. Perfect for a winter warmer, especially if you like your curries hot.</div>
                     <div class="recipe_tags">
-                        <span class="tag">main</span>
+                        <span class="tag">main</span><span class="tag">meat</span>
                     </div>
-                    <h5>Serves 4 | Takes 35 mins</h5>
-                    <a class="more_info_button" href="recipes/gnocchi-alla-norma.html">View Recipe</a>
-                </div>
-                
-                <div data-tags="main gluten" data-cook-time="55" data-serves="4">
-                    <h3>Mushroom & Leek Pie</h3>
-                    <a class="image_link" href="recipes/mushroom-and-leek-pie.html">
-                        <img src="assets/images/recipes/mushroom-and-leek-pie.jpg" alt="Mushroom & Leek Pie">
-                    </a>
-                    <div class="text">A hearty vegan pie filled with leeks and mushrooms in a creamy dairy-free sauce, topped with golden puff pastry.</div>
-                    <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">gluten</span>
-                    </div>
-                    <h5>Serves 4 | Takes 55 mins</h5>
-                    <a class="more_info_button" href="recipes/mushroom-and-leek-pie.html">View Recipe</a>
-                </div>
-                
-                <div data-tags="main meat egg dairy mustard gluten" data-cook-time="80" data-serves="6">
-                    <h3>Spring Chicken Pot Pie</h3>
-                    <a class="image_link" href="recipes/spring-chicken-pot-pie.html">
-                        <img src="assets/images/recipes/spring-chicken-pot-pie.jpg" alt="Spring Chicken Pot Pie">
-                    </a>
-                    <div class="text">Celebrate Easter with this spring chicken pot pie. It's kinder on your wallet than the traditional roast lamb, and equally enjoyable</div>
-                    <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">dairy</span><span class="tag">egg</span><span class="tag">gluten</span><span class="tag">meat</span><span class="tag">mustard</span>
-                    </div>
-                    <h5>Serves 6 | Takes 80 mins</h5>
-                    <a class="more_info_button" href="recipes/spring-chicken-pot-pie.html">View Recipe</a>
-                </div>
-                
-                <div data-tags="main" data-cook-time="95" data-serves="4">
-                    <h3>Parsnip Gnocchi</h3>
-                    <a class="image_link" href="recipes/parsnip-gnocchi.html">
-                        <img src="assets/images/recipes/parsnip-gnocchi.jpg" alt="Parsnip Gnocchi">
-                    </a>
-                    <div class="text">Take parsnips to another level by turning them into gnocchi with a crunchy walnut crumb. This moreish dish is vegan, healthy and delicious.</div>
-                    <div class="recipe_tags">
-                        <span class="tag">main</span>
-                    </div>
-                    <h5>Serves 4 | Takes 95 mins</h5>
-                    <a class="more_info_button" href="recipes/parsnip-gnocchi.html">View Recipe</a>
-                </div>
-                
-                <div data-tags="main meat dairy egg" data-cook-time="150" data-serves="6">
-                    <h3>Chicken & Chorizo Pie</h3>
-                    <a class="image_link" href="recipes/chicken-and-chorizo-pie.html">
-                        <img src="assets/images/recipes/chicken-and-chorizo-pie.jpg" alt="Chicken & Chorizo Pie">
-                    </a>
-                    <div class="text">A wholesome pie perfect for weekends. Flavour your Spanish sausage and chicken with sherry, parsley and a hint of cream</div>
-                    <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">dairy</span><span class="tag">egg</span><span class="tag">meat</span>
-                    </div>
-                    <h5>Serves 6 | Takes 150 mins</h5>
-                    <a class="more_info_button" href="recipes/chicken-and-chorizo-pie.html">View Recipe</a>
-                </div>
-                
-                <div data-tags="main meat brassica" data-cook-time="20" data-serves="4">
-                    <h3>Sausage Kale Gnocchi One Pot</h3>
-                    <a class="image_link" href="recipes/sausage-kale-gnocchi-one-pot.html">
-                        <img src="assets/images/recipes/sausage-kale-gnocchi-one-pot.jpg" alt="Sausage Kale Gnocchi One Pot">
-                    </a>
-                    <div class="text">Plate up this delicious one-pot of sausage, kale and gnocchi in just 20 minutes, with just five minutes prep.</div>
-                    <div class="recipe_tags">
-                        <span class="tag">main</span><span class="tag">brassica</span><span class="tag">meat</span>
-                    </div>
-                    <h5>Serves 4 | Takes 20 mins</h5>
-                    <a class="more_info_button" href="recipes/sausage-kale-gnocchi-one-pot.html">View Recipe</a>
-                </div>
-                
-                <div data-tags="main" data-cook-time="45" data-serves="4">
-                    <h3>Courgette Risotto</h3>
-                    <a class="image_link" href="recipes/courgette-risotto.html">
-                        <img src="assets/images/recipes/courgette-risotto.jpg" alt="Courgette Risotto">
-                    </a>
-                    <div class="text">An easy one-pot vegan risotto with courgette, peas and tomatoes. Great reheated for lunch.</div>
-                    <div class="recipe_tags">
-                        <span class="tag">main</span>
-                    </div>
-                    <h5>Serves 4 | Takes 45 mins</h5>
-                    <a class="more_info_button" href="recipes/courgette-risotto.html">View Recipe</a>
+                    <h5>Serves 4 | Takes 50 mins</h5>
+                    <a class="more_info_button" href="recipes/chicken-madras.html">View Recipe</a>
                 </div>
                 
                 <div data-tags="dessert egg" data-cook-time="250" data-serves="4">
@@ -416,6 +162,214 @@
                     <a class="more_info_button" href="recipes/chocolate-mousse.html">View Recipe</a>
                 </div>
                 
+                <div data-tags="main" data-cook-time="45" data-serves="4">
+                    <h3>Courgette Risotto</h3>
+                    <a class="image_link" href="recipes/courgette-risotto.html">
+                        <img src="assets/images/recipes/courgette-risotto.jpg" alt="Courgette Risotto">
+                    </a>
+                    <div class="text">An easy one-pot vegan risotto with courgette, peas and tomatoes. Great reheated for lunch.</div>
+                    <div class="recipe_tags">
+                        <span class="tag">main</span>
+                    </div>
+                    <h5>Serves 4 | Takes 45 mins</h5>
+                    <a class="more_info_button" href="recipes/courgette-risotto.html">View Recipe</a>
+                </div>
+                
+                <div data-tags="side" data-cook-time="45" data-serves="4">
+                    <h3>Fiesta Red Potatoes</h3>
+                    <a class="image_link" href="recipes/fiesta-red-potatoes.html">
+                        <img src="assets/images/recipes/fiesta-red-potatoes.jpg" alt="Fiesta Red Potatoes">
+                    </a>
+                    <div class="text">A delicious addition to any Spanish tapas night.</div>
+                    <div class="recipe_tags">
+                        <span class="tag">side</span>
+                    </div>
+                    <h5>Serves 4 | Takes 45 mins</h5>
+                    <a class="more_info_button" href="recipes/fiesta-red-potatoes.html">View Recipe</a>
+                </div>
+                
+                <div data-tags="main" data-cook-time="35" data-serves="4">
+                    <h3>Gnocchi Alla Norma</h3>
+                    <a class="image_link" href="recipes/gnocchi-alla-norma.html">
+                        <img src="assets/images/recipes/gnocchi-alla-norma.jpg" alt="Gnocchi Alla Norma">
+                    </a>
+                    <div class="text">Bring the flavours of Italy to your kitchen with gnocchi for dinner. Made with a delicious tomato, basil and aubergine sauce, it's a tasty midweek meal</div>
+                    <div class="recipe_tags">
+                        <span class="tag">main</span>
+                    </div>
+                    <h5>Serves 4 | Takes 35 mins</h5>
+                    <a class="more_info_button" href="recipes/gnocchi-alla-norma.html">View Recipe</a>
+                </div>
+                
+                <div data-tags="main" data-cook-time="30" data-serves="4">
+                    <h3>Gochujang Pasta</h3>
+                    <a class="image_link" href="recipes/gochujang-pasta.html">
+                        <img src="assets/images/recipes/gochujang-pasta.jpg" alt="Gochujang Pasta">
+                    </a>
+                    <div class="text">This vegan pasta dish is so easy to make but is deliciously spicy and comfortingly creamy. Feel free to swap the peas for shredded greens – or leave them out completely.</div>
+                    <div class="recipe_tags">
+                        <span class="tag">main</span>
+                    </div>
+                    <h5>Serves 4 | Takes 30 mins</h5>
+                    <a class="more_info_button" href="recipes/gochujang-pasta.html">View Recipe</a>
+                </div>
+                
+                <div data-tags="main" data-cook-time="30" data-serves="4">
+                    <h3>Harissa Pasta With Olives & Capers</h3>
+                    <a class="image_link" href="recipes/harissa-pasta-with-olives-and-capers.html">
+                        <img src="assets/images/recipes/harissa-pasta-with-olives-and-capers.jpg" alt="Harissa Pasta With Olives & Capers">
+                    </a>
+                    <div class="text">A quick, vibrant pasta dish with a spicy tomato and harissa sauce, briny green olives, and capers. Finished with fresh herbs and lemon, this weeknight-friendly meal is packed with North African flavors.</div>
+                    <div class="recipe_tags">
+                        <span class="tag">main</span>
+                    </div>
+                    <h5>Serves 4 | Takes 30 mins</h5>
+                    <a class="more_info_button" href="recipes/harissa-pasta-with-olives-and-capers.html">View Recipe</a>
+                </div>
+                
+                <div data-tags="main meat" data-cook-time="65" data-serves="4">
+                    <h3>Katsu Curry</h3>
+                    <a class="image_link" href="recipes/katsu-curry.html">
+                        <img src="assets/images/recipes/katsu-curry.jpg" alt="Katsu Curry">
+                    </a>
+                    <div class="text">Make our easy katsu curry with options for chicken or tofu, and adapt for vegetarian, vegan and gluten-free diets. Crispy cutlets, rich curry sauce, and fresh toppings make this a Japanese classic</div>
+                    <div class="recipe_tags">
+                        <span class="tag">main</span><span class="tag">meat</span>
+                    </div>
+                    <h5>Serves 4 | Takes 65 mins</h5>
+                    <a class="more_info_button" href="recipes/katsu-curry.html">View Recipe</a>
+                </div>
+                
+                <div data-tags="main meat dairy" data-cook-time="60" data-serves="6">
+                    <h3>Lamb Biryani</h3>
+                    <a class="image_link" href="recipes/lamb-biryani.html">
+                        <img src="assets/images/recipes/lamb-biryani.jpg" alt="Lamb Biryani">
+                    </a>
+                    <div class="text">Make this classic Indian dish for deliciously moist lamb with paneer, rice and spinach, all spiced to perfection. Great for casual entertaining</div>
+                    <div class="recipe_tags">
+                        <span class="tag">main</span><span class="tag">dairy</span><span class="tag">meat</span>
+                    </div>
+                    <h5>Serves 6 | Takes 60 mins</h5>
+                    <a class="more_info_button" href="recipes/lamb-biryani.html">View Recipe</a>
+                </div>
+                
+                <div data-tags="main meat mustard" data-cook-time="165" data-serves="4">
+                    <h3>Lemon Chicken Traybake</h3>
+                    <a class="image_link" href="recipes/lemon-chicken-traybake.html">
+                        <img src="assets/images/recipes/lemon-chicken-traybake.jpg" alt="Lemon Chicken Traybake">
+                    </a>
+                    <div class="text">This tasty lemon chicken tray bake is super easy – all the flavour comes from the delectable honey and mustard marinade.</div>
+                    <div class="recipe_tags">
+                        <span class="tag">main</span><span class="tag">meat</span><span class="tag">mustard</span>
+                    </div>
+                    <h5>Serves 4 | Takes 165 mins</h5>
+                    <a class="more_info_button" href="recipes/lemon-chicken-traybake.html">View Recipe</a>
+                </div>
+                
+                <div data-tags="main gluten" data-cook-time="55" data-serves="4">
+                    <h3>Mushroom & Leek Pie</h3>
+                    <a class="image_link" href="recipes/mushroom-and-leek-pie.html">
+                        <img src="assets/images/recipes/mushroom-and-leek-pie.jpg" alt="Mushroom & Leek Pie">
+                    </a>
+                    <div class="text">A hearty vegan pie filled with leeks and mushrooms in a creamy dairy-free sauce, topped with golden puff pastry.</div>
+                    <div class="recipe_tags">
+                        <span class="tag">main</span><span class="tag">gluten</span>
+                    </div>
+                    <h5>Serves 4 | Takes 55 mins</h5>
+                    <a class="more_info_button" href="recipes/mushroom-and-leek-pie.html">View Recipe</a>
+                </div>
+                
+                <div data-tags="main" data-cook-time="75" data-serves="6">
+                    <h3>Mushroom & Tarragon Pithivier</h3>
+                    <a class="image_link" href="recipes/mushroom-and-tarragon-pithivier.html">
+                        <img src="assets/images/recipes/mushroom-and-tarragon-pithivier.jpg" alt="Mushroom & Tarragon Pithivier">
+                    </a>
+                    <div class="text">These rich, earthy puff pastry parcels pack a real punch. This rich, aniseedy pie needs only a leafy salad alongside.</div>
+                    <div class="recipe_tags">
+                        <span class="tag">main</span>
+                    </div>
+                    <h5>Serves 6 | Takes 75 mins</h5>
+                    <a class="more_info_button" href="recipes/mushroom-and-tarragon-pithivier.html">View Recipe</a>
+                </div>
+                
+                <div data-tags="main" data-cook-time="95" data-serves="4">
+                    <h3>Parsnip Gnocchi</h3>
+                    <a class="image_link" href="recipes/parsnip-gnocchi.html">
+                        <img src="assets/images/recipes/parsnip-gnocchi.jpg" alt="Parsnip Gnocchi">
+                    </a>
+                    <div class="text">Take parsnips to another level by turning them into gnocchi with a crunchy walnut crumb. This moreish dish is vegan, healthy and delicious.</div>
+                    <div class="recipe_tags">
+                        <span class="tag">main</span>
+                    </div>
+                    <h5>Serves 4 | Takes 95 mins</h5>
+                    <a class="more_info_button" href="recipes/parsnip-gnocchi.html">View Recipe</a>
+                </div>
+                
+                <div data-tags="main meat nut dairy" data-cook-time="40" data-serves="4">
+                    <h3>Pistachio Lamb Koftas With Apricot Relish</h3>
+                    <a class="image_link" href="recipes/pistachio-lamb-koftas-with-apricot-relish.html">
+                        <img src="assets/images/recipes/pistachio-lamb-koftas-with-apricot-relish.jpg" alt="Pistachio Lamb Koftas With Apricot Relish">
+                    </a>
+                    <div class="text">These budget-friendly, Middle Eastern-inspired lamb meatballs make a simple yet tasty supper, served with fruity chutney and crisp wholemeal pittas</div>
+                    <div class="recipe_tags">
+                        <span class="tag">main</span><span class="tag">dairy</span><span class="tag">meat</span><span class="tag">nut</span>
+                    </div>
+                    <h5>Serves 4 | Takes 40 mins</h5>
+                    <a class="more_info_button" href="recipes/pistachio-lamb-koftas-with-apricot-relish.html">View Recipe</a>
+                </div>
+                
+                <div data-tags="main brassica" data-cook-time="65" data-serves="4">
+                    <h3>Roasted Aloo Gobi</h3>
+                    <a class="image_link" href="recipes/roasted-aloo-gobi.html">
+                        <img src="assets/images/recipes/roasted-aloo-gobi.jpg" alt="Roasted Aloo Gobi">
+                    </a>
+                    <div class="text">This extra special vegan curry uses roasted cauliflower and potatoes to bring out their flavour. You can also serve as a side to meat curries</div>
+                    <div class="recipe_tags">
+                        <span class="tag">main</span><span class="tag">brassica</span>
+                    </div>
+                    <h5>Serves 4 | Takes 65 mins</h5>
+                    <a class="more_info_button" href="recipes/roasted-aloo-gobi.html">View Recipe</a>
+                </div>
+                
+                <div data-tags="main peanut" data-cook-time="60" data-serves="4">
+                    <h3>Satay Sweet Potato Curry</h3>
+                    <a class="image_link" href="recipes/satay-sweet-potato-curry.html">
+                        <img src="assets/images/recipes/satay-sweet-potato-curry.jpg" alt="Satay Sweet Potato Curry">
+                    </a>
+                    <div class="text">Cook this tasty, budget-friendly vegan curry for an easy family dinner. With spinach and sweet potato, it boasts two of your five-a-day and it’s under 400 calories</div>
+                    <div class="recipe_tags">
+                        <span class="tag">main</span><span class="tag">peanut</span>
+                    </div>
+                    <h5>Serves 4 | Takes 60 mins</h5>
+                    <a class="more_info_button" href="recipes/satay-sweet-potato-curry.html">View Recipe</a>
+                </div>
+                
+                <div data-tags="main meat brassica" data-cook-time="20" data-serves="4">
+                    <h3>Sausage Kale Gnocchi One Pot</h3>
+                    <a class="image_link" href="recipes/sausage-kale-gnocchi-one-pot.html">
+                        <img src="assets/images/recipes/sausage-kale-gnocchi-one-pot.jpg" alt="Sausage Kale Gnocchi One Pot">
+                    </a>
+                    <div class="text">Plate up this delicious one-pot of sausage, kale and gnocchi in just 20 minutes, with just five minutes prep.</div>
+                    <div class="recipe_tags">
+                        <span class="tag">main</span><span class="tag">brassica</span><span class="tag">meat</span>
+                    </div>
+                    <h5>Serves 4 | Takes 20 mins</h5>
+                    <a class="more_info_button" href="recipes/sausage-kale-gnocchi-one-pot.html">View Recipe</a>
+                </div>
+                
+                <div data-tags="main nut gluten" data-cook-time="30" data-serves="2">
+                    <h3>Sicilian Stew</h3>
+                    <a class="image_link" href="recipes/sicilian-stew.html">
+                        <img src="assets/images/recipes/sicilian-stew.jpg" alt="Sicilian Stew">
+                    </a>
+                    <div class="text">A fantastic dish from southern Italy that the Sicilians are super proud of – and so they should be – it’s a complete joy to eat. Jam-packed with veg, this recipe adds up to two of your 5-a-day, and using wholewheat couscous helps keep you fuller for longer.</div>
+                    <div class="recipe_tags">
+                        <span class="tag">main</span><span class="tag">gluten</span><span class="tag">nut</span>
+                    </div>
+                    <h5>Serves 2 | Takes 30 mins</h5>
+                    <a class="more_info_button" href="recipes/sicilian-stew.html">View Recipe</a>
+                </div>
+                
                 <div data-tags="main meat soy sesame" data-cook-time="480" data-serves="6">
                     <h3>Slow Cooker Korean Beef</h3>
                     <a class="image_link" href="recipes/slow-cooker-korean-beef.html">
@@ -427,6 +381,32 @@
                     </div>
                     <h5>Serves 6 | Takes 480 mins</h5>
                     <a class="more_info_button" href="recipes/slow-cooker-korean-beef.html">View Recipe</a>
+                </div>
+                
+                <div data-tags="main meat egg dairy mustard gluten" data-cook-time="80" data-serves="6">
+                    <h3>Spring Chicken Pot Pie</h3>
+                    <a class="image_link" href="recipes/spring-chicken-pot-pie.html">
+                        <img src="assets/images/recipes/spring-chicken-pot-pie.jpg" alt="Spring Chicken Pot Pie">
+                    </a>
+                    <div class="text">Celebrate Easter with this spring chicken pot pie. It's kinder on your wallet than the traditional roast lamb, and equally enjoyable</div>
+                    <div class="recipe_tags">
+                        <span class="tag">main</span><span class="tag">dairy</span><span class="tag">egg</span><span class="tag">gluten</span><span class="tag">meat</span><span class="tag">mustard</span>
+                    </div>
+                    <h5>Serves 6 | Takes 80 mins</h5>
+                    <a class="more_info_button" href="recipes/spring-chicken-pot-pie.html">View Recipe</a>
+                </div>
+                
+                <div data-tags="main meat dairy" data-cook-time="180" data-serves="5">
+                    <h3>Steak & Ale Pie</h3>
+                    <a class="image_link" href="recipes/steak-and-ale-pie.html">
+                        <img src="assets/images/recipes/steak-and-ale-pie.jpg" alt="Steak & Ale Pie">
+                    </a>
+                    <div class="text">Good meat, good beer and good pastry – it’s clear why this steak and ale pie is a winner.</div>
+                    <div class="recipe_tags">
+                        <span class="tag">main</span><span class="tag">dairy</span><span class="tag">meat</span>
+                    </div>
+                    <h5>Serves 5 | Takes 180 mins</h5>
+                    <a class="more_info_button" href="recipes/steak-and-ale-pie.html">View Recipe</a>
                 </div>
                 <div note="placeholder to prevent last item expanding into multiple slots"></div>
                 <div note="placeholder to prevent last item expanding into multiple slots"></div>
