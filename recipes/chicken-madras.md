@@ -19,6 +19,7 @@ This hearty, spicy tomato-based curry is a classic from South India. Perfect for
 - Salt to taste
 - 300ml water
 - 450g chicken breast or thigh, diced
+- rice and/or naan to serve
 
 ## Method
 1. Heat the oil in a large pan over medium heat. Add the diced onion and fry for 3–4 minutes until softened.
@@ -27,4 +28,4 @@ This hearty, spicy tomato-based curry is a classic from South India. Perfect for
 4. Add the chopped tomatoes, water, and a pinch of salt. Bring to a simmer, cover, and cook for 20 minutes, stirring occasionally.
 5. Remove the lid and simmer for another 5–10 minutes until the sauce thickens and the chicken is cooked through.
 6. Stir in the yogurt and half the chopped coriander. Simmer for 1 minute, then taste and adjust seasoning if needed.
-7. Serve hot, garnished with the remaining coriander. Enjoy with rice and naan.
+7. Serve hot, garnished with the remaining coriander. Enjoy with rice and/or naan.
