@@ -289,7 +289,7 @@ def createRecipePage(recipe: Recipe):
 
 
 if __name__ == "__main__":
-    recipesDir: str = "recipes"
+    recipesDir: str = "assets/data/recipes"
     recipes: list[Recipe] = []
     for filename in os.listdir(recipesDir):
         if filename.endswith(".md"):
