@@ -24,6 +24,8 @@
     --text-mute-color: rgb(145, 145, 145);
     --accent-text-color: rgb(244, 244, 244);
     --accent-color: rgb(19, 41, 68);
+    --alt-accent-color-bright: #ffbfbb;
+    --alt-accent-color-dark: #ff7fbb;
     --alt-background-color: rgb(22, 22, 22);
     --alt-background-color-emphasised: rgb(18, 18, 18);
     /* To be used e.g. opacity: var(--translucent-light) */
@@ -48,6 +50,8 @@ query to detect this preference and adjust our styles accordingly.
         --text-mute-color: rgb(110, 110, 110);
         --accent-text-color: rgb(10, 10, 10);
         --accent-color: rgb(236, 214, 187);
+        --alt-accent-color-bright: #ffdf7d;
+        --alt-accent-color-dark: #ffa449;
         --alt-background-color: rgb(233, 233, 233);
         --alt-background-color-emphasised: rgb(237, 237, 237);
     }

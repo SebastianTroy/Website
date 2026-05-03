@@ -21,6 +21,16 @@
     white-space: nowrap;
 }
 
+.tag.recipe_type {
+    background-color: color-mix(in srgb, var(--accent-color) 60%, var(--alt-accent-color-bright) 40%);
+    color: var(--accent-text-color);
+}
+
+.tag.recipe_uploaded_by {
+        background-color: color-mix(in srgb, var(--accent-color) 60%, var(--alt-accent-color-dark) 40%);
+    color: var(--accent-text-color);
+}
+
 .recipe_filters {
     display: flex;
     flex-direction: row;

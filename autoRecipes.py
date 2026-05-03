@@ -23,7 +23,7 @@ def getRecipeNameFromFilename(filename: str) -> str:
 
 # Hold-all for a single recipe
 class Recipe:
-    def __init__(self, filename: str, type: str, dietary: list[str], serves: int, cook_time: int, source: str, description: str, ingredients: list[str], method: list[str]):
+    def __init__(self, filename: str, type: str, dietary: list[str], serves: int, cook_time: int, source: str, uploaded_by: str, description: str, ingredients: list[str], method: list[str]):
         self.filename = filename.removesuffix(".md")# Name used to find the html, and jpg files for this recipe
         self.name = getRecipeNameFromFilename(self.filename) # Title for the recipe
         self.type = type       # Used to filter between mains, desserts, canapes e.t.c.
@@ -31,6 +31,7 @@ class Recipe:
         self.serves = serves   # Used to filter on how many people we can feed
         self.cook_time = cook_time # Used to filter based on cook time
         self.source = source       # Used to credit the original recipe
+        self.uploaded_by = uploaded_by # Used to credit the person who uploaded the recipe
         self.description = description # Brief description of the recipe, used on the recipe card in the index page
         self.ingredients = ingredients # List of ingredients, used on the recipe page
         self.method = method           # List of steps, used on the recipe page
@@ -41,7 +42,7 @@ def parseRecipeMarkdown(filePath: str) -> Recipe:
     filename: str = os.path.basename(filePath)
 
     expectedSections: list[str] = ["## Meta", "## Description", "## Ingredients", "## Method"]
-    expectedMetaFields: list[str] = ["type", "dietary", "serves", "prep_time", "cook_time", "source"]
+    expectedMetaFields: list[str] = ["type", "dietary", "serves", "prep_time", "cook_time", "source", "uploaded_by"]
 
     currentSection: str = ""
 
@@ -50,6 +51,7 @@ def parseRecipeMarkdown(filePath: str) -> Recipe:
     serves: int = 0
     cook_time: int = 0
     source: str = ""
+    uploaded_by: str = ""
     description: str = ""
     ingredients: list[str] = []
     method: list[str] = []
@@ -88,7 +90,8 @@ def parseRecipeMarkdown(filePath: str) -> Recipe:
                     cook_time += int(fieldValue)
                 elif fieldName == "source":
                     source = fieldValue
-            
+                elif fieldName == "uploaded_by":
+                    uploaded_by = fieldValue
             # Parsing description
             elif currentSection == "## Description":
                 description += line + "\n"
@@ -120,13 +123,13 @@ def parseRecipeMarkdown(filePath: str) -> Recipe:
     if not os.path.exists(recipeImage):
         print(f"    Error: Image file {recipeImage} not found.")
 
-    return Recipe(filename, type, dietary, serves, cook_time, source, description.strip(), ingredients, method)
+    return Recipe(filename, type, dietary, serves, cook_time, source, uploaded_by, description.strip(), ingredients, method)
 
 
 # Uses some templates and a Recipe to generate a block of HTML
 # that can be inserted into a standard "grid" div, where "grid"
 # is a class used in recipes.html to layout the recipe cards
-def generateRecipeCardGrid(recipes: list[Recipe]) -> str:
+def generateRecipeCardGrid(recipes: list[Recipe], show_uploaders: bool) -> str:
     recipeCardTemplate: str = """
 <div data-tags="{dataTags}" data-cook-time="{cook_time}" data-serves="{serves}">
     <h3>{name}</h3>
@@ -141,7 +144,7 @@ def generateRecipeCardGrid(recipes: list[Recipe]) -> str:
     <a class="more_info_button" href="recipes/{filename}.html">View Recipe</a>
 </div>
 """
-    tagSpanTemplate: str = '<span class="tag">{tag}</span>'
+    tagSpanTemplate: str = '<span class="tag {tag_type}">{tag}</span>'
 
     html: str = ""
     recipes.sort(key=lambda r: r.name) # Sort recipes alphabetically by name
@@ -152,11 +155,13 @@ def generateRecipeCardGrid(recipes: list[Recipe]) -> str:
         if recipe.dietary:
             dataTags += " " + " ".join(recipe.dietary)
         dataTags = dataTags.lower()
-        visualTags: str = tagSpanTemplate.format(tag=recipe.type)
+        visualTags: str = tagSpanTemplate.format(tag=recipe.type, tag_type="recipe_type")
         dietaryTags: list[str] = recipe.dietary
         dietaryTags.sort()
         for dietary in dietaryTags:
-            visualTags += tagSpanTemplate.format(tag=dietary)
+            visualTags += tagSpanTemplate.format(tag=dietary, tag_type="recipe_dietary")
+        if show_uploaders:
+            visualTags += tagSpanTemplate.format(tag=f"{recipe.uploaded_by}", tag_type="recipe_uploaded_by")
         html += recipeCardTemplate.format(dataTags=dataTags, name=recipe.name, filename=recipe.filename, thumbnail=recipe.filename, description=recipe.description, visualTags=visualTags, serves=recipe.serves, cook_time=recipe.cook_time)
 
     return html
@@ -222,7 +227,7 @@ def applyIndentation(html: str, reference: str) -> str:
     return indent + html.replace("\n", "\n" + indent).rstrip()
 
 
-def createRecipeIndexPage(recipes: list[Recipe]):
+def createRecipeIndexPage(recipes: list[Recipe], show_uploaders: bool):
     with open("recipes-template.html", "r") as f:
         template: str = f.read()
 
@@ -242,7 +247,7 @@ def createRecipeIndexPage(recipes: list[Recipe]):
     servesFilterSentinel: str = next(line for line in template.splitlines() if "<!-- SERVINGS FILTERS SENTINEL -->" in line)
     servesFilterControls = applyIndentation(servesFilterControls, servesFilterSentinel)
 
-    recipeCardsHtml: str = generateRecipeCardGrid(recipes)
+    recipeCardsHtml: str = generateRecipeCardGrid(recipes, show_uploaders)
     recipeSentinel: str = next(line for line in template.splitlines() if "<!-- RECIPE CARDS SENTINEL -->" in line)
     recipeCardsHtml = applyIndentation(recipeCardsHtml, recipeSentinel)
 
@@ -256,7 +261,7 @@ def createRecipeIndexPage(recipes: list[Recipe]):
         f.write(outputHtml)
 
 
-def createRecipePage(recipe: Recipe):
+def createRecipePage(recipe: Recipe, show_uploaders: bool):
     with open("recipes/recipe-template.html", "r") as f:
         template: str = f.read()
 
@@ -266,9 +271,13 @@ def createRecipePage(recipe: Recipe):
     serves = recipe.serves
     cook_time = recipe.cook_time
     source = recipe.source
-    tags = f'<span class="tag">{recipe.type}</span>'
+    source_hidden = " hidden" if not source else ""
+    uploaded_by = recipe.uploaded_by
+    tags = f'<span class="tag recipe_type">{recipe.type}</span>'
     for dietary in recipe.dietary:
-        tags += f'<span class="tag">{dietary}</span>'
+        tags += f'<span class="tag recipe_dietary">{dietary}</span>'
+    if show_uploaders:
+        tags += f'<span class="tag recipe_uploaded_by">{uploaded_by}</span>'
     ingredients = "<ul>\n"
     for ingredient in recipe.ingredients:
         ingredients += f'    <li><input type="checkbox" class="ingredient_checkbox"><label>{ingredient}</label></li>\n'
@@ -282,7 +291,7 @@ def createRecipePage(recipe: Recipe):
     if source.startswith("http://") or source.startswith("https://"):
         source = f'<a href="{source}" target="_blank" rel="noopener noreferrer">{source}</a>'
 
-    outputHtml: str = template.format(title=title, image=image, description=description, serves=serves, cook_time=cook_time, source=source, tags=tags, ingredients=ingredients, method=method)
+    outputHtml: str = template.format(title=title, image=image, description=description, serves=serves, cook_time=cook_time, source=source, source_hidden=source_hidden, tags=tags, ingredients=ingredients, method=method)
 
     with open(f"recipes/{recipe.filename}.html", "w") as f:
         f.write(outputHtml)
@@ -295,10 +304,13 @@ if __name__ == "__main__":
         if filename.endswith(".md"):
             print(f"Parsing {filename}...")
             recipes.append(parseRecipeMarkdown(os.path.join(recipesDir, filename)))
+
+    unique_uploader_count = len(set(recipe.uploaded_by for recipe in recipes))
+    show_uploaders = unique_uploader_count > 1
     
-    createRecipeIndexPage(recipes)
+    createRecipeIndexPage(recipes, show_uploaders)
 
     for recipe in recipes:
         print(f"Creating page for {recipe.name}...")
-        createRecipePage(recipe)
+        createRecipePage(recipe, show_uploaders)
 
