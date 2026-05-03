@@ -5,6 +5,7 @@ serves: 4
 prep_time: 25
 cook_time: 40
 source: https://www.bbcgoodfood.com/recipes/katsu-curry
+uploaded_by: Sebastian Troy
 
 ## Description
 Make our easy katsu curry with options for chicken or tofu, and adapt for vegetarian, vegan and gluten-free diets. Crispy cutlets, rich curry sauce, and fresh toppings make this a Japanese classic

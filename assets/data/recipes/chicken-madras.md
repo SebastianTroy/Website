@@ -5,6 +5,7 @@ serves: 4
 prep_time: 20
 cook_time: 30
 source: https://www.pataks.co.uk/recipes/chicken-madras
+uploaded_by: Sebastian Troy
 
 ## Description
 This hearty, spicy tomato-based curry is a classic from South India. Perfect for a winter warmer, especially if you like your curries hot.

@@ -5,6 +5,7 @@ serves: 2
 prep_time: 10
 cook_time: 20
 source: https://www.jamieoliver.com/recipes/vegetables/incredible-sicilian-aubergine-stew-with-couscous/
+uploaded_by: Sebastian Troy
 
 ## Description
 A fantastic dish from southern Italy that the Sicilians are super proud of – and so they should be – it’s a complete joy to eat. Jam-packed with veg, this recipe adds up to two of your 5-a-day, and using wholewheat couscous helps keep you fuller for longer.

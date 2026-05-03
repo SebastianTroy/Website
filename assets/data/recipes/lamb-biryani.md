@@ -5,6 +5,7 @@ serves: 6
 prep_time: 10
 cook_time: 50
 source: https://www.bbcgoodfood.com/recipes/lamb-biryani
+uploaded_by: Sebastian Troy
 
 ## Description
 Make this classic Indian dish for deliciously moist lamb with paneer, rice and spinach, all spiced to perfection. Great for casual entertaining

@@ -5,6 +5,7 @@ serves: 4
 prep_time: 20
 cook_time: 20
 source: https://www.bbcgoodfood.com/recipes/pistachio-lamb-koftas-apricot-relish
+uploaded_by: Sebastian Troy
 
 ## Description
 These budget-friendly, Middle Eastern-inspired lamb meatballs make a simple yet tasty supper, served with fruity chutney and crisp wholemeal pittas

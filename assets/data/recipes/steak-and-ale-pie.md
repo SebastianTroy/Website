@@ -5,6 +5,7 @@ serves: 5
 prep_time: 60
 cook_time: 120
 source: https://www.bbc.co.uk/food/recipes/how_to_cook_steak_and_15585
+uploaded_by: Sebastian Troy
 
 ## Description
 Good meat, good beer and good pastry – it’s clear why this steak and ale pie is a winner.

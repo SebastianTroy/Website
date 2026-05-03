@@ -5,6 +5,7 @@ serves: 6
 prep_time: 30
 cook_time: 450
 source: https://www.bbc.co.uk/food/recipes/slow_cooker_korean_beef_67459
+uploaded_by: Sebastian Troy
 
 ## Description
 Packed with flavour and meltingly tender beef, try this classic comfort food with steamed rice and greens.

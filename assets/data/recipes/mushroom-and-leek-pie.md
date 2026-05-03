@@ -5,6 +5,7 @@ serves: 4
 prep_time: 20
 cook_time: 35
 source: https://www.vegansociety.com/lifestyle/recipes/mushroom-leek-pie
+uploaded_by: Sebastian Troy
 
 ## Description
 A hearty vegan pie filled with leeks and mushrooms in a creamy dairy-free sauce, topped with golden puff pastry.

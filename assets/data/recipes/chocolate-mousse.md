@@ -5,6 +5,7 @@ serves: 4
 prep_time: 10
 cook_time: 240
 source: https://www.scotchandscones.com/dairy-free-chocolate-mousse/#recipe
+uploaded_by: Sebastian Troy
 
 ## Description
 This easy dairy-free chocolate mousse is rich, creamy, and made with just a few simple ingredients. Perfect for those avoiding dairy, but delicious enough for everyone!

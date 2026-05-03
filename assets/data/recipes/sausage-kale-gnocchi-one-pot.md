@@ -5,6 +5,7 @@ serves: 4
 prep_time: 5
 cook_time: 15
 source: https://www.bbcgoodfood.com/recipes/sausage-kale-gnocchi-one-pot
+uploaded_by: Sebastian Troy
 
 ## Description
 Plate up this delicious one-pot of sausage, kale and gnocchi in just 20 minutes, with just five minutes prep.

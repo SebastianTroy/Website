@@ -5,6 +5,7 @@ serves: 4
 prep_time: 15
 cook_time: 50
 source: https://www.bbcgoodfood.com/recipes/roasted-aloo-gobi
+uploaded_by: Sebastian Troy
 
 ## Description
 This extra special vegan curry uses roasted cauliflower and potatoes to bring out their flavour. You can also serve as a side to meat curries

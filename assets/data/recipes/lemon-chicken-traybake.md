@@ -5,6 +5,7 @@ serves: 4
 prep_time: 120
 cook_time: 45
 source: https://www.bbc.co.uk/food/recipes/lush_lemon_pepper_19156
+uploaded_by: Sebastian Troy
 
 ## Description
 This tasty lemon chicken tray bake is super easy – all the flavour comes from the delectable honey and mustard marinade.

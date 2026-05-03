@@ -5,6 +5,7 @@ serves: 6
 prep_time: 40
 cook_time: 35
 source: https://www.theguardian.com/lifeandstyle/2009/dec/12/mushroom-tarragon-pithivier-recipe
+uploaded_by: Sebastian Troy
 
 ## Description
 These rich, earthy puff pastry parcels pack a real punch. This rich, aniseedy pie needs only a leafy salad alongside.

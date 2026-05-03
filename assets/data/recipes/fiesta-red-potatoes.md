@@ -5,6 +5,7 @@ serves: 4
 prep_time: 15
 cook_time: 30
 source: https://www.tasteofhome.com/recipes/fiesta-red-potatoes/
+uploaded_by: Sebastian Troy
 
 ## Description
 A delicious addition to any Spanish tapas night.

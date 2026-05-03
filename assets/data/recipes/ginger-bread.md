@@ -4,7 +4,7 @@ dietary:
 serves: 25
 prep_time: 10
 cook_time: 30
-source: Sebastian Troy
+uploaded_by: Sebastian Troy
 
 ## Description
 The perfect blend of crisp and gooey gingerbread, makes 25 gingerbread men. Roll thivker for more goo, and thinner for more crisp.

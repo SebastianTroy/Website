@@ -5,6 +5,7 @@ serves: 4
 prep_time: 10
 cook_time: 20
 source: Ottolenghi SIMPLE, p188
+uploaded_by: Sebastian Troy
 
 ## Description
 A quick, vibrant pasta dish with a spicy tomato and harissa sauce, briny green olives, and capers. Finished with fresh herbs and lemon, this weeknight-friendly meal is packed with North African flavors.

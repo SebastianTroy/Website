@@ -5,6 +5,7 @@ serves: 6
 prep_time: 20
 cook_time: 130
 source: https://www.bbcgoodfood.com/recipes/chicken-chorizo-pie
+uploaded_by: Sebastian Troy
 
 ## Description
 A wholesome pie perfect for weekends. Flavour your Spanish sausage and chicken with sherry, parsley and a hint of cream

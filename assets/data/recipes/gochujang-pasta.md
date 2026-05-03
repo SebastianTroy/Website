@@ -5,6 +5,7 @@ serves: 4
 prep_time: 10
 cook_time: 20
 source: https://www.bbc.co.uk/food/recipes/creamy_gochujang_pasta_59347
+uploaded_by: Sebastian Troy
 
 ## Description
 This vegan pasta dish is so easy to make but is deliciously spicy and comfortingly creamy. Feel free to swap the peas for shredded greens – or leave them out completely.

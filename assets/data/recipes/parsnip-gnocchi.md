@@ -5,6 +5,7 @@ serves: 4
 prep_time: 40
 cook_time: 55
 source: https://www.bbcgoodfood.com/recipes/parsnip-gnocchi
+uploaded_by: Sebastian Troy
 
 ## Description
 Take parsnips to another level by turning them into gnocchi with a crunchy walnut crumb. This moreish dish is vegan, healthy and delicious.

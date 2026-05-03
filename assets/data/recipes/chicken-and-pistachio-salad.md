@@ -5,6 +5,7 @@ serves: 2
 prep_time: 10
 cook_time: 7
 source: https://www.bbcgoodfood.com/recipes/chicken-pistachio-salad
+uploaded_by: Sebastian Troy
 
 ## Description
 A quick, rich and zesty salad. Recipe can be doubled easily with little extra effort.

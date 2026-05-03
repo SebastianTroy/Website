@@ -5,6 +5,7 @@ serves: 4
 prep_time: 15
 cook_time: 45
 source: https://www.bbcgoodfood.com/recipes/satay-sweet-potato-curry
+uploaded_by: Sebastian Troy
 
 ## Description
 Cook this tasty, budget-friendly vegan curry for an easy family dinner. With spinach and sweet potato, it boasts two of your five-a-day and it’s under 400 calories

@@ -5,6 +5,7 @@ serves: 4
 prep_time: 10
 cook_time: 40
 source: https://www.bbcgoodfood.com/recipes/one-pot-chicken-rice
+uploaded_by: Sebastian Troy
 
 ## Description
 A tasty chicken dish to feed 4 in under an hour, using only one pan.

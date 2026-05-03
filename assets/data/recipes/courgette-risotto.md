@@ -5,6 +5,7 @@ serves: 4
 prep_time: 15
 cook_time: 30
 source: https://www.bbcgoodfood.com/recipes/summer-courgette-risotto
+uploaded_by: Sebastian Troy
 
 ## Description
 An easy one-pot vegan risotto with courgette, peas and tomatoes. Great reheated for lunch.

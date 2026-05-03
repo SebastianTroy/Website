@@ -5,6 +5,7 @@ serves: 6
 prep_time: 15
 cook_time: 65
 source: https://www.bbcgoodfood.com/recipes/spring-chicken-pot-pie
+uploaded_by: Sebastian Troy
 
 ## Description
 Celebrate Easter with this spring chicken pot pie. It's kinder on your wallet than the traditional roast lamb, and equally enjoyable

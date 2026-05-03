@@ -4,7 +4,7 @@ dietary: meat, egg
 serves: 3
 prep_time: 15
 cook_time: 25
-source: Sebastian Troy
+uploaded_by: Sebastian Troy
 
 ## Description
 One of my favorite cheat meals, very quick and easy to prepare, and interactive to eat.

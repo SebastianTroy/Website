@@ -5,6 +5,7 @@ serves: 4
 prep_time: 10
 cook_time: 25
 source: https://www.bbcgoodfood.com/recipes/gnocchi-alla-norma
+uploaded_by: Sebastian Troy
 
 ## Description
 Bring the flavours of Italy to your kitchen with gnocchi for dinner. Made with a delicious tomato, basil and aubergine sauce, it's a tasty midweek meal
