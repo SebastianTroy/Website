@@ -39,14 +39,14 @@
 
             <div class="js_enabled_only">
                 <div class="recipe_filters">
-                    <!-- TYPE FILTER TOGGLES SENTINEL -->
+                    {type_filters}
                 </div>
                 <div class="recipe_filters">
-                    <!-- DIETARY FILTER TOGGLES SENTINEL -->
+                    {dietary_filters}
                 </div>
                 <div class="recipe_filters grid">
-                    <!-- COOKTIME FILTERS SENTINEL -->
-                    <!-- SERVINGS FILTERS SENTINEL -->
+                    {cooktime_filters}
+                    {serves_filters}
                 </div>
                 <div class="sorting_buttons">
                     <input type="radio" name="sort" id="sort_name" class="sorting_radio" data-sort-by="name" hidden checked>
@@ -61,7 +61,7 @@
             </div>
 
             <div class="grid cards_container">
-                <!-- RECIPE CARDS SENTINEL -->
+                {recipe_cards}
                 <div note="placeholder to prevent last item expanding into multiple slots"></div>
                 <div note="placeholder to prevent last item expanding into multiple slots"></div>
             </div>

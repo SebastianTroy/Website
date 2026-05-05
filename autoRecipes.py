@@ -219,43 +219,30 @@ def generateServesFilterControls(recipes: list[Recipe]) -> str:
     return html
 
 
-# Takes a multi-line HTML string, and applies the indentation of
-# the reference string to it.
-def applyIndentation(html: str, reference: str) -> str:
-    indentLen: int = len(reference) - len(reference.lstrip())
-    indent: str = " " * indentLen
-    return indent + html.replace("\n", "\n" + indent).rstrip()
+# Like str.format(**kwargs), but for each placeholder finds its line in the
+# template and applies that line's indentation to every line of the replacement.
+def indentedFormat(template: str, **kwargs) -> str:
+    indented: dict = {}
+    for key, value in kwargs.items():
+        line = next((l for l in template.splitlines() if f"{{{key}}}" in l), None)
+        if line is not None:
+            indent: str = " " * (len(line) - len(line.lstrip()))
+            value = str(value).replace("\n", "\n" + indent).rstrip()
+        indented[key] = value
+    return template.format(**indented)
 
 
 def createRecipeIndexPage(recipes: list[Recipe], show_uploaders: bool):
     with open("recipes-template.html", "r") as f:
         template: str = f.read()
 
-    typeFiltersHtml: str = generateTypeFilterControls(recipes)
-    typeFilterSentinel: str = next(line for line in template.splitlines() if "<!-- TYPE FILTER TOGGLES SENTINEL -->" in line)
-    typeFiltersHtml = applyIndentation(typeFiltersHtml, typeFilterSentinel)
-
-    dietaryFiltersHtml: str = generateDietaryFilterControls(recipes)
-    dietaryFilterSentinel: str = next(line for line in template.splitlines() if "<!-- DIETARY FILTER TOGGLES SENTINEL -->" in line)
-    dietaryFiltersHtml = applyIndentation(dietaryFiltersHtml, dietaryFilterSentinel)
-
-    cookTimeFilterControls: str = generateCookTimeFilterControls(recipes)
-    cookTimeFilterSentinel: str = next(line for line in template.splitlines() if "<!-- COOKTIME FILTERS SENTINEL -->" in line)
-    cookTimeFilterControls = applyIndentation(cookTimeFilterControls, cookTimeFilterSentinel)
-
-    servesFilterControls: str = generateServesFilterControls(recipes)
-    servesFilterSentinel: str = next(line for line in template.splitlines() if "<!-- SERVINGS FILTERS SENTINEL -->" in line)
-    servesFilterControls = applyIndentation(servesFilterControls, servesFilterSentinel)
-
-    recipeCardsHtml: str = generateRecipeCardGrid(recipes, show_uploaders)
-    recipeSentinel: str = next(line for line in template.splitlines() if "<!-- RECIPE CARDS SENTINEL -->" in line)
-    recipeCardsHtml = applyIndentation(recipeCardsHtml, recipeSentinel)
-
-    outputHtml: str = template.replace(typeFilterSentinel, typeFiltersHtml)
-    outputHtml = outputHtml.replace(dietaryFilterSentinel, dietaryFiltersHtml)
-    outputHtml = outputHtml.replace(cookTimeFilterSentinel, cookTimeFilterControls)
-    outputHtml = outputHtml.replace(servesFilterSentinel, servesFilterControls)
-    outputHtml = outputHtml.replace(recipeSentinel, recipeCardsHtml)
+    outputHtml: str = indentedFormat(template,
+        type_filters = generateTypeFilterControls(recipes),
+        dietary_filters = generateDietaryFilterControls(recipes),
+        cooktime_filters = generateCookTimeFilterControls(recipes),
+        serves_filters = generateServesFilterControls(recipes),
+        recipe_cards = generateRecipeCardGrid(recipes, show_uploaders),
+    )
 
     with open("recipes.html", "w") as f:
         f.write(outputHtml)
@@ -265,33 +252,34 @@ def createRecipePage(recipe: Recipe, show_uploaders: bool):
     with open("recipes/recipe-template.html", "r") as f:
         template: str = f.read()
 
-    title = recipe.name
-    image = f"../assets/images/recipes/{recipe.filename}.jpg"
-    description = recipe.description
-    serves = recipe.serves
-    cook_time = recipe.cook_time
-    source = recipe.source
-    source_hidden = " hidden" if not source else ""
-    uploaded_by = recipe.uploaded_by
     tags = f'<span class="tag recipe_type">{recipe.type}</span>'
     for dietary in recipe.dietary:
         tags += f'<span class="tag recipe_dietary">{dietary}</span>'
     if show_uploaders:
-        tags += f'<span class="tag recipe_uploaded_by">{uploaded_by}</span>'
+        tags += f'<span class="tag recipe_uploaded_by">{recipe.uploaded_by}</span>'
+
     ingredients = "<ul>\n"
     for ingredient in recipe.ingredients:
         ingredients += f'    <li><input type="checkbox" class="ingredient_checkbox"><label>{ingredient}</label></li>\n'
     ingredients += "</ul>"
+
     method = "<ol>\n"
     for step in recipe.method:
         method += f'    <li><input type="checkbox" class="method_checkbox"><label>{step}</label></li>\n'
     method += "</ol>"
 
-    # If source is a URL, make it a clickable link
-    if source.startswith("http://") or source.startswith("https://"):
-        source = f'<a href="{source}" target="_blank" rel="noopener noreferrer">{source}</a>'
-
-    outputHtml: str = template.format(title=title, image=image, description=description, serves=serves, cook_time=cook_time, source=source, source_hidden=source_hidden, tags=tags, ingredients=ingredients, method=method)
+    outputHtml: str = indentedFormat(template, 
+        title = recipe.name,
+        image = f"../assets/images/recipes/{recipe.filename}.jpg",
+        description = recipe.description,
+        serves = recipe.serves,
+        cook_time = recipe.cook_time,
+        source = f'<a href="{recipe.source}" target="_blank" rel="noopener noreferrer">{recipe.source}</a>' if recipe.source.startswith("http://") or recipe.source.startswith("https://") else recipe.source,
+        source_hidden = " hidden" if not recipe.source else "",
+        tags = tags,
+        ingredients = ingredients,
+        method = method
+    )
 
     with open(f"recipes/{recipe.filename}.html", "w") as f:
         f.write(outputHtml)
