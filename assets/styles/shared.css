@@ -273,6 +273,35 @@ iframe.embedded_godot {
     border: none;
 }
 
+/* A two-column list of a game's controls, with <kbd> keys */
+table.controls_table {
+    color: var(--text-mute-color);
+    font-size: 18px;
+    line-height: 1.4;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table.controls_table td {
+    padding: 6px 8px;
+    border-bottom: solid 1px var(--alt-background-color);
+    vertical-align: top;
+}
+
+table.controls_table td:first-child {
+    color: var(--text-color);
+}
+
+kbd {
+    font-family: "Lato", arial, sans-serif;
+    font-size: 15px;
+    padding: 1px 6px;
+    margin: 0 1px;
+    border: solid 1px var(--text-mute-color);
+    border-radius: 4px;
+    background-color: var(--alt-background-color);
+}
+
 .try_it_now {
     display: block;
     color: var(--text-color);

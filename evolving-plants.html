@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="assets/fonts/fonts.css">
         <link rel="stylesheet" href="assets/styles/shared.css">
         <link rel="stylesheet" href="assets/styles/toolbar.css">
+        <link rel="stylesheet" href="assets/styles/evolving-plants.css">
         <script src="assets/scripts/shared.js"></script>
         <script src="assets/scripts/toolbar.js"></script>
     </head>
@@ -36,26 +37,56 @@
         <div class="content">
             <h2>Evolving Plants</h2>
             <div class="box">
-                <img src="assets/images/evolving-plants/overview.png">
-                <div class="text">This is one of my earliest interactive projects, or at least, the original version was. It was first written in Java, and then updated in 2022 to C++ in Qt.</div>
-                <div class="text">See below for a more detailed explanation.</div>
+                <div class="js_disabled_only">
+                    <div class="large_text">The interactive parts of this page require javascript to be enabled.</div>
+                    <div class="large_text">(There are no ADs or tracking scripts installed on this website!).</div>
+                </div>
+                <div class="godot_launcher js_enabled_only" data-title="Evolving Plants" data-src="godot/EvolvingPlants/EvolvingPlants.html?embedded=1">
+                    <picture><source srcset="assets/images/evolving-plants/overview_light.webp" media="(prefers-color-scheme: light)"><img class="godot_launcher_poster" src="assets/images/evolving-plants/overview.webp"></picture>
+                    <button class="godot_launcher_button more_info_button" type="button">Play</button>
+                </div>
+                <div class="small_text">The simulation is a download of around 13 MB, and works best with a mouse or trackpad. On a touch screen a tap or drag selects plants (or whatever the left button is set to do), and you can zoom and move around with the buttons, but not yet pinch or pan.</div>
+                <div class="text">This is one of my earliest interactive projects, or at least, the original version was. It was first written in Java, updated in 2022 to C++ in Qt, and in 2026 moved to Godot so it can run in the browser.</div>
                 <div class="text">This project is open source and can be <a target="_blank" rel="noopener noreferrer" href="https://www.github.com/SebastianTroy/Evolving-Plants">found on GitHub</a></div>
             </div>
-            <h2>Run it yourself</h2>
+            <h2>Controls</h2>
+            <div class="pair">
+                <div class="box">
+                    <h3>Mouse and keyboard</h3>
+                    <div class="text_left">Each mouse button does the action chosen for it in the <b>Mouse</b> section: Select plant, Add seed or Remove plants. It acts on a click and all along a drag. By default, left selects and right removes.</div>
+                    <table class="controls_table">
+                        <tr><td>The right button's action</td><td><kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + click, or hold <kbd>X</kbd></td></tr>
+                        <tr><td>The left button's action</td><td>Hold <kbd>Z</kbd></td></tr>
+                        <tr><td>Pan</td><td>Middle drag, <kbd>Alt</kbd>/<kbd>Option</kbd> + drag, two-finger drag, or <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> / arrow keys</td></tr>
+                        <tr><td>Zoom</td><td>Mouse wheel, pinch, <kbd>+</kbd> and <kbd>-</kbd>, or the buttons at the view's top right</td></tr>
+                        <tr><td>Fit the world to the view</td><td><kbd>F</kbd>, or the button at the view's top right</td></tr>
+                        <tr><td>Pause or resume</td><td><kbd>Space</kbd></td></tr>
+                        <tr><td>Speed</td><td><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> for 10, 250 and 1,000 ticks a second, <kbd>4</kbd> for as fast as possible</td></tr>
+                        <tr><td>Hide the side panels</td><td>The buttons at the view's top corners</td></tr>
+                    </table>
+                </div>
+                <div class="box">
+                    <h3>Looking closer</h3>
+                    <input class="lightbox_toggle" type="checkbox" id="selectedPlant" />
+                    <label class="lightbox" for="selectedPlant">
+                        <picture><source srcset="assets/images/evolving-plants/selected_plant_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/evolving-plants/selected_plant.webp"></picture>
+                    </label>
+                    <div class="text_left">Select a plant to see its details in the info panel. On narrow screens the panels float over the view, folded away behind the buttons in its top corners.</div>
+                </div>
+            </div>
+            <h2>Run it on Windows</h2>
             <div class="box">
-                <div class="text">To run this program yourself on Windows, download and unzip the file and double-click on "EvolvingPlants.exe" inside the folder.</div>
+                <div class="text">The older Qt version can still be downloaded. Unzip the file and double-click on "EvolvingPlants.exe" inside the folder.</div>
                 <a class="try_it_now" href="assets/zips/EvolvingPlants_v4-1.zip">EvolvingPlants_v4-1 (zip)</a>
             </div>
             <h2>How it works</h2>
             <div class="pair">
                 <input class="lightbox_toggle" type="checkbox" id="overview" />
                 <label class="lightbox" for="overview">
-                    <img src="assets/images/evolving-plants/overview.png">
+                    <picture><source srcset="assets/images/evolving-plants/clip_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/evolving-plants/clip.webp" alt="Several fresh simulations, each evolving over 1,500 ticks"></picture>
                 </label>
                 <div class="box">
-                    <h3>
-                        The Gist
-                    </h3>
+                    <h3>The Gist</h3>
                     <div class="text">
                         "Plants" are modelled as lines (stems) and ovals (leaves), the leaves absorb light energy and cast shadows. Over time plants evolve to compete for this light energy by being taller than competitors, or a different colour,
                         or by having more leaves. The trade-off is that being taller and more complex requires more energy to exist, and a high dense canopy that blocks out all light prevents baby plants from surviving long enough to grow to full
@@ -66,65 +97,55 @@
             <div class="pair alt">
                 <input class="lightbox_toggle" type="checkbox" id="lightVis" />
                 <label class="lightbox" for="lightVis">
-                    <img src="assets/images/evolving-plants/light_visible_new_sim.png">
+                    <picture><source srcset="assets/images/evolving-plants/light_map_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/evolving-plants/light_map.webp"></picture>
                 </label>
                 <div class="box">
-                    <h3>
-                        Light
-                    </h3>
+                    <h3>Light</h3>
                     <div class="text">
-                        The image to the right shows a number of small multi-coloured plants on a white background. The coloured rectangles beneath each leaf are shadows. The colour of the light represents the energy available at that point. <a
+                        The image shows a new simulation, 60 ticks in, with the light drawn in. The small plants are all different colours, and the coloured columns beneath each leaf are its shadow. The colour of the light represents the energy available at that point. <a
                             target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/Web_colors">R,G,& B channels</a> each contain their own energy and a leaf may evolve in colour to extract energy from one or more of these
-                        channels. A leaf "blocks" all of the energy
-                        it absorbs.
+                        channels. A leaf "blocks" all of the energy it absorbs.
                     </div>
                     <div class="text">
-                        If a leaf has the colour 50, 50, 50, it will try to absorb that much light from each colour channel, gaining up to 150 energy. A plant cannot utilise more that 200 units of energy, the excess is actually deducted from the
-                        energy the leaf generates by "photosynthesising", this is realistic, plant leaves in strong direct sunlight can overheat and even "burn" like human skin does in strong sunlight.
+                        A leaf's colour is the light it reflects; it absorbs the rest. A leaf with the colour 200, 200, 200 in full sunlight (255 in each channel) absorbs 55 from each, 165 in total. A leaf can use up to 150 energy from the light it absorbs.
+                        Beyond that, the excess counts against it, as too much light inhibits photosynthesis in nature, so that leaf gains 150 &minus; 15 = 135. So pale leaves suit plants in full sun, and plants in the shade can afford darker leaves that absorb more.
                     </div>
                 </div>
             </div>
             <div class="pair">
                 <input class="lightbox_toggle" type="checkbox" id="earlyOn" />
                 <label class="lightbox" for="earlyOn">
-                    <img src="assets/images/evolving-plants/early_on.png">
+                    <picture><source srcset="assets/images/evolving-plants/early_on_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/evolving-plants/early_on.webp"></picture>
                 </label>
                 <div class="box">
-                    <h3>
-                        Early on
-                    </h3>
+                    <h3>Early on</h3>
                     <div class="text">
-                        Here we can see two groups of plants, this simulation is actually the same as in the previous image, some 4000 ticks later, and we can see that these plants appear to all be descended from just two of the original plants
-                        based on their colour.
+                        Here we can see two groups of plants. This is the same simulation as in the previous image, some 4000 ticks later, and judging by their colour these plants appear to all be descended from just two of the original plants.
                     </div>
                 </div>
             </div>
             <div class="pair alt">
                 <input class="lightbox_toggle" type="checkbox" id="earlyCompetition" />
                 <label class="lightbox" for="earlyCompetition">
-                    <img src="assets/images/evolving-plants/early_competition.png">
+                    <picture><source srcset="assets/images/evolving-plants/early_competition_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/evolving-plants/early_competition.webp"></picture>
                 </label>
                 <div class="box">
-                    <h3>
-                        Competition
-                    </h3>
+                    <h3>Competition</h3>
                     <div class="text">
-                        Now that these plants are growing in the same range, they have begun to compete for light, both with members of their own species, but now also with the other species too, initially we see a simple increase in height.
+                        Now that these plants are growing in the same range, they have begun to compete for light, both with members of their own species, but now also with the other species too. Initially we see a simple increase in height, with a few plants breaking above the canopy.
                     </div>
                 </div>
             </div>
             <div class="pair">
                 <input class="lightbox_toggle" type="checkbox" id="colourNiches" />
                 <label class="lightbox" for="colourNiches">
-                    <img src="assets/images/evolving-plants/colour_niches.png">
+                    <picture><source srcset="assets/images/evolving-plants/colour_niches_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/evolving-plants/colour_niches.webp"></picture>
                 </label>
                 <div class="box">
-                    <h3>
-                        Colour Niches
-                    </h3>
+                    <h3>Colour Niches</h3>
                     <div class="text">
-                        As there is a cap on how much energy a leaf can extract from the light when photosynthesising, we see different species evolving to take advantage of the light not absorbed by the upper canopy. Here we see three different
-                        colours of plant, with the shadows becoming progressively darker as each species extracts a different subset of the available light. From this point on the upper canopy colour may drift over time via <a
+                        As there is a cap on how much energy a leaf can extract from the light when photosynthesising, we see different species evolving to take advantage of the light not absorbed by the upper canopy. Here, 150,000 ticks in, a green and orange canopy
+                        grows over a blue and violet understory, with the shadows becoming progressively darker as each species extracts a different subset of the available light. From this point on the upper canopy colour may drift over time via <a
                             target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/Genetic_drift">genetic drift</a> and
                         smaller species will adapt their colours via <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/Natural_selection">natural selection</a> to stay different from the taller plants.
                     </div>
@@ -133,15 +154,13 @@
             <div class="pair alt">
                 <input class="lightbox_toggle" type="checkbox" id="branching" />
                 <label class="lightbox" for="branching">
-                    <img src="assets/images/evolving-plants/branching.png">
+                    <picture><source srcset="assets/images/evolving-plants/branching_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/evolving-plants/branching.webp"></picture>
                 </label>
                 <div class="box">
-                    <h3>
-                        Branching
-                    </h3>
+                    <h3>Branching</h3>
                     <div class="text">
-                        The selected plant is drawn with a white outline, here it is possible to make out that it is no longer a single stem with a leaf at the top, but it now has a second branch out to the right. The reddish plants also appear
-                        to have a branch, albeit smaller. The plants' structure will continue to get more complex as the simulation continues.
+                        Plants aren't limited to a single stem with a leaf at the top; their genes can also describe branches, each with leaves of their own. Branching rarely evolves from the default starting plants within a reasonable run, so this world
+                        was grown from "TallBunch", tall plants with two leaves each. It is one of the saved genomes you can pick in <b>Genetics</b>, then press <b>Reset simulation</b> to try it.
                     </div>
                 </div>
             </div>
