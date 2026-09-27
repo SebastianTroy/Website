@@ -169,12 +169,21 @@ form > button {
     text-decoration: underline;
 }
 
+/*
+    <picture> only swaps an image for the light or dark colour scheme, so
+    lay out its <img> as though the <picture> wasn't there.
+*/
+picture {
+    display: contents;
+}
+
 /* useful for making images clickable */
 a.image_link {
     display: contents;
 }
 
-a.image_link > img {
+a.image_link > img,
+a.image_link > picture > img {
     width: 100%;
     height: auto;
 }
@@ -218,6 +227,50 @@ iframe.embedded_youtube {
 iframe.embedded_godot {
     width: 100%;
     aspect-ratio: calc(560 / 315);
+}
+
+/*
+    Shows a poster image with a play button, so the (large) Godot export
+    is only downloaded once the user asks for it. Set the aspect-ratio
+    inline to match the game's viewport, and data-src to the exported
+    HTML file (without data-src the button shows "Coming Soon").
+*/
+.godot_launcher {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--alt-background-color);
+}
+
+.godot_launcher .godot_launcher_poster {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: var(--translucent-medium);
+}
+
+.godot_launcher > .godot_launcher_button {
+    position: relative;
+    font-family: inherit;
+    font-size: 20px;
+}
+
+.godot_launcher > .godot_launcher_button:hover {
+    text-decoration: underline;
+}
+
+.godot_launcher > .godot_launcher_button:disabled {
+    cursor: default;
+    text-decoration: none;
+}
+
+.godot_launcher > iframe.embedded_godot {
+    height: 100%;
+    aspect-ratio: auto;
+    border: none;
 }
 
 .try_it_now {
@@ -412,14 +465,16 @@ iframe.embedded_godot {
     justify-content: center;
 }
 
-.lightbox > img {
+.lightbox > img,
+.lightbox > picture > img {
     width: 100%;
     height: auto;
     max-width: 100%;
     cursor: pointer;
 }
 
-.lightbox_toggle:checked + .lightbox > img {
+.lightbox_toggle:checked + .lightbox > img,
+.lightbox_toggle:checked + .lightbox > picture > img {
     width: auto;
     height: auto;
 }

@@ -23,3 +23,25 @@ attachListener(document, "DOMContentLoaded", function () {
     document.head.appendChild(style);
     style.sheet.insertRule(".js_disabled_only { display: none !important; }");
 });
+
+// Swap each Godot launcher's poster for the game when its play button is clicked
+attachListener(document, "DOMContentLoaded", function () {
+    for (let launcher of document.querySelectorAll(".godot_launcher")) {
+        let button = launcher.querySelector(".godot_launcher_button");
+        let source = launcher.dataset.src;
+        if (!source) {
+            button.disabled = true;
+            button.textContent = "Coming Soon";
+            continue;
+        }
+        attachListener(button, "click", function () {
+            let iframe = document.createElement("iframe");
+            iframe.className = "embedded_godot";
+            iframe.title = launcher.dataset.title || "";
+            iframe.allowFullscreen = true;
+            iframe.src = source;
+            launcher.replaceChildren(iframe);
+            iframe.focus();
+        });
+    }
+});

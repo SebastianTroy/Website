@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="assets/fonts/fonts.css">
         <link rel="stylesheet" href="assets/styles/shared.css">
         <link rel="stylesheet" href="assets/styles/toolbar.css">
+        <link rel="stylesheet" href="assets/styles/travelling-salesman.css">
         <script src="assets/scripts/shared.js"></script>
         <script src="assets/scripts/toolbar.js"></script>
     </head>
@@ -36,61 +37,90 @@
         <div class="content">
             <h2>Travelling Salesman Solver</h2>
             <div class="box">
-                <div class="pair alt">
-                    <img src="https://img1.wsimg.com/isteam/stock/24856/:/cr=t:12.5%25,l:0%25,w:100%25,h:75%25/rs=w:400,h:200,cg:true">
-                    <div class="two_thirds box">
-                        <h3></h3>
-                        <div class="text_left">The inspiration for this project was the famous <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/Travelling_salesman_problem">travelling salesman problem</a>, where you
-                            try to find the shortest route between a number of locations, visiting each location only once.</div>
-                        <div class="text_left">I wanted to see if a simple evolutionary algorithm could be used to obtain decent solutions, and to experiment with different mutations to see which gave the best results.</div>
-                        <div class="text_left">The project is open source and can be <a target="_blank" rel="noopener noreferrer" href="https://www.github.com/SebastianTroy/salesman">found on GitHub</a></div>
-                    </div>
+                <div class="js_disabled_only">
+                    <div class="large_text">The interactive parts of this page require javascript to be enabled.</div>
+                    <div class="large_text">(There are no ADs or tracking scripts installed on this website!).</div>
+                </div>
+                <div class="godot_launcher js_enabled_only" data-title="Travelling Salesman Solver" data-src="godot/TravellingSalesman/TravellingSalesman.html?embedded=1">
+                    <picture><source srcset="assets/images/salesman/screenshot_light.webp" media="(prefers-color-scheme: light)"><img class="godot_launcher_poster" src="assets/images/salesman/screenshot.webp"></picture>
+                    <button class="godot_launcher_button more_info_button" type="button">Play</button>
+                </div>
+                <div class="small_text">The solver is a download of around 13 MB, and works best with a mouse or trackpad. On a touch screen you can tap to place stops, drag them to move them or onto the bin to delete them, and zoom with the buttons, but not yet pan.</div>
+            </div>
+            <h2>Controls</h2>
+            <div class="pair">
+                <div class="box">
+                    <h3>Editing the map</h3>
+                    <div class="text_left">Every mouse action has another way to do it, for trackpads, one-button mice and touch screens.</div>
+                    <table class="controls_table">
+                        <tr><td>Place a stop</td><td>Left click</td></tr>
+                        <tr><td>Move a stop</td><td>Left drag, or hold <kbd>G</kbd> over it</td></tr>
+                        <tr><td>Delete stops</td><td>Right drag, <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + drag, hold <kbd>X</kbd>, or drop a dragged stop on the bin</td></tr>
+                        <tr><td>Pan</td><td>Middle drag, <kbd>Alt</kbd>/<kbd>Option</kbd> + drag, two-finger drag, or <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> / arrow keys</td></tr>
+                        <tr><td>Zoom</td><td>Mouse wheel, pinch, <kbd>+</kbd> and <kbd>-</kbd>, or the buttons at the map's top right</td></tr>
+                        <tr><td>Fit the map to the view</td><td><kbd>F</kbd>, or the button under the zoom buttons</td></tr>
+                        <tr><td>Start or stop solving</td><td><kbd>Space</kbd></td></tr>
+                        <tr><td>Find one more improvement</td><td><kbd>.</kbd></td></tr>
+                    </table>
+                </div>
+                <div class="box">
+                    <h3>The sidebar</h3>
+                    <div class="text_left"><b>Configure</b> sets the number of stops and the seed. The same seed and stop count always generate the same stops, and solve them the same way, so an interesting tour can be shared or replayed. From here you can also add, shuffle or clear stops, and choose whether the salesman loops back home.</div>
+                    <div class="text_left"><b>Playback</b> starts and stops the solver (it starts playing at 3 improvements per second), or steps it forward by 1, 10 or 100 improvements. The speed limit slows solving down so you can watch the route untangle, or tick <b>Max</b> to solve as fast as possible.</div>
+                    <div class="text_left"><b>Mutations</b> turns each mutation on or off, and picks whether they are tried at random or in turn. The <b>?</b> button explains each one.</div>
+                    <div class="text_left"><b>Stats</b> shows how the search is going, <b>Display</b> picks a light or dark theme and has a high contrast mode for tours with hundreds of stops, and <b>Help</b> lists these controls.</div>
+                    <div class="text_left">Under the map, the <b>Graphs</b> dock plots the tour's length and rate of improvement as it is solved, and tallies how often each mutation succeeds. On narrow screens the sidebar folds away, using the button at the top left of the map.</div>
                 </div>
             </div>
-            <h2>Run it yourself</h2>
-            <div class="box">
-                <div class="text">To run this program yourself on Windows, download and unzip the file and double-click on "TravellingSalesman.exe" inside the folder.</div>
-                <a href="assets/zips/TravellingSalesman_v3.zip" class="try_it_now">TravellingSalesman_v3 (zip)</a>
-            </div>
-            <h2>Results</h2>
+            <h2>How it works</h2>
             <div class="pair">
                 <input class="lightbox_toggle" type="checkbox" id="muddled" />
                 <label class="lightbox" for="muddled">
-                    <img src="assets/images/salesman/muddled.webp">
+                    <picture><source srcset="assets/images/salesman/muddled_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/salesman/muddled.webp"></picture>
                 </label>
                 <div class="box">
                     <h3>The algorithm</h3>
-                    <div class="text">A basic hill-climber is used, the tour is copied, mutated and the shortest version is kept. There are 5 differnt mutations that can be applied.</div>
-                    <div class="text">
-                        <ol>
-                            <li>Move a random stop to a random location</li>
-                            <li>Move some random stops to random locations</li>
-                            <li>Take a random subsection of the tour and reverse the order of stops</li>
-                            <li>Take a random subsection of the tour and move it to the end</li>
-                            <li>Swap the position of two stops</li>
-                        </ol>
+                    <div class="text">A basic hill-climber is used: the tour is copied, mutated, and the change is kept if the tour is no longer than before. Millions of attempts a second are made, and only a tiny fraction of them are improvements.</div>
+                    <div class="text">Individually the mutations often get stuck in clearly sub-optimal solutions, however together they cover each other's weaknesses and give great results very quickly.</div>
+                </div>
+            </div>
+            <div class="box">
+                <h3>The mutations</h3>
+                <div class="text">Each mutation has its own colour and pattern, so they can be told apart without relying on colour. While the solver is speed limited or stepping, the roads added by each improvement flash in the style of the mutation that found it, so you can see which mutation is doing the work.</div>
+                <picture><source srcset="assets/images/salesman/clip_light.webp" media="(prefers-color-scheme: light)"><img class="mutation_clip" src="assets/images/salesman/clip.webp" alt="A tour untangling, each improvement flashing in the colour and pattern of the mutation that found it"></picture>
+                <div class="flowbox mutations">
+                    <div>
+                        <h4><span class="swatch dots" style="background-color: #e69f00;"></span>Randomise Stop</h4>
+                        <div class="text">Moves one stop to a random position in the tour. It fixes a single stop visited at the wrong time, such as a detour to a far-off city in the middle of a run of neighbours.</div>
                     </div>
-                    <div class="text">Individually these mutations often get stuck in clearly sub-optimal solutions, however together they cover each other's weaknesses and give great results very quickly.</div>
+                    <div>
+                        <h4><span class="swatch diagonal" style="background-color: #cc79a7;"></span>Randomise Stops</h4>
+                        <div class="text">Moves several stops at once. It rarely succeeds once the tour is decent, but it can reach changes no single small move can, occasionally escaping a dead end.</div>
+                    </div>
+                    <div>
+                        <h4><span class="swatch stripes" style="background-color: #0072b2;"></span>Reverse Section</h4>
+                        <div class="text">Reverses the order of the stops between two points, the classic "2-opt" move. Wherever two roads cross, this uncrosses them, so it is usually the most productive mutation.</div>
+                    </div>
+                    <div>
+                        <h4><span class="swatch grid" style="background-color: #d55e00;"></span>Move Section</h4>
+                        <div class="text">Cuts out a run of stops and moves it, still in order, to the end of the tour. It relocates a whole cluster visited at the wrong point in the tour.</div>
+                    </div>
+                    <div>
+                        <h4><span class="swatch checker" style="background-color: #f0e442;"></span>Swap Stops</h4>
+                        <div class="text">Exchanges two stops' places in the tour, such as two neighbouring towns visited in the wrong order. It is most useful early on.</div>
+                    </div>
                 </div>
             </div>
             <div class="pair alt">
                 <input class="lightbox_toggle" type="checkbox" id="solved" />
                 <label class="lightbox" for="solved">
-                    <img src="assets/images/salesman/solved.webp">
+                    <picture><source srcset="assets/images/salesman/best_route_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/salesman/best_route.webp"></picture>
                 </label>
                 <div class="box">
-                    <h3>Solution</h3>
-                    <div class="text">This shows the solution for the above image, over 22.5 million mutations have been applied, but the best solution found was at mutation 4.6 million. It is hard to prove this is the most optimum solution, and it
-                        likely isn't, the evolutionary landscape that this particular problem exists on has many local optima that my algorithm may not be able to escape easily, and even if it can, the nature of random mutations means that it could
-                        take a very long time to find further improvements.</div>
-                </div>
-            </div>
-            <div class="pair">
-                <iframe class="embedded_youtube" src="https://www.youtube-nocookie.com/embed/XxzZ7P3_bpQ?rel=0" title="Travelling salesman solver in action" frameborder="0" allow="clipboard-write; encrypted-media;" allowfullscreen></iframe>
-                <div class="box">
-                    <h3>250 Stops Example</h3>
-                    <div class="text">The more stops that are added, the longer it takes to settle on a good solution. There is a "high contrast" mode to make routes with hundreds of stops easier to view. In this example the "Reverse Section"
-                        mutation is selected to quickly hone in on a good solution, then the other mutations are enabled, allowing a small number of improvements that would not have otherwise been possible.</div>
+                    <h3>Is it the best route?</h3>
+                    <div class="text">Probably not. It is hard to prove any solution is the shortest possible, and the landscape this problem exists on has many local optima that a hill-climber may not be able to escape. Even when it can, the nature of random mutations means it could take a very long time to find further improvements.</div>
+                    <div class="text">The Improvement rate graph shows this happening: a flurry of improvements early on, then a long tail where they become rare. Its log scale is required to see the long tail clearly, as it reaches near 0 very quickly.</div>
+                    <div class="text">Try solving with just "Reverse Section" to quickly hone in on a good solution, then enable the other mutations, allowing a small number of improvements that would not otherwise have been possible.</div>
                 </div>
             </div>
             <hr class="section_end">

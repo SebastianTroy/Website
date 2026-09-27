@@ -1,0 +1,87 @@
+table.controls_table {
+    color: var(--text-mute-color);
+    font-size: 18px;
+    line-height: 1.4;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table.controls_table td {
+    padding: 6px 8px;
+    border-bottom: solid 1px var(--alt-background-color);
+    vertical-align: top;
+}
+
+table.controls_table td:first-child {
+    color: var(--text-color);
+}
+
+kbd {
+    font-family: "Lato", arial, sans-serif;
+    font-size: 15px;
+    padding: 1px 6px;
+    margin: 0 1px;
+    border: solid 1px var(--text-mute-color);
+    border-radius: 4px;
+    background-color: var(--alt-background-color);
+}
+
+.mutations > * > h4 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.swatch {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    flex: none;
+    border-radius: 3px;
+}
+
+/* The same 8px patterns the solver draws over each mutation's colour */
+.swatch {
+    --mark: rgba(0, 0, 0, 0.45);
+    background-size: 8px 8px;
+}
+
+.swatch.dots {
+    background-image: radial-gradient(circle, var(--mark) 2px, transparent 2px);
+}
+
+.swatch.diagonal {
+    background-image: repeating-linear-gradient(-45deg, var(--mark) 0 1.5px, transparent 1.5px 5.66px);
+    background-size: auto;
+}
+
+.swatch.stripes {
+    background-image: linear-gradient(var(--mark) 2px, transparent 2px);
+}
+
+.swatch.grid {
+    background-image: linear-gradient(var(--mark) 1px, transparent 1px), linear-gradient(90deg, var(--mark) 1px, transparent 1px);
+}
+
+.swatch.checker {
+    background-image: conic-gradient(var(--mark) 25%, transparent 25% 50%, var(--mark) 50% 75%, transparent 75%);
+}
+
+/* The game's own viewport ratio; on phones its panel folds away over the map, so give it more height */
+.godot_launcher {
+    aspect-ratio: 1142 / 725;
+}
+
+@media (max-width: 640px) {
+    .godot_launcher {
+        aspect-ratio: 3 / 4;
+    }
+}
+
+.mutation_clip {
+    width: 100%;
+    max-width: 571px;
+    height: auto;
+    align-self: center;
+}
