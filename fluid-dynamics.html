@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:site_name" content="TroyDev">
+        <meta property="og:description" content="Site for my personal projects">
+        <meta property="og:type" content="website">
+        <meta property="og:locale" content="en_GB">
+
+        <title>Fluid Dynamics | TroyDev</title>
+
+        <link rel="icon" type="image/x-icon" href="assets/icons/logo.png">
+        <link rel="stylesheet" href="assets/fonts/fonts.css">
+        <link rel="stylesheet" href="assets/styles/shared.css">
+        <link rel="stylesheet" href="assets/styles/toolbar.css">
+        <link rel="stylesheet" href="assets/styles/fluid-dynamics.css">
+        <script src="assets/scripts/shared.js"></script>
+        <script src="assets/scripts/toolbar.js"></script>
+    </head>
+
+    <body>
+        <div class="toolbar">
+            <div class="toolbar_content">
+                <a class="toolbar_logo" href="index.html"></a>
+                <input type="checkbox" id="toolbar_hamburger_menu" style="display: none;">
+                <label for="toolbar_hamburger_menu" class="toolbar_buttons_toggle"></label>
+                <div class="toolbar_buttons_container">
+                    <a class="toolbar_button" href="index.html">Projects</a>
+                    <hr class="toolbar_button_spacer">
+                    <a class="toolbar_button" href="recipes.html">Recipes</a>
+                    <hr class="toolbar_button_spacer">
+                    <a class="toolbar_button" href="contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <h2>Fluid Dynamics</h2>
+            <div class="box">
+                <div class="js_disabled_only">
+                    <div class="large_text">The interactive parts of this page require javascript to be enabled.</div>
+                    <div class="large_text">(There are no ADs or tracking scripts installed on this website!).</div>
+                </div>
+                <div class="godot_launcher js_enabled_only" data-title="Fluid Dynamics" data-src="godot/FluidDynamics/FluidDynamics.html?embedded=1">
+                    <picture><source srcset="assets/images/fluid-dynamics/poster_light.webp" media="(prefers-color-scheme: light)"><img class="godot_launcher_poster" src="assets/images/fluid-dynamics/poster.webp"></picture>
+                    <button class="godot_launcher_button more_info_button" type="button">Play</button>
+                </div>
+                <div class="small_text">The simulation is a download of around 12 MB. It works with a mouse, a trackpad or a touch screen: drag to use the brush. On narrow screens the controls fold away behind the button at the top left.</div>
+                <div class="text">A model of an incompressible fluid, like looking through the side of a thin tank of water. Stir it, drop dye in it, build walls in it, or turn on a current and watch it flow past obstacles. The arrows show which way, and how fast, the water is flowing, and the tracers are specks carried along by it.</div>
+                <div class="text">This started as a spin-off from the modelling I did for my undergraduate dissertation, written in Java and based on Jos Stam's <a target="_blank" rel="noopener noreferrer" href="https://www.dgp.toronto.edu/public_user/stam/reality/Research/pdf/GDC03.pdf">Real-Time Fluid Dynamics for Games</a>. In 2026 it was rewritten in C++ and Godot, so it can run in the browser, with a more accurate solver, obstacles, currents, dye and a few ready-made scenes.</div>
+                <div class="text">This project is open source and can be <a target="_blank" rel="noopener noreferrer" href="https://www.github.com/SebastianTroy/Particle-Model-Java">found on GitHub</a></div>
+            </div>
+            <h2>Controls</h2>
+            <div class="pair">
+                <div class="box">
+                    <h3>Mouse and keyboard</h3>
+                    <div class="text_left">Drag in the water to use the brush chosen in the <b>Brush</b> section. <b>Stir</b> pushes the water along with the drag, <b>Dye</b> drops dye without pushing, and <b>Wall</b> and <b>Erase</b> build and knock down walls.</div>
+                    <table class="controls_table">
+                        <tr><td>Use the brush</td><td>Drag</td></tr>
+                        <tr><td>Erase walls, with any brush</td><td>Right drag</td></tr>
+                        <tr><td>Stir, Dye, Wall, Erase</td><td><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd></td></tr>
+                        <tr><td>Smaller or bigger brush</td><td><kbd>[</kbd> and <kbd>]</kbd></td></tr>
+                        <tr><td>Pause or resume</td><td><kbd>Space</kbd></td></tr>
+                        <tr><td>One step, while paused</td><td><kbd>.</kbd></td></tr>
+                        <tr><td>Show or hide the arrows and tracers</td><td><kbd>A</kbd> and <kbd>T</kbd></td></tr>
+                        <tr><td>Gather the tracers in the middle</td><td><kbd>G</kbd></td></tr>
+                        <tr><td>Clear the dye</td><td><kbd>C</kbd></td></tr>
+                        <tr><td>Reset the scene</td><td><kbd>R</kbd></td></tr>
+                    </table>
+                </div>
+                <div class="box">
+                    <h3>Drawing walls</h3>
+                    <input class="lightbox_toggle" type="checkbox" id="walls" />
+                    <label class="lightbox" for="walls">
+                        <picture><source srcset="assets/images/fluid-dynamics/walls_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/fluid-dynamics/walls.webp" alt="Walls drawn by hand in a current, with dye streaks flowing round them"></picture>
+                    </label>
+                    <div class="text_left">Walls are hatched, so they stand out by pattern as well as colour. Draw them while paused if you like, then press <kbd>Space</kbd> to see how the water copes. <b>High contrast</b> in the <b>Show</b> section switches to black, white and grey.</div>
+                </div>
+            </div>
+            <h2>How it works</h2>
+            <div class="pair">
+                <input class="lightbox_toggle" type="checkbox" id="clip" />
+                <label class="lightbox" for="clip">
+                    <picture><source srcset="assets/images/fluid-dynamics/clip_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/fluid-dynamics/clip.webp" alt="Dye streaks flowing past a post, with swirls peeling off each side in turn"></picture>
+                </label>
+                <div class="box">
+                    <h3>The Gist</h3>
+                    <div class="text">
+                        Water can't be squashed, so wherever you push it, it has to make room by flowing somewhere else. The tank is divided into a grid of 150 by 120 cells, each with a velocity. Every step, the water carries itself along (each cell takes the velocity of
+                        whatever was upstream of it), then the model works out the pressure needed to push the water back to the same density everywhere, and takes it away. What's left is a flow that never piles up or thins out anywhere, just like a real liquid.
+                    </div>
+                    <div class="text">
+                        The clip shows the <b>Cylinder</b> scene: a current flows past a round post, and swirls peel off each side in turn, a pattern called a <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/K%C3%A1rm%C3%A1n_vortex_street">von K&aacute;rm&aacute;n vortex street</a>.
+                        The same thing happens to wind blowing past chimneys, and to clouds downwind of islands.
+                    </div>
+                </div>
+            </div>
+            <div class="pair alt">
+                <input class="lightbox_toggle" type="checkbox" id="stirred" />
+                <label class="lightbox" for="stirred">
+                    <picture><source srcset="assets/images/fluid-dynamics/stirred_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/fluid-dynamics/stirred.webp" alt="Tracers rolled up into two spirals by a single stroke"></picture>
+                </label>
+                <div class="box">
+                    <h3>Tracers</h3>
+                    <div class="text">
+                        Tracers are like tiny beads that neither float nor sink: they only move when the water around them does. Here they were all gathered in the middle with <b>Gather</b>, then pushed with a single stroke of the <b>Stir</b> brush. The water
+                        pushed forward has to go somewhere, so it curls back round either side, rolling the tracers up into a pair of spirals.
+                    </div>
+                    <div class="text">
+                        <b>Jiggle</b> in the <b>Physics</b> section makes each tracer wander a little on its own too, like a molecule jostled by its neighbours, so a tight group slowly spreads out.
+                    </div>
+                </div>
+            </div>
+            <div class="pair">
+                <input class="lightbox_toggle" type="checkbox" id="slits" />
+                <label class="lightbox" for="slits">
+                    <picture><source srcset="assets/images/fluid-dynamics/slits_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/fluid-dynamics/slits.webp" alt="Dye streaks squeezed through two gaps in a wall, breaking up into swirls beyond it"></picture>
+                </label>
+                <div class="box">
+                    <h3>Dye and currents</h3>
+                    <div class="text">
+                        Turn on a <b>Current</b>, and the left edge becomes an inlet where water flows in at a steady speed, releasing streaks of dye, like smoke in a wind tunnel. The right edge is an outlet, which calms the water down before it wraps round to the
+                        inlet again. In <b>Two slits</b>, the current squeezes through two gaps as a pair of jets, which wobble, break up and mix.
+                    </div>
+                    <div class="text">
+                        Moving dye around a grid tends to blur it, a little more every step. To keep the streaks sharp, the model uses <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/MacCormack_method">MacCormack's method</a>: it moves the
+                        dye forward a step, then back again, and whatever didn't survive the round trip shows how much blurring it made, so it can take that back off.
+                    </div>
+                </div>
+            </div>
+            <div class="pair alt">
+                <input class="lightbox_toggle" type="checkbox" id="speed" />
+                <label class="lightbox" for="speed">
+                    <picture><source srcset="assets/images/fluid-dynamics/speed_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/fluid-dynamics/speed.webp" alt="The cylinder scene shaded by speed, with a slow, swirling wake behind the post"></picture>
+                </label>
+                <div class="box">
+                    <h3>Speed</h3>
+                    <div class="text">
+                        The <b>Show</b> section can shade the water by its speed instead of its dye: the stronger the colour, the faster. The water speeds up to squeeze round the sides of the post, and leaves a slow, swirling wake behind it.
+                    </div>
+                    <div class="text">
+                        <b>Swirl</b> (vorticity confinement) puts back some of the small swirls that the grid smooths away, and <b>Thickness</b> (viscosity) turns the water into something more like honey, which resists being stirred and soon settles.
+                    </div>
+                </div>
+            </div>
+            <div class="pair">
+                <input class="lightbox_toggle" type="checkbox" id="step" />
+                <label class="lightbox" for="step">
+                    <picture><source srcset="assets/images/fluid-dynamics/step_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/fluid-dynamics/step.webp" alt="A current flowing over a step, with slower water beneath it"></picture>
+                </label>
+                <div class="box">
+                    <h3>Accuracy</h3>
+                    <div class="text">
+                        Working out the pressure exactly would take far too long for every step, so the model improves its guess a set number of times instead. <b>Accuracy</b> in the <b>Physics</b> section is how many times. At 2 the water is noticeably squashy,
+                        and swirls fade quickly; around 16 is plenty to look right.
+                    </div>
+                    <div class="text">
+                        The original Java version stored each cell's velocity at its centre, as Stam's paper does. That's simple, but it leaves a checkerboard pattern that the pressure can't see, and so can't remove. This version stores the flow through each cell's
+                        edges instead (a staggered grid), which the pressure can balance exactly.
+                    </div>
+                </div>
+            </div>
+            <div class="pair alt">
+                <input class="lightbox_toggle" type="checkbox" id="javaOriginal" />
+                <label class="lightbox" for="javaOriginal">
+                    <img src="assets/images/fluid-dynamics/java_original.webp" alt="The original Java version, with tracers stirred into spirals">
+                </label>
+                <div class="box">
+                    <h3>The original</h3>
+                    <div class="text">
+                        The 2014 Java version: a grid of 100 by 100 cells, 20,000 tracers that all started in the middle, and a mouse to stir them with. It's still on GitHub, along with a runnable jar, in the
+                        <a target="_blank" rel="noopener noreferrer" href="https://github.com/SebastianTroy/Particle-Model-Java/tree/2D-only">2D-only branch</a>.
+                    </div>
+                </div>
+            </div>
+            <hr class="section_end">
+        </div>
+        <div class="footer">
+            <div class="footer_content">
+                <div class="small_text">Copyright © 2026 TroyDev - All Rights Reserved.</div>
+                <input type="checkbox" id="toolbar_hamburger_menu" style="display: none;">
+                <label for="toolbar_hamburger_menu" class="toolbar_buttons_toggle"></label>
+                <div class="toolbar_buttons_container" style="flex-direction: row;">
+                    <a class="toolbar_button" href="index.html">Projects</a>
+                    <hr>
+                    <a class="toolbar_button" href="recipes.html">Recipes</a>
+                    <hr>
+                    <a class="toolbar_button" href="contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

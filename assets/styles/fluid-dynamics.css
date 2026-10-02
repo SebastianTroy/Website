@@ -1,0 +1,10 @@
+/* The game's own viewport ratio; on phones its panel floats over the view, so give it more height */
+.godot_launcher {
+    aspect-ratio: 1142 / 725;
+}
+
+@media (max-width: 640px) {
+    .godot_launcher {
+        aspect-ratio: 3 / 4;
+    }
+}
