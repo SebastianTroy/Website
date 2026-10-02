@@ -77,6 +77,12 @@
                     <div class="text_left">Walls are hatched, so they stand out by pattern as well as colour. Draw them while paused if you like, then press <kbd>Space</kbd> to see how the water copes. <b>High contrast</b> in the <b>Show</b> section switches to black, white and grey.</div>
                 </div>
             </div>
+            <h2>Download it</h2>
+            <div class="box">
+                <div class="text">It also runs on its own, without a browser. Unzip the file for your system, keeping the two files in it together, then run "FluidDynamics.exe" on Windows or "FluidDynamics.x86_64" on Linux.</div>
+                <a class="try_it_now" href="assets/zips/FluidDynamics_windows.zip">FluidDynamics for Windows (zip, 39 MB)</a>
+                <a class="try_it_now" href="assets/zips/FluidDynamics_linux.zip">FluidDynamics for Linux (zip, 29 MB)</a>
+            </div>
             <h2>How it works</h2>
             <div class="pair">
                 <input class="lightbox_toggle" type="checkbox" id="clip" />
@@ -107,7 +113,7 @@
                         pushed forward has to go somewhere, so it curls back round either side, rolling the tracers up into a pair of spirals.
                     </div>
                     <div class="text">
-                        <b>Jiggle</b> in the <b>Physics</b> section makes each tracer wander a little on its own too, like a molecule jostled by its neighbours, so a tight group slowly spreads out.
+                        Each tracer also wanders a little on its own, like a molecule jostled by its neighbours, so a tight group slowly spreads out.
                     </div>
                 </div>
             </div>
@@ -151,8 +157,8 @@
                 <div class="box">
                     <h3>Accuracy</h3>
                     <div class="text">
-                        Working out the pressure exactly would take far too long for every step, so the model improves its guess a set number of times instead. <b>Accuracy</b> in the <b>Physics</b> section is how many times. At 2 the water is noticeably squashy,
-                        and swirls fade quickly; around 16 is plenty to look right.
+                        Working out the pressure exactly would take far too long for every step, so the model improves its guess a set number of times instead: 16, which is plenty to look right. With only a couple of tries the water would be noticeably squashy,
+                        and swirls would fade quickly.
                     </div>
                     <div class="text">
                         The original Java version stored each cell's velocity at its centre, as Stam's paper does. That's simple, but it leaves a checkerboard pattern that the pressure can't see, and so can't remove. This version stores the flow through each cell's
