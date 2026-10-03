@@ -520,3 +520,8 @@ kbd {
     overflow: hidden;
     cursor: pointer;
 }
+
+/* A Download it section, filled in by autoHeader.py from downloads-template.html. It adds no box of its own */
+.downloads {
+    display: contents;
+}

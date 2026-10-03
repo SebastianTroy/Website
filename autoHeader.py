@@ -5,6 +5,7 @@
 # ##################################################################### #
 
 import os
+import re
 # pip3 install requests
 import requests
 import aiohttp
@@ -26,6 +27,9 @@ web_link_tasks = []
 def main():
     print("Running autoHeader.py")
     headerString, toolbarString, footerString = getTemplateSections()
+    global downloadsTemplate
+    with open("downloads-template.html", "r") as downloadsFile:
+        downloadsTemplate = downloadsFile.read()
     processFiles(".", headerString, toolbarString, footerString)
     processFiles("./godot", headerString, toolbarString, footerString)
     processFiles("./recipes", headerString, toolbarString, footerString)
@@ -67,6 +71,8 @@ def processFiles(dir: str, headerString: str, toolbarString: str, footerString: 
 
                 if line == "    </head>\n" or line == "        </div>\n":
                     currentSection = Section.NONE
+
+            reconstructedDOM = fillDownloads(reconstructedDOM)
 
             if dir != ".":
                 reconstructedDOM = reconstructedDOM.replace('href="assets', 'href="../assets')
@@ -139,6 +145,22 @@ def filenameToTitle(filename: str) -> str:
         word = word[0].capitalize() + word[1:]
         title += word
     return title
+
+
+
+# Matches a downloads section, from its opening tag to the closing tag at the same indent
+DOWNLOADS_PATTERN = re.compile(r'^( *)<div class="downloads"([^>]*)>\n.*?^\1</div>\n', re.MULTILINE | re.DOTALL)
+
+# Rewrites each <div class="downloads" data-name=... data-title=... data-windows=... data-linux=...>
+# from downloads-template.html, so every page's Download it section looks the same.
+# A page only needs the opening and closing tags with those attributes, the contents are filled in.
+def fillDownloads(page: str) -> str:
+    def fill(match: re.Match) -> str:
+        indent = match.group(1)
+        values = dict(re.findall(r'data-([a-z]+)="([^"]*)"', match.group(2)))
+        filled = downloadsTemplate.format(**values)
+        return "".join(indent + line if line.strip() else line for line in filled.splitlines(keepends=True))
+    return DOWNLOADS_PATTERN.sub(fill, page)
 
 
 
