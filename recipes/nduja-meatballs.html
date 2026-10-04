@@ -36,11 +36,22 @@
         </div>
         <div class="content">
             <h2>Nduja Meatballs</h2>
-            
+            <div class="recipe_filters variant_switch js_enabled_only">
+                <input type="radio" name="variant" id="variant_original" class="variant_radio" data-variant="original" hidden checked>
+                <label for="variant_original" class="type_button">Original</label>
+                <input type="radio" name="variant" id="variant_with-gnocchi" class="variant_radio" data-variant="with-gnocchi" hidden>
+                <label for="variant_with-gnocchi" class="type_button">With gnocchi</label>
+            </div>
             <div class="box preamble">
                 <img src="../assets/images/recipes/nduja-meatballs.jpg">
                 <div class="recipe_variant" data-variant="original">
                     <div class="text">This one-pan dinner packs in plenty of protein. Serve with dollops of yogurt and lemon zest.</div>
+                    <div class="text">Serves 4 | Takes 40 mins</div>
+                    <div class="text">Original recipe: Waitrose & partners leaflet, June 2025</div>
+                    <div class="recipe_tags"><span class="tag recipe_type">main</span><span class="tag recipe_dietary">meat</span></div>
+                </div>
+                <div class="recipe_variant" data-variant="with-gnocchi" hidden>
+                    <div class="text">This one-pan dinner packs in plenty of protein, served with gnocchi instead of couscous. Serve with dollops of yogurt and lemon zest.</div>
                     <div class="text">Serves 4 | Takes 40 mins</div>
                     <div class="text">Original recipe: Waitrose & partners leaflet, June 2025</div>
                     <div class="recipe_tags"><span class="tag recipe_type">main</span><span class="tag recipe_dietary">meat</span></div>
@@ -69,6 +80,32 @@
                             <li><input type="checkbox" class="method_checkbox"><label>Heat 1tbsp oil in a large saute pan, or shallow casserole dish over a medium-high heat. Add the onion and meatballs, then fry, stirring regularly, for 8-10 minutes until the onion is soft and the meatballs are golden in places. Add the paprika and stir over the heat for a minute.</label></li>
                             <li><input type="checkbox" class="method_checkbox"><label>Add the tomatoes, breaking up any whole pieces with a wooden spoon. put 200ml water in the tomato can, swirl around to rinse out, then stir it into the pan along with the butter beans and honey. Season and simmer for 10-15 minutes over a medium heat until the sauce has thickened and the meatballs are cooked through with no pink meat. In a separate pan, heat the stock.</label></li>
                             <li><input type="checkbox" class="method_checkbox"><label>Meanwhile, put the couscous in a large bowl. Season with a pinch of salt, then pour in the hot chicken stock. Cover the bowl with a plate and leave to absorb for 6 minutes. Fluff up the couscous with a fork, drizzle with the remaining 1tbsp olive oil, then serve with the meatballs and a scattering of rough chopped parsley.</label></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="recipe_variant" data-variant="with-gnocchi" hidden>
+                <div class="pair">
+                    <div class="box">
+                        <h3>Ingredients</h3>
+                        <ul>
+                            <li><input type="checkbox" class="ingredient_checkbox"><label>2 tsp olive oil</label></li>
+                            <li><input type="checkbox" class="ingredient_checkbox"><label>1 onion, finely chopped</label></li>
+                            <li><input type="checkbox" class="ingredient_checkbox"><label>20 pork 'nduja meatballs (or regular pork)</label></li>
+                            <li><input type="checkbox" class="ingredient_checkbox"><label>½ tsp smoked paprika</label></li>
+                            <li><input type="checkbox" class="ingredient_checkbox"><label>400g can peeled tomatoes</label></li>
+                            <li><input type="checkbox" class="ingredient_checkbox"><label>400g can butter beans, drained and rinsed</label></li>
+                            <li><input type="checkbox" class="ingredient_checkbox"><label>½ tsp clear honey</label></li>
+                            <li><input type="checkbox" class="ingredient_checkbox"><label>500g fresh gnocchi</label></li>
+                            <li><input type="checkbox" class="ingredient_checkbox"><label>12g flatleaf parsley</label></li>
+                        </ul>
+                    </div>
+                    <div class="two_thirds box">
+                        <h3>Method</h3>
+                        <ol>
+                            <li><input type="checkbox" class="method_checkbox"><label>Heat 1tbsp oil in a large saute pan, or shallow casserole dish over a medium-high heat. Add the onion and meatballs, then fry, stirring regularly, for 8-10 minutes until the onion is soft and the meatballs are golden in places. Add the paprika and stir over the heat for a minute.</label></li>
+                            <li><input type="checkbox" class="method_checkbox"><label>Add the tomatoes, breaking up any whole pieces with a wooden spoon. put 200ml water in the tomato can, swirl around to rinse out, then stir it into the pan along with the butter beans and honey. Season and simmer for 10-15 minutes over a medium heat until the sauce has thickened and the meatballs are cooked through with no pink meat.</label></li>
+                            <li><input type="checkbox" class="method_checkbox"><label>Meanwhile, cook the gnocchi in a large pan of salted boiling water for 2-3 minutes, until they float to the surface. Drain, then stir into the sauce with the remaining 1tbsp olive oil, and serve with a scattering of rough chopped parsley.</label></li>
                         </ol>
                     </div>
                 </div>
