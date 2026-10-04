@@ -278,33 +278,63 @@ def createRecipePage(recipe: Recipe, show_uploaders: bool):
     with open("recipes/recipe-template.html", "r") as f:
         template: str = f.read()
 
-    tags = f'<span class="tag recipe_type">{recipe.original.type}</span>'
-    for dietary in recipe.original.dietary:
-        tags += f'<span class="tag recipe_dietary">{dietary}</span>'
-    if show_uploaders:
-        tags += f'<span class="tag recipe_uploaded_by">{recipe.original.uploaded_by}</span>'
+    # Each variant's text, ingredients and method go in a recipe_variant div,
+    # and recipes.js shows the one picked with the switch
+    variantSwitch: str = ""
+    if len(recipe.variants) > 1:
+        variantSwitch = '<div class="recipe_filters variant_switch js_enabled_only">\n'
+        for variant in recipe.variants:
+            checked: str = " checked" if variant is recipe.original else ""
+            variantSwitch += f'    <input type="radio" name="variant" id="variant_{variant.id}" class="variant_radio" data-variant="{variant.id}" hidden{checked}>\n'
+            variantSwitch += f'    <label for="variant_{variant.id}" class="type_button">{variant.name}</label>\n'
+        variantSwitch += "</div>"
 
-    ingredients = "<ul>\n"
-    for ingredient in recipe.original.ingredients:
-        ingredients += f'    <li><input type="checkbox" class="ingredient_checkbox"><label>{ingredient}</label></li>\n'
-    ingredients += "</ul>"
+    preambles: str = ""
+    lists: str = ""
+    for variant in recipe.variants:
+        hidden: str = "" if variant is recipe.original else " hidden"
 
-    method = "<ol>\n"
-    for step in recipe.original.method:
-        method += f'    <li><input type="checkbox" class="method_checkbox"><label>{step}</label></li>\n'
-    method += "</ol>"
+        tags = f'<span class="tag recipe_type">{variant.type}</span>'
+        for dietary in variant.dietary:
+            tags += f'<span class="tag recipe_dietary">{dietary}</span>'
+        if show_uploaders:
+            tags += f'<span class="tag recipe_uploaded_by">{variant.uploaded_by}</span>'
 
-    outputHtml: str = indentedFormat(template, 
+        source: str = f'<a href="{variant.source}" target="_blank" rel="noopener noreferrer">{variant.source}</a>' if variant.source.startswith("http://") or variant.source.startswith("https://") else variant.source
+        sourceHidden: str = " hidden" if not variant.source else ""
+
+        preambles += f'<div class="recipe_variant" data-variant="{variant.id}"{hidden}>\n'
+        preambles += f'    <div class="text">{variant.description}</div>\n'
+        preambles += f'    <div class="text">Serves {variant.serves} | Takes {variant.cook_time} mins</div>\n'
+        preambles += f'    <div class="text{sourceHidden}">Original recipe: {source}</div>\n'
+        preambles += f'    <div class="recipe_tags">{tags}</div>\n'
+        preambles += '</div>\n'
+
+        lists += f'<div class="recipe_variant" data-variant="{variant.id}"{hidden}>\n'
+        lists += '    <div class="pair">\n'
+        lists += '        <div class="box">\n'
+        lists += '            <h3>Ingredients</h3>\n'
+        lists += '            <ul>\n'
+        for ingredient in variant.ingredients:
+            lists += f'                <li><input type="checkbox" class="ingredient_checkbox"><label>{ingredient}</label></li>\n'
+        lists += '            </ul>\n'
+        lists += '        </div>\n'
+        lists += '        <div class="two_thirds box">\n'
+        lists += '            <h3>Method</h3>\n'
+        lists += '            <ol>\n'
+        for step in variant.method:
+            lists += f'                <li><input type="checkbox" class="method_checkbox"><label>{step}</label></li>\n'
+        lists += '            </ol>\n'
+        lists += '        </div>\n'
+        lists += '    </div>\n'
+        lists += '</div>\n'
+
+    outputHtml: str = indentedFormat(template,
         title = recipe.name,
         image = f"../assets/images/recipes/{recipe.filename}.jpg",
-        description = recipe.original.description,
-        serves = recipe.original.serves,
-        cook_time = recipe.original.cook_time,
-        source = f'<a href="{recipe.original.source}" target="_blank" rel="noopener noreferrer">{recipe.original.source}</a>' if recipe.original.source.startswith("http://") or recipe.original.source.startswith("https://") else recipe.original.source,
-        source_hidden = " hidden" if not recipe.original.source else "",
-        tags = tags,
-        ingredients = ingredients,
-        method = method
+        variant_switch = variantSwitch,
+        preambles = preambles,
+        lists = lists,
     )
 
     with open(f"recipes/{recipe.filename}.html", "w") as f:

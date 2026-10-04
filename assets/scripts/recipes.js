@@ -1,4 +1,28 @@
 attachListener(document, "DOMContentLoaded", function () {
+    // Recipe pages: show one variant at a time, and keep it in the URL hash so it can be linked to
+    const variantRadios = Array.from(document.querySelectorAll(".variant_radio"));
+    function showVariant(id) {
+        document.querySelectorAll(".recipe_variant").forEach(function (div) {
+            div.hidden = div.getAttribute("data-variant") !== id;
+        });
+    }
+    variantRadios.forEach(function (radio) {
+        radio.addEventListener("change", function () {
+            showVariant(radio.getAttribute("data-variant"));
+            history.replaceState(null, "", "#" + radio.getAttribute("data-variant"));
+        });
+    });
+    const linkedVariant = variantRadios.find(radio => "#" + radio.getAttribute("data-variant") === location.hash);
+    if (linkedVariant) {
+        linkedVariant.checked = true;
+        showVariant(linkedVariant.getAttribute("data-variant"));
+    }
+
+    // Everything below is for the recipes index page
+    if (!document.querySelector(".cards_container")) {
+        return;
+    }
+
     const typeFilters = Array.from(document.querySelectorAll(".type_radio"));
     const dietaryFilters = Array.from(document.querySelectorAll(".filter_checkbox"));
     const cards = Array.from(document.querySelectorAll(".cards_container > div")).filter(card => card.hasAttribute("data-tags"));

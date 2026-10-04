@@ -36,27 +36,12 @@
         </div>
         <div class="content">
             <h2>{title}</h2>
+            {variant_switch}
             <div class="box preamble">
                 <img src="{image}">
-                <div class="text">{description}</div>
-                <div class="text">Serves {serves} | Takes {cook_time} mins</div>
-                <div class="text{source_hidden}">Original recipe: {source}</div>
-                <div class="recipe_tags">{tags}</div>
+                {preambles}
             </div>
-            <div class="pair">
-                <div class="box">
-                    <h3>
-                        Ingredients
-                    </h3>
-                    {ingredients}
-                </div>
-                <div class="two_thirds box"">
-                    <h3>
-                        Method
-                    </h3>
-                    {method}
-                </div>
-            </div>
+            {lists}
             <hr class="section_end">
         </div>
         <div class="footer">

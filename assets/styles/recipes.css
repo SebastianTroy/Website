@@ -109,12 +109,14 @@
 
 .type_button:hover,
 .type_radio:checked + .type_button:hover,
+.variant_radio:checked + .type_button:hover,
 .sorting_button:hover,
 .sorting_radio:checked + .sorting_button:hover {
     border-color: color-mix(in srgb, var(--accent-color) 60%, var(--text-mute-color) 40%);
 }
 
 .type_radio:checked + .type_button,
+.variant_radio:checked + .type_button,
 .sorting_radio:checked + .sorting_button {
     background-color: var(--accent-color);
     color: var(--accent-text-color);
@@ -234,6 +236,20 @@
 
 .hidden {
     display: none !important;
+}
+
+/* The switch between a recipe's variants, and the parts of the page that change with it */
+.variant_switch {
+    justify-content: center;
+    padding-bottom: 16px;
+}
+
+.recipe_variant {
+    display: contents;
+}
+
+.recipe_variant[hidden] {
+    display: none;
 }
 
 /* For recipe pages we want to tweak a few divs to make the layout a little more compact */
