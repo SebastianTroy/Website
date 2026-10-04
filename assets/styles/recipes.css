@@ -240,16 +240,57 @@
 
 /* The switch between a recipe's variants, and the parts of the page that change with it */
 .variant_switch {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
     justify-content: center;
     padding-bottom: 16px;
 }
 
-.recipe_variant {
+.recipe_variant,
+.recipe_card {
     display: contents;
 }
 
-.recipe_variant[hidden] {
+/* .grid's padding for .text only reaches its own children */
+.recipe_card > .text {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.recipe_variant[hidden],
+.recipe_card[hidden] {
     display: none;
+}
+
+/* View Recipe, with a picker for the recipe's variants beside it */
+.split_button {
+    display: inline-flex;
+    align-items: stretch;
+}
+
+.variant_select {
+    appearance: none;
+    background-color: var(--accent-color);
+    color: var(--accent-text-color);
+    border: none;
+    border-left: 2px solid var(--background-color);
+    font-family: "Lato", arial, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0 30px 0 14px;
+    cursor: pointer;
+    /* A small ▾, as the picker's arrow */
+    background-image: linear-gradient(45deg, transparent 50%, var(--accent-text-color) 50%), linear-gradient(135deg, var(--accent-text-color) 50%, transparent 50%);
+    background-position: right 16px center, right 11px center;
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+}
+
+.variant_select option {
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
 /* For recipe pages we want to tweak a few divs to make the layout a little more compact */

@@ -154,12 +154,15 @@ def parseRecipeMarkdown(filePath: str) -> Recipe:
 
 # Uses some templates and a Recipe to generate a block of HTML
 # that can be inserted into a standard "grid" div, where "grid"
-# is a class used in recipes.html to layout the recipe cards
+# is a class used in recipes.html to layout the recipe cards.
+# Each recipe is a recipe_group holding one card per variant. When there's
+# more than one, the View Recipe button gets a variant picker, and recipes.js
+# shows one card at a time.
 def generateRecipeCardGrid(recipes: list[Recipe], show_uploaders: bool) -> str:
     recipeCardTemplate: str = """
-<div data-tags="{dataTags}" data-cook-time="{cook_time}" data-serves="{serves}">
+<div class="recipe_card" data-variant="{variantId}" data-tags="{dataTags}" data-cook-time="{cook_time}" data-serves="{serves}"{hidden}>
     <h3>{name}</h3>
-    <a class="image_link" href="recipes/{filename}.html">
+    <a class="image_link" href="recipes/{filename}.html{link}">
         <img src="assets/images/recipes/{thumbnail}.jpg" alt="{name}">
     </a>
     <div class="text">{description}</div>
@@ -167,34 +170,53 @@ def generateRecipeCardGrid(recipes: list[Recipe], show_uploaders: bool) -> str:
         {visualTags}
     </div>
     <h5>Serves {serves} | Takes {cook_time} mins</h5>
-    <a class="more_info_button" href="recipes/{filename}.html">View Recipe</a>
+    {viewButton}
 </div>
 """
+    viewButtonTemplate: str = '<a class="more_info_button" href="recipes/{filename}.html{link}">View Recipe</a>'
+    splitButtonTemplate: str = """
+<div class="split_button">
+    {viewButton}
+    <select class="variant_select js_enabled_only" aria-label="Variant">
+        {options}
+    </select>
+</div>
+"""
+    optionTemplate: str = '<option value="{variantId}" data-name="{variantName}"{selected}>{variantName}</option>'
     tagSpanTemplate: str = '<span class="tag {tag_type}">{tag}</span>'
 
-    html: str = ""
+    groups: str = ""
     recipes.sort(key=lambda r: r.name) # Sort recipes alphabetically by name
     for recipe in recipes:
-        # concatenate the type and dietary list lower case class names
-        # These will be used to toggle visibility
-        dataTags: str = recipe.original.type
-        if recipe.original.dietary:
-            dataTags += " " + " ".join(recipe.original.dietary)
-        dataTags = dataTags.lower()
-        visualTags: str = tagSpanTemplate.format(tag=recipe.original.type, tag_type="recipe_type")
-        dietaryTags: list[str] = recipe.original.dietary
-        dietaryTags.sort()
-        for dietary in dietaryTags:
-            visualTags += tagSpanTemplate.format(tag=dietary, tag_type="recipe_dietary")
-        if show_uploaders:
-            visualTags += tagSpanTemplate.format(tag=f"{recipe.original.uploaded_by}", tag_type="recipe_uploaded_by")
-        html += recipeCardTemplate.format(dataTags=dataTags, name=recipe.name, filename=recipe.filename, thumbnail=recipe.filename, description=recipe.original.description, visualTags=visualTags, serves=recipe.original.serves, cook_time=recipe.original.cook_time)
+        cards: str = ""
+        for variant in recipe.variants:
+            isOriginal: bool = variant is recipe.original
+            link: str = "" if isOriginal else f"#{variant.id}"
+            # concatenate the type and dietary list lower case class names
+            # These will be used to toggle visibility
+            dataTags: str = variant.type
+            if variant.dietary:
+                dataTags += " " + " ".join(variant.dietary)
+            dataTags = dataTags.lower()
+            visualTags: str = tagSpanTemplate.format(tag=variant.type, tag_type="recipe_type")
+            dietaryTags: list[str] = sorted(variant.dietary)
+            for dietary in dietaryTags:
+                visualTags += tagSpanTemplate.format(tag=dietary, tag_type="recipe_dietary")
+            if show_uploaders:
+                visualTags += tagSpanTemplate.format(tag=f"{variant.uploaded_by}", tag_type="recipe_uploaded_by")
+            viewButton: str = viewButtonTemplate.format(filename=recipe.filename, link=link)
+            if len(recipe.variants) > 1:
+                options: str = "\n".join(optionTemplate.format(variantId=other.id, variantName=other.name, selected=" selected" if other is variant else "") for other in recipe.variants)
+                viewButton = indentedFormat(splitButtonTemplate, viewButton=viewButton, options=options).strip()
+            cards += "\n" + indentedFormat(recipeCardTemplate, variantId=variant.id, dataTags=dataTags, hidden="" if isOriginal else " hidden", name=recipe.name, filename=recipe.filename, link=link, thumbnail=recipe.filename, description=variant.description, visualTags=visualTags, serves=variant.serves, cook_time=variant.cook_time, viewButton=viewButton).strip()
 
-    return html
+        groups += '\n<div class="recipe_group">' + cards.replace("\n", "\n    ").rstrip() + "\n</div>\n"
+
+    return groups
 
 
 def generateTypeFilterControls(recipes: list[Recipe]) -> str:
-    types: list[str] = list(set(recipe.original.type for recipe in recipes))
+    types: list[str] = list(set(variant.type for recipe in recipes for variant in recipe.variants))
     types.sort()
     filterTemplate: str = """
 <input type="radio" name="type_filter" id="filter_{type}" class="type_radio" data-type="{type}" hidden {checked}>
@@ -203,12 +225,12 @@ def generateTypeFilterControls(recipes: list[Recipe]) -> str:
     html: str = ""
     html += filterTemplate.format(type="all", count=len(recipes), checked="checked")
     for type in types:
-        count = sum(type == recipe.original.type for recipe in recipes)
+        count = sum(any(type == variant.type for variant in recipe.variants) for recipe in recipes)
         html += filterTemplate.format(type=type, count=count, checked="")
     return html
 
 def generateDietaryFilterControls(recipes: list[Recipe]) -> str:
-    dietaryOptions: list[str] = list(set(dietary for recipe in recipes for dietary in recipe.original.dietary))
+    dietaryOptions: list[str] = list(set(dietary for recipe in recipes for variant in recipe.variants for dietary in variant.dietary))
     dietaryOptions.sort()
     filterTemplate: str = """
 <input type="checkbox" id="filter_{dietary}" class="filter_checkbox" data-dietary="{dietary}" hidden>
@@ -216,13 +238,13 @@ def generateDietaryFilterControls(recipes: list[Recipe]) -> str:
 """
     html: str = ""
     for dietary in dietaryOptions:
-        count = sum(dietary in recipe.original.dietary for recipe in recipes)
+        count = sum(any(dietary in variant.dietary for variant in recipe.variants) for recipe in recipes)
         html += filterTemplate.format(dietary=dietary, count=count)
     return html
 
 
 def generateCookTimeFilterControls(recipes: list[Recipe]) -> str:
-    maxCookTime: int = max(recipe.original.cook_time for recipe in recipes)
+    maxCookTime: int = max(variant.cook_time for recipe in recipes for variant in recipe.variants)
     filterTemplate: str = """
 <div class="slider_container">
     <label for="cooktime_slider" class="text slider_label">Takes up to <span id="cooktime_count">{max}</span> (mins)</label>
@@ -234,7 +256,7 @@ def generateCookTimeFilterControls(recipes: list[Recipe]) -> str:
 
 
 def generateServesFilterControls(recipes: list[Recipe]) -> str:
-    maxServes: int = max(recipe.original.serves for recipe in recipes)
+    maxServes: int = max(variant.serves for recipe in recipes for variant in recipe.variants)
     filterTemplate: str = """
 <div class="slider_container">
     <label for="serves_slider" class="text slider_label">Serves at least <span id="serves_count">1</span></label>
@@ -349,7 +371,7 @@ if __name__ == "__main__":
             print(f"Parsing {filename}...")
             recipes.append(parseRecipeMarkdown(os.path.join(recipesDir, filename)))
 
-    unique_uploader_count = len(set(recipe.original.uploaded_by for recipe in recipes))
+    unique_uploader_count = len(set(variant.uploaded_by for recipe in recipes for variant in recipe.variants))
     show_uploaders = unique_uploader_count > 1
     
     createRecipeIndexPage(recipes, show_uploaders)

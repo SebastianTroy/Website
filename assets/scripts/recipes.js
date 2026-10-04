@@ -1,5 +1,13 @@
 attachListener(document, "DOMContentLoaded", function () {
-    // Recipe pages: show one variant at a time, and keep it in the URL hash so it can be linked to
+    if (!document.querySelector(".cards_container")) {
+        setUpRecipePage();
+    } else {
+        setUpRecipesIndex();
+    }
+});
+
+// Recipe pages: show one variant at a time, and keep it in the URL hash so it can be linked to
+function setUpRecipePage() {
     const variantRadios = Array.from(document.querySelectorAll(".variant_radio"));
     function showVariant(id) {
         document.querySelectorAll(".recipe_variant").forEach(function (div) {
@@ -17,16 +25,15 @@ attachListener(document, "DOMContentLoaded", function () {
         linkedVariant.checked = true;
         showVariant(linkedVariant.getAttribute("data-variant"));
     }
+}
 
-    // Everything below is for the recipes index page
-    if (!document.querySelector(".cards_container")) {
-        return;
-    }
-
+// The recipes index page: filters, sorting, and each recipe's variant switch
+function setUpRecipesIndex() {
     const typeFilters = Array.from(document.querySelectorAll(".type_radio"));
     const dietaryFilters = Array.from(document.querySelectorAll(".filter_checkbox"));
-    const cards = Array.from(document.querySelectorAll(".cards_container > div")).filter(card => card.hasAttribute("data-tags"));
-    const placeholderCards = Array.from(document.querySelectorAll(".cards_container > div")).filter(card => !card.hasAttribute("data-tags"));
+    // Each of these is a recipe_group, holding one recipe_card per variant
+    const cards = Array.from(document.querySelectorAll(".cards_container > div")).filter(card => card.classList.contains("recipe_group"));
+    const placeholderCards = Array.from(document.querySelectorAll(".cards_container > div")).filter(card => !card.classList.contains("recipe_group"));
     const cardsContainer = document.querySelector(".cards_container");
 
     function hideFilteredCards() {
@@ -39,34 +46,66 @@ attachListener(document, "DOMContentLoaded", function () {
         const maxCookTime = parseInt(cookTimeSlider.value, 10);
         const servesAtLeast = parseInt(servesSlider.value, 10);
 
-        cards.forEach(function (card) {
-            let hidden = false;
+        cards.forEach(function (group) {
+            const variantCards = Array.from(group.querySelectorAll(".recipe_card"));
+            const passing = variantCards.filter(card => filteredOutBecause(card) === "");
 
+            // Variants that don't pass are disabled in the picker, with the reason,
+            // and if the one showing doesn't pass, the first one that does is shown instead
+            group.querySelectorAll(".variant_select option").forEach(function (option) {
+                const reason = filteredOutBecause(group.querySelector('.recipe_card[data-variant="' + option.value + '"]'));
+                option.disabled = reason !== "";
+                option.textContent = option.getAttribute("data-name") + (reason !== "" ? " (" + reason + ")" : "");
+            });
+            if (passing.length > 0 && !passing.includes(shownCard(group))) {
+                showCard(group, passing[0].getAttribute("data-variant"));
+            }
+
+            group.classList.toggle('hidden', passing.length === 0);
+        });
+
+        // Why a card doesn't pass the filters, or "" if it does
+        function filteredOutBecause(card) {
             const cardTags = card.getAttribute("data-tags").split(" ");
+            const hiddenTags = cardTags.filter(tag => hiddenDietary.includes(tag));
             if (visibletype !== "all" && !cardTags.includes(visibletype)) {
-                hidden = true;
-            } else if (cardTags.some(tag => hiddenDietary.includes(tag))) {
-                hidden = true;
+                return "not a " + visibletype;
+            } else if (hiddenTags.length > 0) {
+                return hiddenTags.join(", ");
+            } else if (parseInt(card.getAttribute("data-cook-time"), 10) > maxCookTime) {
+                return "takes " + card.getAttribute("data-cook-time") + " mins";
+            } else if (parseInt(card.getAttribute("data-serves"), 10) < servesAtLeast) {
+                return "serves " + card.getAttribute("data-serves");
             }
+            return "";
+        }
+    }
 
-            const cookTime = parseInt(card.getAttribute('data-cook-time'), 10);
-            if (cookTime > maxCookTime) {
-                hidden = true;
-            }
+    function shownCard(group) {
+        return group.querySelector(".recipe_card:not([hidden])");
+    }
 
-            const serves = parseInt(card.getAttribute('data-serves'), 10);
-            if (serves < servesAtLeast) {
-                hidden = true;
-            }
-
-            card.classList.toggle('hidden', hidden);
+    function showCard(group, variantId) {
+        group.querySelectorAll(".recipe_card").forEach(function (card) {
+            card.hidden = card.getAttribute("data-variant") !== variantId;
+        });
+        group.querySelectorAll(".variant_select").forEach(function (select) {
+            select.value = variantId;
         });
     }
 
+    cards.forEach(function (group) {
+        group.querySelectorAll(".variant_select").forEach(function (select) {
+            select.addEventListener("change", function () {
+                showCard(group, select.value);
+            });
+        });
+    });
+
     function sortCardsByCookTime(cards, ascending) {
         const sortedCards = cards.sort((a, b) => {
-            const cookTimeA = parseInt(a.getAttribute("data-cook-time"), 10);
-            const cookTimeB = parseInt(b.getAttribute("data-cook-time"), 10);
+            const cookTimeA = parseInt(shownCard(a).getAttribute("data-cook-time"), 10);
+            const cookTimeB = parseInt(shownCard(b).getAttribute("data-cook-time"), 10);
             return ascending ? cookTimeA - cookTimeB : cookTimeB - cookTimeA;
         });
 
@@ -75,8 +114,8 @@ attachListener(document, "DOMContentLoaded", function () {
 
     function sortCardsByServes(cards, ascending) {
         const sortedCards = cards.sort((a, b) => {
-            const servesA = parseInt(a.getAttribute("data-serves"), 10);
-            const servesB = parseInt(b.getAttribute("data-serves"), 10);
+            const servesA = parseInt(shownCard(a).getAttribute("data-serves"), 10);
+            const servesB = parseInt(shownCard(b).getAttribute("data-serves"), 10);
             return ascending ? servesA - servesB : servesB - servesA;
         });
 
@@ -185,4 +224,4 @@ attachListener(document, "DOMContentLoaded", function () {
         slider.addEventListener('input', updateSliderBackground);
         updateSliderBackground();
     });
-});
+}
