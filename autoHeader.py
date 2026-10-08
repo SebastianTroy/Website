@@ -197,8 +197,20 @@ def getTemplateSections() -> tuple[str, str, str]:
 
 
 def checkLocalLink(link: str, linkLocation: str):
-    if not os.path.exists(link):
+    path, _, fragment = link.partition("#")
+    if not os.path.exists(path):
         print(" >>> " + linkLocation + " Broken internal link: " + link)
+    elif fragment and not linkTargetExists(path, fragment):
+        print(" >>> " + linkLocation + " Broken internal link, no such anchor or variant: " + link)
+
+
+# A fragment can name an element's id, or a recipe variant, which recipes.js shows when the hash matches a .variant_radio's data-variant
+def linkTargetExists(path: str, fragment: str) -> bool:
+    if os.path.isdir(path):
+        path = os.path.join(path, "index.html")
+    with open(path, "r") as page:
+        html = page.read()
+    return re.search('id="' + re.escape(fragment) + '"', html) is not None or re.search('class="variant_radio" data-variant="' + re.escape(fragment) + '"', html) is not None
 
 
 
