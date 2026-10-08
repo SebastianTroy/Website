@@ -53,25 +53,56 @@
             <div class="pair">
                 <div class="box">
                     <h3>Mouse and keyboard</h3>
-                    <div class="text_left">Each mouse button does the action chosen for it in the <b>Mouse</b> section: Select plant, Add seed or Remove plants. It acts on a click and all along a drag. By default, left selects and right removes.</div>
+                    <div class="text_left">The tool buttons at the view's top right choose what the left mouse button does. The right button always selects. Press <b>Help</b> (or <kbd>H</kbd>) in the game for the full list.</div>
                     <table class="controls_table">
-                        <tr><td>The right button's action</td><td><kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + click, or hold <kbd>X</kbd></td></tr>
-                        <tr><td>The left button's action</td><td>Hold <kbd>Z</kbd></td></tr>
-                        <tr><td>Pan</td><td>Middle drag, <kbd>Alt</kbd>/<kbd>Option</kbd> + drag, two-finger drag, or <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> / arrow keys</td></tr>
-                        <tr><td>Zoom</td><td>Mouse wheel, pinch, <kbd>+</kbd> and <kbd>-</kbd>, or the buttons at the view's top right</td></tr>
-                        <tr><td>Fit the world to the view</td><td><kbd>F</kbd>, or the button at the view's top right</td></tr>
+                        <tr><td>Tools: Select, Move, Add seed, Remove</td><td><kbd>S</kbd> <kbd>M</kbd> <kbd>A</kbd> <kbd>R</kbd></td></tr>
+                        <tr><td>Select, without a right button</td><td><kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + click, or hold <kbd>X</kbd></td></tr>
+                        <tr><td>Use the tool under the cursor</td><td>Hold <kbd>Z</kbd></td></tr>
+                        <tr><td>Pan</td><td>Middle drag, <kbd>Alt</kbd>/<kbd>Option</kbd> + drag, two-finger drag, or the arrow keys</td></tr>
+                        <tr><td>Zoom</td><td>Mouse wheel, pinch, <kbd>+</kbd> and <kbd>-</kbd>, or the buttons at the view's bottom right</td></tr>
+                        <tr><td>Fit the world to the view</td><td><kbd>F</kbd></td></tr>
                         <tr><td>Pause or resume</td><td><kbd>Space</kbd></td></tr>
                         <tr><td>Speed</td><td><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> for 10, 250 and 1,000 ticks a second, <kbd>4</kbd> for as fast as possible</td></tr>
-                        <tr><td>Hide the side panels</td><td>The buttons at the view's top corners</td></tr>
+                        <tr><td>Step 1, 10 or 100 ticks, while paused</td><td><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></td></tr>
+                        <tr><td>New simulation</td><td><kbd>N</kbd></td></tr>
+                        <tr><td>Hide the side panels</td><td>The handles halfway down the view's sides</td></tr>
                     </table>
                 </div>
+                <div class="box">
+                    <h3>Tools</h3>
+                    <input class="lightbox_toggle" type="checkbox" id="tools" />
+                    <label class="lightbox" for="tools">
+                        <picture><source srcset="assets/images/evolving-plants/tools_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/evolving-plants/tools.webp"></picture>
+                    </label>
+                    <div class="text_left">The left panel follows the tool. <b>Add seed</b> picks a genome, and <b>Plant all</b> seeds the whole world evenly. <b>Remove</b> kills a plant, or every plant in a box you drag, and <b>Clear all</b> empties the world. <b>Settings</b> on the right holds the simulation's constants, with Default, Low wind and High wind presets.</div>
+                </div>
+            </div>
+            <div class="pair">
                 <div class="box">
                     <h3>Looking closer</h3>
                     <input class="lightbox_toggle" type="checkbox" id="selectedPlant" />
                     <label class="lightbox" for="selectedPlant">
                         <picture><source srcset="assets/images/evolving-plants/selected_plant_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/evolving-plants/selected_plant.webp"></picture>
                     </label>
-                    <div class="text_left">Select a plant to see its details in the info panel. On narrow screens the panels float over the view, folded away behind the buttons in its top corners.</div>
+                    <div class="text_left">Select a plant to see its details and genes in the left panel, and save its genome to plant again later.</div>
+                </div>
+                <div class="box">
+                    <h3>Genome builder</h3>
+                    <input class="lightbox_toggle" type="checkbox" id="genomeBuilder" />
+                    <label class="lightbox" for="genomeBuilder">
+                        <picture><source srcset="assets/images/evolving-plants/genome_builder_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/evolving-plants/genome_builder.webp"></picture>
+                    </label>
+                    <div class="text_left"><b>Edit…</b>, beside Add seed's genome or under a selected plant, opens a builder. Type a shape and set the genes, and the preview draws the plant it grows, a stage at a time. Plant it, or <b>Save as</b> a new genome.</div>
+                </div>
+            </div>
+            <div class="pair alt">
+                <input class="lightbox_toggle" type="checkbox" id="graphs" />
+                <label class="lightbox" for="graphs">
+                    <picture><source srcset="assets/images/evolving-plants/graphs_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/evolving-plants/graphs.webp"></picture>
+                </label>
+                <div class="box">
+                    <h3>Graphs</h3>
+                    <div class="text_left">The bar under the view unfolds into graphs of the run so far: the number of plants, their mean height and leaves, their leaf colour (red, green and blue told apart by solid, dashed and dotted lines, each labelled), and the time each tick takes. Turn <b>Record</b> off for the most speed.</div>
                 </div>
             </div>
             <div class="downloads" data-name="EvolvingPlants" data-title="Evolving Plants" data-windows="39 MB" data-linux="30 MB">
@@ -149,11 +180,16 @@
                 <div class="box">
                     <h3>Colour Niches</h3>
                     <div class="text">
-                        As there is a cap on how much energy a leaf can extract from the light when photosynthesising, we see different species evolving to take advantage of the light not absorbed by the upper canopy. Here, 150,000 ticks in, a green and orange canopy
-                        grows over a blue and violet understory, with the shadows becoming progressively darker as each species extracts a different subset of the available light. From this point on the upper canopy colour may drift over time via <a
+                        As there is a cap on how much energy a leaf can extract from the light when photosynthesising, we see different species evolving to take advantage of the light not absorbed by the upper canopy. Here, 150,000 ticks in, a magenta and orange canopy grows over a yellow-green and cyan
+                        layer, with small plants beneath, with the shadows becoming progressively darker as each species extracts a different subset of the available light. From this point on the upper canopy colour may drift over time via <a
                             target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/Genetic_drift">genetic drift</a> and
                         smaller species will adapt their colours via <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/Natural_selection">natural selection</a> to stay different from the taller plants.
                     </div>
+                    <input class="lightbox_toggle" type="checkbox" id="lightNichesSplit" />
+                    <label class="lightbox" for="lightNichesSplit">
+                        <picture><source srcset="assets/images/evolving-plants/light_niches_split_light.webp" media="(prefers-color-scheme: light)"><img src="assets/images/evolving-plants/light_niches_split.webp"></picture>
+                    </label>
+                    <div class="text">To show the idea clearly, here are three designed plants, with evolution turned off, after 20,000 ticks: a cyan layer on top, magenta in the middle and yellow at the bottom. Each absorbs one colour channel that the layers above let through. Left: the plants. Right: the light reaching each point, from white sky to near-dark at the ground.</div>
                 </div>
             </div>
             <div class="pair alt">
@@ -164,8 +200,8 @@
                 <div class="box">
                     <h3>Branching</h3>
                     <div class="text">
-                        Plants aren't limited to a single stem with a leaf at the top; their genes can also describe branches, each with leaves of their own. Branching rarely evolves from the default starting plants within a reasonable run, so this world
-                        was grown from "TallBunch", tall plants with two leaves each. It is one of the saved genomes you can pick in <b>Genetics</b>, then press <b>Reset simulation</b> to try it.
+                        Plants aren't limited to a single stem with a leaf at the top. Each plant's shape is written in a short text genome: <code>|</code> grows a stem, <code>/</code> and <code>\</code> turn, and <code>[</code>&hellip;<code>]</code> starts a branch.
+                        This is a designed genome, Acacia, growing in the simulation 60,000 ticks in. It's one of the genomes you can plant with <b>Add seed</b>. Stems thicken to carry their load, and thin ones pay a cost in the wind, so tall spindly poles no longer win every run.
                     </div>
                 </div>
             </div>
