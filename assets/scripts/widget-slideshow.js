@@ -1,6 +1,10 @@
 let backgroundColor = "black";
 let highlightColor = "white";
 
+// Respect the "reduce motion" accessibility setting: no Flappy Bird, and everything else slower
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const motionScale = reducedMotion ? 0.25 : 1;
+
 // Catch up on at most this many ticks per frame, so a slow frame can't snowball
 const maxTicksPerFrame = 5;
 
@@ -133,7 +137,7 @@ class Boids extends Widget {
         this.boidShape.lineTo(-boidBaseLength / 2, boidHeight / 2);
         this.boidShape.closePath();
 
-        this.boidSpeed = Math.min(this.context.canvas.width, this.context.canvas.height) / 50;
+        this.boidSpeed = (Math.min(this.context.canvas.width, this.context.canvas.height) / 50) * motionScale;
         this.boidPerception = boidHeight * 2.5;
         this.boidAvoidance = this.boidPerception / 5;
 
@@ -399,12 +403,13 @@ class BouncingConnectedBalls extends Widget {
         this.connectionDistance = Math.min(this.context.canvas.width, this.context.canvas.height) / 5;
         let ballArea = Math.PI * this.ballRadius ** 2;
         let ballCount = ((this.context.canvas.width * this.context.canvas.height) / ballArea) * this.ballDensity;
+        let maxSpeed = (Math.min(this.context.canvas.width, this.context.canvas.height) / 100) * motionScale;
         this.balls = Array.from({ length: ballCount }, () => {
             return {
                 x: Math.random() * this.context.canvas.width,
                 y: Math.random() * this.context.canvas.height,
-                xSpeed: (Math.random() - 0.5) * (Math.min(this.context.canvas.width, this.context.canvas.height) / 100),
-                ySpeed: (Math.random() - 0.5) * (Math.min(this.context.canvas.width, this.context.canvas.height) / 100),
+                xSpeed: (Math.random() - 0.5) * maxSpeed,
+                ySpeed: (Math.random() - 0.5) * maxSpeed,
             };
         });
     }
@@ -477,11 +482,13 @@ attachListener(document, "DOMContentLoaded", function () {
     const context = canvas.getContext("2d");
 
     let widgets = [
-        new FlappyBird(1000 / 60, context), //
-        new ConwaysGameOfLife(1000 / 5, context),
+        new ConwaysGameOfLife(1000 / (reducedMotion ? 1 : 5), context), //
         new Boids(1000 / 60, context),
         new BouncingConnectedBalls(1000 / 60, context),
     ];
+    if (!reducedMotion) {
+        widgets.push(new FlappyBird(1000 / 60, context));
+    }
     // shuffle widgets
     widgets = widgets
         .map((widget) => ({ widget, weight: Math.random() })) // map each widget to a random weight
