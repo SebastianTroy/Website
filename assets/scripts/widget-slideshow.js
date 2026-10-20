@@ -1,8 +1,12 @@
 let backgroundColor = "black";
 let highlightColor = "white";
 
+// Catch up on at most this many ticks per frame, so a slow frame can't snowball
+const maxTicksPerFrame = 5;
+
 class Widget {
-    constructor(millisecondsPerTick, context) {
+    constructor(name, millisecondsPerTick, context) {
+        this.name = name;
         this.lastTime = 0.0;
         this.context = context;
         this.millisecondsPerTick = millisecondsPerTick || 1000 / 60;
@@ -29,9 +33,10 @@ class Widget {
     }
 
     nextFrame(deltaTime) {
-        this.lastTime += deltaTime;
-        if (this.lastTime > this.millisecondsPerTick) {
-            this.lastTime = 0;
+        // Keep the leftover time, so the speed doesn't depend on the frame rate
+        this.lastTime = Math.min(this.lastTime + deltaTime, this.millisecondsPerTick * maxTicksPerFrame);
+        while (this.lastTime >= this.millisecondsPerTick) {
+            this.lastTime -= this.millisecondsPerTick;
             this.tick();
         }
     }
@@ -39,12 +44,13 @@ class Widget {
 
 class ConwaysGameOfLife extends Widget {
     constructor(millisecondsPerTick, context, cellsPerVmin, proportionAliveOnReset, cellColor) {
-        super(millisecondsPerTick, context);
+        super("Conway's Game of Life", millisecondsPerTick, context);
         this.cells = [];
 
         this.cellsPerVmin = cellsPerVmin || 50;
         this.proportionAliveOnReset = proportionAliveOnReset || 0.1;
-        this.cellColor = cellColor || highlightColor;
+        // Colours left unset follow the theme, which can change while the page is open
+        this.cellColor = cellColor;
     }
 
     reset() {
@@ -60,7 +66,7 @@ class ConwaysGameOfLife extends Widget {
     draw() {
         this.context.fillStyle = backgroundColor;
         this.context.fillRect(0, 0, this.context.canvas.width, this.context.canvas.height);
-        this.context.fillStyle = this.cellColor;
+        this.context.fillStyle = this.cellColor || highlightColor;
         for (let x = 0; x < this.gridWidth; x++) {
             for (let y = 0; y < this.gridHeight; y++) {
                 if (this.cells[x][y]) {
@@ -106,7 +112,7 @@ class ConwaysGameOfLife extends Widget {
 
 class Boids extends Widget {
     constructor(millisecondsPerTick, context, boidColour, boidDensity) {
-        super(millisecondsPerTick, context);
+        super("Boids", millisecondsPerTick, context);
         this.boids = [];
         this.boidDensity = boidDensity || 0.05;
         this.boidSpeed = 0;
@@ -114,7 +120,7 @@ class Boids extends Widget {
         this.boidAvoidance = 10;
         this.boidAlignment = 0.2;
         this.boidCohesion = 0.001;
-        this.boidColour = boidColour || highlightColor;
+        this.boidColour = boidColour;
         this.boidShape = {};
     }
 
@@ -147,7 +153,7 @@ class Boids extends Widget {
     draw() {
         this.context.fillStyle = backgroundColor;
         this.context.fillRect(0, 0, this.context.canvas.width, this.context.canvas.height);
-        this.context.fillStyle = this.boidColour;
+        this.context.fillStyle = this.boidColour || highlightColor;
         for (let boid of this.boids) {
             this.context.save();
             this.context.translate(boid.x, boid.y);
@@ -234,7 +240,7 @@ class FlappyBird extends Widget {
     };
 
     constructor(millisecondsPerTick, context) {
-        super(millisecondsPerTick, context);
+        super("Flappy Bird", millisecondsPerTick, context);
         this.bird = {};
         this.pipes = [];
         this.pipeWidth = 0;
@@ -257,7 +263,7 @@ class FlappyBird extends Widget {
         this.gravity = this.jumpStrength / 10;
 
         // Adjust pipeWidth, pipeSpacing, and pipeSpeed based on canvas width
-        this.pipeWidth = Math.min(50, this.context.canvas.width / 20);
+        this.pipeWidth = Math.min(50 * window.devicePixelRatio, this.context.canvas.width / 20);
         this.pipeSpacing = this.context.canvas.width / 10;
 
         // Base the pipe speed on the pipe spacing, so it is consistent across different canvas sizes
@@ -335,6 +341,9 @@ class FlappyBird extends Widget {
             if (this.bird.y > this.context.canvas.height || this.bird.y < 0) {
                 this.reset();
             }
+            if (!pipe) {
+                return;
+            }
             // if the bird is colliding with pipe, reset
             const pipeCollideLeft = pipe.x;
             const pipeCollideRight = pipe.x + pipe.width;
@@ -374,14 +383,14 @@ class FlappyBird extends Widget {
     }
 }
 
-// This class features a number of bouncing balls, that are drawn with lines connecting the nearest three balls
+// This class features a number of bouncing balls, with lines connecting each pair of balls that are close together
 class BouncingConnectedBalls extends Widget {
     constructor(millisecondsPerTick, context, ballDensity, ballColour, lineColour) {
-        super(millisecondsPerTick, context);
+        super("Connected Balls", millisecondsPerTick, context);
         this.ballDensity = ballDensity || 0.01;
         this.ballRadius = 0;
-        this.ballColour = ballColour || highlightColor;
-        this.lineColour = lineColour || highlightColor;
+        this.ballColour = ballColour;
+        this.lineColour = lineColour;
         this.balls = [];
     }
 
@@ -404,23 +413,24 @@ class BouncingConnectedBalls extends Widget {
         this.context.fillStyle = backgroundColor;
         this.context.fillRect(0, 0, this.context.canvas.width, this.context.canvas.height);
         // Draw the connections first
-        this.context.strokeStyle = this.lineColour;
+        this.context.strokeStyle = this.lineColour || highlightColor;
         this.context.lineWidth = this.ballRadius / 4;
+        this.context.beginPath();
         for (let i = 0; i < this.balls.length; i++) {
             let ball = this.balls[i];
-            for (let j = 0; j < this.balls.length; j++) {
+            // Start after i, so each pair is only connected once
+            for (let j = i + 1; j < this.balls.length; j++) {
                 let otherBall = this.balls[j];
                 let distanseSquared = (ball.x - otherBall.x) ** 2 + (ball.y - otherBall.y) ** 2;
                 if (distanseSquared < this.connectionDistance ** 2) {
-                    this.context.beginPath();
                     this.context.moveTo(ball.x, ball.y);
                     this.context.lineTo(otherBall.x, otherBall.y);
-                    this.context.stroke();
                 }
             }
         }
+        this.context.stroke();
         // Draw the balls over the connections
-        this.context.fillStyle = this.ballColour;
+        this.context.fillStyle = this.ballColour || highlightColor;
         for (let ball of this.balls) {
             this.context.beginPath();
             this.context.arc(ball.x, ball.y, this.ballRadius, 0, Math.PI * 2);
@@ -457,10 +467,11 @@ function updateColours() {
 }
 
 attachListener(document, "DOMContentLoaded", function () {
-    // Keep track of the user's preferred colour theme
+    // Keep track of the user's preferred colour theme, which can change while the page is open
     updateColours();
     let colourObserver = new MutationObserver(updateColours);
     colourObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["style"] });
+    attachListener(window.matchMedia("(prefers-color-scheme: light)"), "change", updateColours);
 
     const canvas = document.getElementById("simulation");
     const context = canvas.getContext("2d");
@@ -478,17 +489,46 @@ attachListener(document, "DOMContentLoaded", function () {
         .map(({ widget }) => widget); // map back to just the widget
     const widgetPlayDuration = 20000;
 
-    let now = Date.now() - widgetPlayDuration;
     let currentWidgetPlayTime = 0.0;
     let currentWidgetIndex = 0;
+    // Choosing a widget with its dot stops the slideshow on it
+    let autoAdvance = true;
+
+    // One dot per widget, filled in for the current one
+    const dots = document.getElementById("widget_dots");
+    const dotButtons = widgets.map((widget, index) => {
+        let button = document.createElement("button");
+        button.className = "widget_dot";
+        button.title = widget.name;
+        button.setAttribute("aria-label", widget.name);
+        attachListener(button, "click", function () {
+            autoAdvance = false;
+            showWidget(index);
+        });
+        dots.appendChild(button);
+        return button;
+    });
+
+    function showWidget(index) {
+        currentWidgetIndex = index;
+        currentWidgetPlayTime = 0;
+        widgets[currentWidgetIndex].reset();
+        dotButtons.forEach((button, i) => button.setAttribute("aria-current", i === currentWidgetIndex));
+    }
+
+    let now = Date.now();
+    let running = false;
     function draw() {
+        if (!running) {
+            return;
+        }
         let deltaTime = Date.now() - now;
         now = Date.now();
-        currentWidgetPlayTime += deltaTime;
-        if (currentWidgetPlayTime > widgetPlayDuration) {
-            currentWidgetPlayTime = 0;
-            currentWidgetIndex = (currentWidgetIndex + 1) % widgets.length;
-            widgets[currentWidgetIndex].reset();
+        if (autoAdvance) {
+            currentWidgetPlayTime += deltaTime;
+            if (currentWidgetPlayTime > widgetPlayDuration) {
+                showWidget((currentWidgetIndex + 1) % widgets.length);
+            }
         }
 
         widgets[currentWidgetIndex].nextFrame(deltaTime);
@@ -496,37 +536,65 @@ attachListener(document, "DOMContentLoaded", function () {
         requestAnimationFrame(draw);
     }
 
-    attachListener(window, "mousemove", function (event) {
+    function setRunning(shouldRun) {
+        if (shouldRun && !running) {
+            // Don't count the time spent paused
+            now = Date.now();
+            running = true;
+            requestAnimationFrame(draw);
+        }
+        running = shouldRun;
+    }
+
+    // The canvas is drawn in device pixels, so it stays sharp on high-DPI screens
+    function resizeCanvas() {
+        canvas.width = Math.round(canvas.offsetWidth * window.devicePixelRatio);
+        canvas.height = Math.round(canvas.offsetHeight * window.devicePixelRatio);
+    }
+
+    // Convert a mouse event to canvas pixels, or null if it's outside the canvas or on the dots
+    function canvasPosition(event) {
+        if (dots.contains(event.target)) {
+            return null;
+        }
         let rect = canvas.getBoundingClientRect();
         let eventOutOfBounds = event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom;
         if (eventOutOfBounds) {
-            return;
+            return null;
         }
-        let x = event.clientX - rect.left;
-        let y = event.clientY - rect.top;
-        widgets[currentWidgetIndex].mouseMoved(x, y, event.buttons === 1);
+        return {
+            x: (event.clientX - rect.left) * (canvas.width / rect.width),
+            y: (event.clientY - rect.top) * (canvas.height / rect.height),
+        };
+    }
+
+    attachListener(window, "mousemove", function (event) {
+        let position = canvasPosition(event);
+        if (position) {
+            widgets[currentWidgetIndex].mouseMoved(position.x, position.y, event.buttons === 1);
+        }
     });
 
     attachListener(window, "click", function (event) {
-        let rect = canvas.getBoundingClientRect();
-        let eventOutOfBounds = event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom;
-        if (eventOutOfBounds) {
-            return;
+        let position = canvasPosition(event);
+        if (position) {
+            widgets[currentWidgetIndex].mouseClick(position.x, position.y);
         }
-        let x = event.clientX - rect.left;
-        let y = event.clientY - rect.top;
-        widgets[currentWidgetIndex].mouseClick(x, y);
     });
 
     attachListener(window, "load", function () {
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
-        draw();
+        resizeCanvas();
+        showWidget(0);
+        // Only animate while the banner is on screen, to save CPU and battery
+        if ("IntersectionObserver" in window) {
+            new IntersectionObserver((entries) => setRunning(entries[entries.length - 1].isIntersecting)).observe(canvas);
+        } else {
+            setRunning(true);
+        }
     });
 
     attachListener(window, "resize", function () {
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
+        resizeCanvas();
         widgets[currentWidgetIndex].reset();
     });
 });

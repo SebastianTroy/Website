@@ -11,3 +11,42 @@ canvas {
     width: 100%;
     height: 100%;
 }
+
+/* One dot per widget along the bottom, filled in for the current one */
+#widget_dots {
+    position: absolute;
+    bottom: 0.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+}
+
+.widget_dot {
+    /* The padding gives a bigger target to click than the dot itself */
+    padding: 0.4rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.widget_dot::before {
+    content: "";
+    display: block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border: 2px solid var(--text-mute-color);
+    border-radius: 50%;
+    box-sizing: border-box;
+    opacity: var(--translucent-medium);
+    transition: opacity 0.2s;
+}
+
+.widget_dot:hover::before,
+.widget_dot:focus-visible::before {
+    opacity: 1;
+}
+
+.widget_dot[aria-current="true"]::before {
+    background-color: var(--text-mute-color);
+    opacity: 1;
+}
