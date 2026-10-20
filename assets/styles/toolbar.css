@@ -1,6 +1,8 @@
 .toolbar {
     position: sticky;
     top: 0;
+    /* Above positioned content, such as the Godot launchers, when scrolled over it */
+    z-index: 20;
     background-color: var(--alt-background-color);
     width: 100%;
     display: flex;
