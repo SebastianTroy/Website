@@ -19,6 +19,7 @@
  */
 
 :root {
+    color-scheme: dark;
     --background-color: black;
     --text-color: rgb(226, 226, 226);
     --text-mute-color: rgb(145, 145, 145);
@@ -37,14 +38,30 @@
     --link-hover-color: rgb(89, 130, 181);
 }
 
-/* 
+/*
 Some users may have a preference for a light theme, and we should
-respect that preference. We can use the prefers-color-scheme media
-query to detect this preference and adjust our styles accordingly.
+respect that preference. shared.js sets data-theme from the theme
+toggle, or from the prefers-color-scheme media query if the visitor
+hasn't used it. Without JavaScript there's no data-theme, so the
+media query applies directly.
 */
 
+:root[data-theme="light"] {
+    color-scheme: light;
+    --background-color: white;
+    --text-color: rgb(29, 29, 29);
+    --text-mute-color: rgb(110, 110, 110);
+    --accent-text-color: rgb(10, 10, 10);
+    --accent-color: rgb(236, 214, 187);
+    --alt-accent-color-bright: #ffdf7d;
+    --alt-accent-color-dark: #ffa449;
+    --alt-background-color: rgb(233, 233, 233);
+    --alt-background-color-emphasised: rgb(237, 237, 237);
+}
+
 @media (prefers-color-scheme: light) {
-    :root {
+    :root:not([data-theme]) {
+        color-scheme: light;
         --background-color: white;
         --text-color: rgb(29, 29, 29);
         --text-mute-color: rgb(110, 110, 110);
@@ -544,4 +561,47 @@ kbd {
     .download_links .try_it_now {
         max-width: 100%;
     }
+}
+
+/* The theme toggle, fixed in the bottom right of every page */
+.theme_toggle {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 10;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0.5rem;
+    border: 1px solid var(--text-mute-color);
+    border-radius: 50%;
+    background-color: var(--alt-background-color);
+    color: var(--text-color);
+    cursor: pointer;
+    opacity: var(--translucent-heavy);
+}
+
+.theme_toggle:hover,
+.theme_toggle:focus-visible {
+    opacity: 1;
+}
+
+.theme_toggle svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Show what the button switches to: a moon in the light theme, a sun in the dark one */
+.theme_toggle_sun,
+:root[data-theme="light"] .theme_toggle_moon {
+    display: block;
+}
+
+.theme_toggle_moon,
+:root[data-theme="light"] .theme_toggle_sun {
+    display: none;
 }

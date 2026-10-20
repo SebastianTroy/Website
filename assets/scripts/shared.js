@@ -8,6 +8,68 @@ function attachListener(eventSource, event, callback) {
     }
 }
 
+// The theme is the visitor's choice from the theme toggle, or the OS preference if they haven't used it
+const lightSchemeQuery = window.matchMedia("(prefers-color-scheme: light)");
+
+function storedTheme() {
+    try {
+        return localStorage.getItem("theme");
+    } catch {
+        return null;
+    }
+}
+
+function currentTheme() {
+    return storedTheme() || (lightSchemeQuery.matches ? "light" : "dark");
+}
+
+function applyTheme() {
+    let theme = currentTheme();
+    document.documentElement.dataset.theme = theme;
+    // Light images are picked by a prefers-color-scheme media query, which can't see the toggle
+    for (let source of document.querySelectorAll('source[media*="prefers-color-scheme"], source[data-theme-media]')) {
+        source.dataset.themeMedia ??= source.media;
+        let forLight = source.dataset.themeMedia.includes("light");
+        source.media = forLight === (theme === "light") ? "all" : "not all";
+    }
+    for (let button of document.querySelectorAll(".theme_toggle")) {
+        button.title = theme === "light" ? "Switch to the dark theme" : "Switch to the light theme";
+        button.setAttribute("aria-label", button.title);
+    }
+}
+
+// Set the theme straight away, before the page is drawn
+applyTheme();
+attachListener(lightSchemeQuery, "change", applyTheme);
+// Other tabs and iframes, such as the banner, follow a change made with the toggle
+attachListener(window, "storage", function (event) {
+    if (event.key === "theme" || event.key === null) {
+        applyTheme();
+    }
+});
+
+attachListener(document, "DOMContentLoaded", function () {
+    applyTheme();
+    for (let button of document.querySelectorAll(".theme_toggle")) {
+        attachListener(button, "click", function () {
+            let next = currentTheme() === "light" ? "dark" : "light";
+            try {
+                // Choosing the OS preference forgets the choice, so the OS is followed again
+                if (next === (lightSchemeQuery.matches ? "light" : "dark")) {
+                    localStorage.removeItem("theme");
+                } else {
+                    localStorage.setItem("theme", next);
+                }
+            } catch {
+                // Without storage the choice only lasts for this page
+                document.documentElement.dataset.theme = next;
+                return;
+            }
+            applyTheme();
+        });
+    }
+});
+
 attachListener(document, "DOMContentLoaded", function () {
     // modify the css to delete the .js_enabled_only class entirely
     for (let stylesheet of document.styleSheets) {
@@ -39,7 +101,8 @@ attachListener(document, "DOMContentLoaded", function () {
             iframe.className = "embedded_godot";
             iframe.title = launcher.dataset.title || "";
             iframe.allowFullscreen = true;
-            iframe.src = source;
+            let theme = storedTheme();
+            iframe.src = theme ? source + (source.includes("?") ? "&" : "?") + "theme=" + theme : source;
             launcher.replaceChildren(iframe);
             iframe.focus();
         });

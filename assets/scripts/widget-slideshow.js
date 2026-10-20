@@ -475,8 +475,7 @@ attachListener(document, "DOMContentLoaded", function () {
     // Keep track of the user's preferred colour theme, which can change while the page is open
     updateColours();
     let colourObserver = new MutationObserver(updateColours);
-    colourObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["style"] });
-    attachListener(window.matchMedia("(prefers-color-scheme: light)"), "change", updateColours);
+    colourObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["style", "data-theme"] });
 
     const canvas = document.getElementById("simulation");
     const context = canvas.getContext("2d");
