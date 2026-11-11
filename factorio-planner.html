@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:site_name" content="TroyDev">
+        <meta property="og:description" content="Site for my personal projects">
+        <meta property="og:type" content="website">
+        <meta property="og:locale" content="en_GB">
+
+        <title>Factorio Planner | TroyDev</title>
+
+        <link rel="icon" type="image/x-icon" href="assets/icons/logo.png">
+        <link rel="stylesheet" href="assets/fonts/fonts.css">
+        <link rel="stylesheet" href="assets/styles/shared.css">
+        <link rel="stylesheet" href="assets/styles/toolbar.css">
+        <link rel="stylesheet" href="assets/styles/factorio-planner.css">
+        <script src="assets/scripts/shared.js"></script>
+        <script src="assets/scripts/toolbar.js"></script>
+    </head>
+
+    <body>
+        <div class="toolbar">
+            <div class="toolbar_content">
+                <a class="toolbar_logo" href="index.html"></a>
+                <input type="checkbox" id="toolbar_hamburger_menu" style="display: none;">
+                <label for="toolbar_hamburger_menu" class="toolbar_buttons_toggle"></label>
+                <div class="toolbar_buttons_container">
+                    <a class="toolbar_button" href="index.html">Projects</a>
+                    <hr class="toolbar_button_spacer">
+                    <a class="toolbar_button" href="recipes.html">Recipes</a>
+                    <hr class="toolbar_button_spacer">
+                    <a class="toolbar_button" href="contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <h2>Factorio Planner</h2>
+            <div class="box">
+                <div class="js_disabled_only">
+                    <div class="large_text">The interactive parts of this page require javascript to be enabled.</div>
+                    <div class="large_text">(There are no ADs or tracking scripts installed on this website!).</div>
+                </div>
+                <div class="godot_launcher js_enabled_only" data-title="Factorio Planner" data-src="godot/FactorioPlanner/FactorioPlanner.html?embedded=1">
+                    <picture><source srcset="assets/images/factorio-planner/poster_light.webp" media="(prefers-color-scheme: light)"><img class="godot_launcher_poster" src="assets/images/factorio-planner/poster.webp"></picture>
+                    <button class="godot_launcher_button more_info_button" type="button">Play</button>
+                </div>
+                <div class="small_text">The planner is a download of around 14 MB.</div>
+                <div class="text">A production planner for <a target="_blank" rel="noopener noreferrer" href="https://www.factorio.com/">Factorio</a>. Choose the items you want and how fast you want them, and it works out every production step, shown as a tree or a table, with how many machines each step needs, which belts carry it, and the raw inputs, byproducts and buildings for the whole factory. It's a rewrite of my 2017 <a target="_blank" rel="noopener noreferrer" href="https://github.com/SebastianTroy/FactorioManufacturingPlanner">JavaFX planner</a>, now in C++ and Godot so it runs in the browser.</div>
+                <div class="text">The data for vanilla Factorio and Space Age 2.1 are built in. Modded games can be loaded too, as described below.</div>
+                <div class="small_text">This is an unofficial fan tool. Factorio and its item icons belong to Wube Software.</div>
+            </div>
+            <h2>Controls</h2>
+            <div class="pair">
+                <div class="box">
+                    <h3>Choosing what to make</h3>
+                    <div class="text_left">Pick the items you want from the item list, then set how many of each. The planner lays out every step needed to make them.</div>
+                    <table class="controls_table">
+                        <tr><td>Find an item</td><td>Type in <b>Search items</b>, or pick a group below it</td></tr>
+                        <tr><td>Make an item</td><td>Double-click it, or select it and press <b>Make</b> (or <kbd>Enter</kbd>)</td></tr>
+                        <tr><td>Bring an item in ready-made</td><td>Select it and press <b>Supply</b></td></tr>
+                        <tr><td>Choose several items</td><td><kbd>Ctrl</kbd> or <kbd>Shift</kbd> click, then <b>Make</b> or <b>Supply</b></td></tr>
+                        <tr><td>Set how many you want</td><td>Type the number or use the arrows, then pick /s, /min, /h or × belt</td></tr>
+                        <tr><td>Remove an item</td><td>Its bin button</td></tr>
+                    </table>
+                </div>
+                <div class="box">
+                    <h3>Working with the steps</h3>
+                    <div class="text_left">Each step shows its recipe, machines and belts. Fluids are shown in pipes, and belts are numbered by tier.</div>
+                    <table class="controls_table">
+                        <tr><td>Show a tree or a table</td><td>The <b>Tree</b> and <b>Table</b> buttons</td></tr>
+                        <tr><td>Choose a step's recipe or machine</td><td>Click its <b>Recipe</b> or <b>Machine</b> cell, then pick from the menu</td></tr>
+                        <tr><td>Supply or make a step's item, or reset its choices</td><td>Right-click the step</td></tr>
+                        <tr><td>Column settings, and which machines and belts you have</td><td>The cog on a column title, or right-click the title</td></tr>
+                        <tr><td>More room for the steps</td><td>The button at the far left of the top bar</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="box">
+                <div class="text_left">On a touch screen, tap to select and then tap <b>Make</b> or <b>Supply</b>. Right-clicking a step has no touch equivalent yet. On narrow screens, the <b>Factory</b> and <b>Plan</b> tabs switch between the two halves.</div>
+                <div class="text_left">For a modded game, run <kbd>factorio --dump-data</kbd>, then choose <b>Load data dump…</b> in the <b>Game data</b> list and open the <b>data-raw-dump.json</b> it writes. The <b>?</b> beside it explains how.</div>
+            </div>
+            <hr class="section_end">
+        </div>
+        <div class="footer">
+            <div class="footer_content">
+                <button class="theme_toggle js_enabled_only" type="button">
+                    <svg class="theme_toggle_sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M1.5 12h2.5M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
+                    <svg class="theme_toggle_moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11z"/></svg>
+                </button>
+                <div class="small_text">Copyright © 2026 TroyDev - All Rights Reserved.</div>
+                <input type="checkbox" id="toolbar_hamburger_menu" style="display: none;">
+                <label for="toolbar_hamburger_menu" class="toolbar_buttons_toggle"></label>
+                <div class="toolbar_buttons_container" style="flex-direction: row;">
+                    <a class="toolbar_button" href="index.html">Projects</a>
+                    <hr>
+                    <a class="toolbar_button" href="recipes.html">Recipes</a>
+                    <hr>
+                    <a class="toolbar_button" href="contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
