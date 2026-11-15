@@ -1,0 +1,13 @@
+/* The poster's ratio; on phones give the demo more height */
+.godot_launcher {
+    aspect-ratio: 16 / 10;
+    /* Never taller than the screen below the scrolled toolbar (its padding and logo), with a strip
+       left over so the page can still be scrolled past the demo */
+    max-height: calc(100dvh - 32px - clamp(35px, 20vmin, 64px) - 64px);
+}
+
+@media (max-width: 640px) {
+    .godot_launcher {
+        aspect-ratio: 3 / 4;
+    }
+}

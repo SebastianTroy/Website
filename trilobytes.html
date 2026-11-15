@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="assets/fonts/fonts.css">
         <link rel="stylesheet" href="assets/styles/shared.css">
         <link rel="stylesheet" href="assets/styles/toolbar.css">
+        <link rel="stylesheet" href="assets/styles/trilobytes.css">
         <script src="assets/scripts/shared.js"></script>
         <script src="assets/scripts/toolbar.js"></script>
     </head>
@@ -33,52 +34,47 @@
             </div>
         </div>
         <div class="content">
-            <h2>Brief</h2>
+            <h2>Trilobytes</h2>
+            <div class="box">
+                <div class="js_disabled_only">
+                    <div class="large_text">The interactive parts of this page require javascript to be enabled.</div>
+                    <div class="large_text">(There are no ADs or tracking scripts installed on this website!).</div>
+                </div>
+                <div class="godot_launcher js_enabled_only" data-title="Trilobyte Designer" data-src="godot/Trilobytes/Trilobytes.html?embedded=1">
+                    <picture><source srcset="assets/images/trilobytes/poster_light.webp" media="(prefers-color-scheme: light)"><img class="godot_launcher_poster" src="assets/images/trilobytes/poster.webp"></picture>
+                    <button class="godot_launcher_button more_info_button" type="button">Play</button>
+                </div>
+                <div class="small_text">The tech demo is a download of around 13 MB, and is made for a computer with a mouse: on a phone or other small screen the controls are too small to use comfortably, and it runs slowly. The first time it starts, the page can freeze for up to half a minute while your graphics card prepares the trilobyte's shader; later visits start straight away.</div>
+                <div class="text">Trilobytes is an evolution simulator in a top down "petri dish" style, where individuals compete for food and can evolve new body parts and brain connections.</div>
+                <div class="text">This tech demo shows one of its systems on its own: the designer used to create the trilobytes' procedural looks. Shape each part with sliders, colours and lists, lock what you like, roll random designs or pick from a row of possible offspring, then save your trilobyte as a picture that can be loaded back in.</div>
+            </div>
+            <h2>Controls</h2>
             <div class="pair">
-                <iframe class="embedded_youtube" src="https://www.youtube-nocookie.com/embed/7qzXBoBR-u0?rel=0" title="Trilobytes CoverArt" frameborder="0" allow="clipboard-write; encrypted-media;" allowfullscreen></iframe>
                 <div class="box">
-                    <h3>Artwork</h3>
-                    <div class="text">Art by <a target="_blank" rel="noopener noreferrer" href="https://www.behance.net/KZinner/">K. R. Zinner</a></div>
+                    <h3>Designing</h3>
+                    <div class="text_left">The <b>Design</b> panel holds every part's settings. Parts fold open one at a time.</div>
+                    <table class="controls_table">
+                        <tr><td>Edit a part</td><td>Click it on the trilobyte (or tap it); its settings open and it gets a thick outline</td></tr>
+                        <tr><td>See what a part is</td><td>Hover over the trilobyte; the part under the cursor gets a thin ring</td></tr>
+                        <tr><td>Change a setting</td><td>Its slider, colour swatch, list or colour picker</td></tr>
+                        <tr><td>Randomise or reset everything</td><td>The dice or reset icon by the <b>Design</b> title</td></tr>
+                        <tr><td>Randomise or reset one part or group</td><td>The dice or reset icon in its title bar</td></tr>
+                        <tr><td>Keep something when randomising</td><td>The padlock on a setting, group or part</td></tr>
+                        <tr><td>Undo and redo</td><td>The buttons, or <kbd>Ctrl</kbd> <kbd>Z</kbd> and <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>Z</kbd> (or <kbd>Ctrl</kbd> <kbd>Y</kbd>)</td></tr>
+                    </table>
                 </div>
-            </div>
-            <div class="pair alt">
-                <iframe class="embedded_youtube" src="https://www.youtube-nocookie.com/embed/K9PFH5LzEGA?rel=0" title="Sneak Peek" frameborder="0" allow="clipboard-write; encrypted-media;" allowfullscreen></iframe>
                 <div class="box">
-                    <h3>Sneak Peek</h3>
-                    <div class="text">Whilst the project is heavily in development, it has already produced some exciting and very natural looking behaviours.</div>
-                </div>
-            </div>
-            <div class="pair">
-                <input class="lightbox_toggle" type="checkbox" id="overview" />
-                <label class="lightbox" for="overview">
-                    <img src="assets/images/trilobytes/overview.png">
-                </label>
-                <div class="box">
-                    <h3>Overview</h3>
-                    <div class="text">The window is divided into 4 main areas. On the left are the settings, in the middle is the simulation, the right is an information panel and below are a number of graphs.</div>
-                    <div class="text">The large green circles represent zones which spawn food, these areas can be zoomed in on the observe the simulation in real time, or fast forward can be selected to run many more </div>
-                </div>
-            </div>
-            <div class="pair alt">
-                <input class="lightbox_toggle" type="checkbox" id="closeup" />
-                <label class="lightbox" for="closeup">
-                    <img src="assets/images/trilobytes/trilobyte_closeup.png">
-                </label>
-                <div class="box">
-                    <h3>The graphics</h3>
-                    <div class="text">Currently rudimentory placeholders. The coloured circle in the middle is a trilobyte, with grey spikes, a health bar showing ~75% health, and a number of large circles surrounding it representing various senses.
-                        The grey circle with radial spikes is an environmental hazard. The small green circe is a food pellet which has presumably lured this unfortunate individual into the spike, causing it damage.</div>
-                </div>
-            </div>
-            <div class="pair">
-                <input class="lightbox_toggle" type="checkbox" id="inspector" />
-                <label class="lightbox" for="inspector">
-                    <img src="assets/images/trilobytes/brain_inspector.png">
-                </label>
-                <div class="box">
-                    <h3>A creature's brain</h3>
-                    <div class="text">Every creature has a neural network which controls its behaviour. There are inputs along the top, corresponding to various senses. There are outputs along the bottom (in this case only one) corresponding to
-                        things the individual can do. This is updated each simulation frame for every individual.</div>
+                    <h3>Siblings, seeds and saving</h3>
+                    <div class="text_left">Siblings below the view are possible offspring of your design.</div>
+                    <table class="controls_table">
+                        <tr><td>Preview a sibling</td><td>Hover over it</td></tr>
+                        <tr><td>Take a sibling's looks</td><td>Click or tap it</td></tr>
+                        <tr><td>New siblings</td><td>The dice by the <b>Siblings</b> title, which also sets how many, how different, and whether they keep locked settings</td></tr>
+                        <tr><td>Re-roll a known trilobyte</td><td>Type a number or any words in <b>Seed</b> and press <kbd>Enter</kbd>; the copy icon copies the seed</td></tr>
+                        <tr><td>Save a picture</td><td><b>Picture</b>: a PNG with the design hidden inside, so it loads back</td></tr>
+                        <tr><td>Save the design as text</td><td><b>Design</b>: a JSON file</td></tr>
+                        <tr><td>Load</td><td><b>Load</b>, then pick a saved PNG or JSON</td></tr>
+                    </table>
                 </div>
             </div>
             <hr class="section_end">
